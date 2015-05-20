@@ -7,51 +7,21 @@
     <meta name="viewport" content="width=device-width" />
 	<link href="assets/css/reset.css" rel="stylesheet">
     <link href="assets/css/main.css" rel="stylesheet">
-    <script data-main="assets/js/main" src="bower_components/requirejs/require.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script data-main="../main" src="bower_components/requirejs/require.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div id="board">
-            <div class="wallpaper"></div>
-            <div class="front"></div>
-            <div class="back" id="game-overview">
-                <button id="join-new-game">Join Game</button>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Enemy</th>
-                            <th>Turn</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>rechtsonder@gmail.com</td>
-                            <td>Yours!</td>
-                            <td><button id="join-game">Join</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="right"></div>
-            <div class="left"></div>
-            <div class="top">
-                <div class="boat">
-                    <div class="hull"></div>
-                    <div class="stand"><div></div></div>
-                    <div class="stand"><div></div></div>
-                </div>
-            </div>
-            <div class="bottom">
-                <div class="prop-sd"></div>
-            </div>
-            <div class="front2"></div>
-            <div class="leftlegfront"></div>
-            <div class="leftlegside"></div>
-            <div class="rightlegfront"></div>
-            <div class="rightlegside"></div>
-            <div class="side"></div>
+    <div id="hud">
+        <div id="ship-select">
+            <ul>
+                <li>Aircraft carrier</li>
+                <li>Battleship</li>
+                <li>Submarine</li>
+                <li>Destroyer</li>
+                <li>Patrol boat</li>
+            </ul>
         </div>
     </div>
+    <div id="container"></div>
 </body>
 </html>
