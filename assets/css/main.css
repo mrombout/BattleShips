@@ -1,0 +1,268 @@
+body {
+  background-color: #C5EFF7;
+  overflow: hidden;
+  font-family: arial, sans-serif;
+}
+/******************************************************************************
+ * 3D Stuff
+ *****************************************************************************/
+.container {
+  width: 640px;
+  height: 64px;
+  position: relative;
+  margin: 400px auto;
+  border: 1px solid #CCC;
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  -o-perspective: 1000px;
+  perspective: 1000px;
+}
+#board {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  transform: rotateX(-25deg);
+}
+#board.zoom-board {
+  transform: translateZ(275px) translateY(-25px) rotateX(-70deg);
+}
+#board.zoom-back {
+  transform: translateZ(600px) translateY(370px);
+}
+#board > div {
+  display: block;
+  position: absolute;
+  width: 196px;
+  height: 196px;
+  line-height: 32px;
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+#board,
+#board div {
+  -webkit-transition: -webkit-transform 1s;
+  -moz-transition: -moz-transform 1s;
+  -o-transition: -o-transform 1s;
+  transition: transform 1s;
+}
+#board .front {
+  background-color: #34495E;
+  height: 32px;
+  width: 640px;
+  transform: rotateX(0deg) translateZ(320px);
+}
+#board .back {
+  background-color: #34495E;
+  height: 640px;
+  width: 640px;
+  transform: rotateX(0deg) translateZ(-320px) translateY(-640px);
+}
+#board .right {
+  height: 32px;
+  width: 640px;
+  transform: rotateY(90deg) translateZ(320px);
+}
+#board .left {
+  height: 32px;
+  width: 640px;
+  transform: rotateY(-90deg) translateZ(320px);
+}
+#board .top {
+  background-color: #34495E;
+  transform: rotateX(-90deg) translateZ(-320px);
+  width: 640px;
+  height: 640px;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+#board .bottom {
+  background-color: #D35400;
+  transform: rotateX(-90deg) translateZ(-288px) translateX(-700px) translateY(-20px);
+  width: 1920px;
+  height: 640px;
+}
+#board .front2 {
+  background-color: #EB974E;
+  height: 32px;
+  width: 1920px;
+  transform: rotateX(0deg) translateZ(340px) translateX(-700px) translateY(32px);
+}
+#board .leftlegfront {
+  background-color: #964816;
+  height: 640px;
+  width: 120px;
+  transform: rotateX(180deg) translateZ(-330px) translateY(-30px) translateX(-400px);
+}
+#board .leftlegside {
+  background-color: #D35400;
+  height: 640px;
+  width: 120px;
+  transform: rotateX(180deg) translateZ(-270px) translateY(-28px) translateX(-344px) rotateY(-90deg);
+}
+#board .rightlegfront {
+  background-color: #964816;
+  height: 640px;
+  width: 120px;
+  transform: rotateX(180deg) translateZ(-330px) translateY(-30px) translateX(900px);
+}
+#board.show-front {
+  transform: translateZ(-100px) rotateY(0deg);
+}
+#board.show-back {
+  transform: translateZ(-100px) rotateX(-180deg);
+}
+#board.show-right {
+  transform: translateZ(-100px) rotateY(-90deg);
+}
+#board.show-left {
+  transform: translateZ(-100px) rotateY(90deg);
+}
+#board.show-top {
+  transform: translateZ(-100px) rotateX(-90deg);
+}
+#board.show-bottom {
+  transform: translateZ(-100px) rotateX(90deg);
+}
+/******************************************************************************
+ * Boat
+ *****************************************************************************/
+.boat {
+  position: absolute;
+  width: 128px;
+  height: 64px;
+  transform-style: preserve-3d;
+}
+.boat .stand {
+  float: left;
+  background-color: #222;
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  transform-style: preserve-3d;
+}
+.boat .stand div {
+  background-color: #444;
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  transform: translateZ(-8px) rotateX(180deg);
+  animation-name: dissapear-hack;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate;
+}
+.boat .hull {
+  position: absolute;
+  background-size: 100%;
+  background-image: url("../img/destroyer.svg");
+  width: 128px;
+  height: 64px;
+  animation-name: rock;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate;
+}
+@keyframes rock {
+  from {
+    transform: rotateX(90deg) translateY(-32px) rotateZ(5deg);
+  }
+  to {
+    transform: rotateX(90deg) translateY(-32px) rotateZ(-5deg);
+  }
+}
+/* Quick hack to counter the sudden dissapearance of certain elements */
+@keyframes dissapear-hack {
+  from {
+    transform: translateZ(-8px) rotateX(180deg);
+  }
+  to {
+    transform: translateZ(-8px) rotateX(179deg);
+  }
+}
+/******************************************************************************
+ * Board
+ *****************************************************************************/
+#board .top .field {
+  background-color: #517CA8;
+  float: left;
+  width: 64px;
+  height: 64px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: 1px solid #34495E;
+  border-radius: 15px;
+  -webkit-transition: all 0.20s;
+  -moz-transition: all 0.20s;
+  -o-transition: all 0.20s;
+  transition: all 0.20s;
+}
+#board .top .field:hover {
+  border: 5px solid white;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+}
+#board .top .row::after {
+  content: ".";
+  height: 0px;
+  visibility: hidden;
+  display: block;
+  clear: both;
+}
+.prop-sd {
+  width: 51px;
+  height: 68px;
+  transform: translateX(415px) translateY(253px) rotateZ(75deg);
+  background-image: url('../img/sd.svg');
+}
+/******************************************************************************
+ * Board
+ *****************************************************************************/
+#game-overview {
+  padding: 15px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#game-overview button {
+  background-color: #517CA8;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+#game-overview button:hover {
+  background-color: #8495a8;
+}
+#game-overview button#join-new-game {
+  font-size: 30px;
+  margin-bottom: 15px;
+  height: 50px;
+}
+#game-overview table {
+  width: 100%;
+  color: black;
+}
+#game-overview table thead {
+  background-color: red;
+  text-transform: uppercase;
+}
+#game-overview table tbody {
+  background-color: white;
+}
