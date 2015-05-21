@@ -5,47 +5,67 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', '..
         this.domElement = $(viewHtml);
         this.domElement.hide();
 
-        this.domElement.on('mousedown', 'li', this, this.onMenuItemMouseDown);
+        this.ul = this.domElement.find('ul');
 
-        this.presenter = new HUDPresenter();
+        this.domElement.on('mousedown', 'li', function(e) {
+            this.onMenuItemMouseDown(e);
+        }.bind(this));
+        container.on('mouseup', function(e) {
+            this.onDocumentMouseUp(e);
+        }.bind(this));
+
+        this.presenter = new HUDPresenter(this);
 
         container.append(this.domElement);
     };
 
+    HUD.prototype.addShipItem = function(shipItem) {
+        this.ul.append(shipItem);
+    };
+
     HUD.prototype.onMenuItemMouseDown = function(e) {
-        var $this = $(this);
+        var $this = $(e.target);
 
         console.log('mousedown');
 
-        container.on('mouseup', e.data, e.data.onDocumentMouseUp);
+        if(e.button === 0) {
+            this.presenter.selectShip($this);
 
-        e.data.presenter.selectShip($this);
-
-        $this.css('opacity', '0');
-        $this.animate({
-            height: 0
-        }, 500, function() {
-            $this.hide();
-        });
+            $this.css('opacity', '0');
+            $this.animate({
+                height: 0
+            }, 500, function() {
+                $this.hide();
+            });
+        }
     };
 
     HUD.prototype.onDocumentMouseUp = function(e) {
-        var $this = $(this);
-        var $selectedShip = e.data.presenter.selectedShip;
+        var $this = $(e.target);
+        var $selectedShip = this.presenter.selectedShip;
 
-        if($selectedShip) {
-            $selectedShip.stop();
-            $selectedShip.show();
-            $selectedShip.css('opacity', '1');
-            $selectedShip.animate({
-                height: 48
-            }, 500);
+        console.log('mouseup');
 
-            e.data.presenter.deselectShip();
+        if(e.button === 0 && $selectedShip) {
+            if($selectedShip) {
+                $selectedShip.stop();
+                $selectedShip.show();
+                $selectedShip.css('opacity', '1');
+                $selectedShip.animate({
+                    height: 48
+                }, 500);
+
+                this.presenter.deselectShip();
+            }
+        }
+
+        if(e.button === 2 && $selectedShip) {
+            this.presenter.rotateSelectedShip();
         }
     };
 
     HUD.prototype.show = function() {
+        this.presenter.loadShips();
         this.domElement.show();
     };
 
