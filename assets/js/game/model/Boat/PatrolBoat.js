@@ -1,3 +1,5 @@
+"use strict";
+
 define(['./Boat'], function() {
     var PatrolBoat = function() {
 	    this.size = 2;

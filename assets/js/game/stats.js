@@ -1,3 +1,5 @@
+"use strict";
+
 define(['Stats', 'container'], function(Stats, container) {
     var stats = new Stats();
     stats.domElement.style.position = 'absolute';

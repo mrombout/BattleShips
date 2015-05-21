@@ -1,4 +1,6 @@
-define(['.Boat'], function() {
+"use strict";
+
+define(['Boat'], function() {
     var Submarine = function() {
 	    this.size = 3;
     };

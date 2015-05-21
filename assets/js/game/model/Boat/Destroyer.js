@@ -1,3 +1,5 @@
+"use strict";
+
 define(['./Boat'], function() {
     var Destroyer = function() {
 	    this.size = 3;

@@ -1,3 +1,5 @@
+"use strict";
+
 define(function() {
     var Hit = function() {
         this.id = null;

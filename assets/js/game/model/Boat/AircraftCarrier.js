@@ -1,3 +1,5 @@
+"use strict";
+
 define(['./Boat'], function(Boat) {
 	// AircraftCarrier
 	var AircraftCarrier = function() {

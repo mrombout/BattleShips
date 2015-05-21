@@ -1,3 +1,5 @@
+"use strict";
+
 var require = {
     baseUrl: "assets/js/game",
     shim: {

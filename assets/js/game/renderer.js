@@ -1,3 +1,5 @@
+"use strict";
+
 define(["three", "container"], function(THREE) {
     // Create renderer
     var renderer= new THREE.WebGLRenderer();

@@ -1,3 +1,5 @@
+"use strict";
+
 define(function() {
 	var Board = function() {
         this.id = null;
@@ -6,11 +8,11 @@ define(function() {
 		this.boats = [];
 	};
 
-	Board.prototype.addTile(tile) {
+	Board.prototype.addTile = function(tile) {
 		this.tiles.append(tile);
 	};
 
-	Board.prototype.addBoat(boat) {
+	Board.prototype.addBoat = function(boat) {
 		this.boats.append(boat);
 	};
 

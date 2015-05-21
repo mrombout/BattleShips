@@ -1,3 +1,5 @@
+"use strict";
+
 require(['detector', 'game'], function(Detector, game){
     if(!Detector.webgl) {
         Detector.addGetWebGLMessage();

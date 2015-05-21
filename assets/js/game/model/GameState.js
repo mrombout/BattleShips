@@ -1,3 +1,5 @@
+"use strict";
+
 define(function() {
     var GameState = function() {
         this.QUEUE = 'que';

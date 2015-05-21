@@ -1,3 +1,5 @@
+"use strict";
+
 define(['./Boat'], function(Boat) {
 	var Battleship = function() {
 		this.size = 4;

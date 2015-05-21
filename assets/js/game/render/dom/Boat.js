@@ -1,3 +1,5 @@
+"use strict";
+
 // Boat
 var Boat = function() {
 

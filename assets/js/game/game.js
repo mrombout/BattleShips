@@ -1,7 +1,8 @@
-define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert', 'shader!skydome.frag'], function(THREE, container, renderer, scene, stats, skydomeVert, skydomeFrag) {
+"use strict";
+
+define(['three', 'container', 'renderer', 'scene', 'camera', 'stats', 'shader!skydome.vert', 'shader!skydome.frag', 'view/hud'], function(THREE, container, renderer, scene, camera, stats, skydomeVert, skydomeFrag, hudView) {
     var game = {
         init: function() {
-            game.createCamera();
             game.createControls();
             game.createLight();
             game.createSkydome();
@@ -13,6 +14,8 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
 
             game.createShips();
 
+            hudView.show();
+
             window.addEventListener('resize', game.onWindowResize, false);
         },
         onWindowResize: function() {
@@ -21,18 +24,8 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
 
             renderer.setSize(window.innerWidth, window.innerHeight);
         },
-        createCamera: function() {
-            game.camera = new THREE.PerspectiveCamera(
-                35,         // Field of view
-                800 / 600,  // Aspect ratio
-                1,          // Near
-                3000000     // Far
-            );
-            game.camera.position.set(-250, 200, 200);
-            game.camera.lookAt(scene.position);
-        },
         createControls: function() {
-            game.controls = new THREE.TrackballControls(game.camera, renderer.domElement);
+            game.controls = new THREE.TrackballControls(camera, renderer.domElement);
             game.controls.rotateSpeed = 2.0;
             game.controls.zoomSpeed = 1.2;
             game.controls.panSpeed = 0.8;
@@ -70,6 +63,7 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
             scene.add( sky );
         },
         createGrid: function() {
+            // create grid
             var size = 100, step = 20;
 
             var geometry = new THREE.Geometry();
@@ -87,7 +81,17 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
 
             var line = new THREE.Line( geometry, material, THREE.LinePieces );
             line.position.y = 1;
-            scene.add( line );
+            scene.add(line);
+
+            // create supported plane
+            var planeGeometry = new THREE.PlaneBufferGeometry(200, 200);
+            planeGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
+
+            var planeMesh = new THREE.Mesh(planeGeometry);
+            planeMesh.visible = false;
+            planeMesh.name = "dank";
+
+            scene.add(planeMesh);
         },
         createRaycaster: function() {
             game.raycaster = new THREE.Raycaster();
@@ -96,7 +100,7 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
             var waterNormals = new THREE.ImageUtils.loadTexture('assets/texture/waternormals.jpg');
             waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 
-            game.water = new THREE.Water(renderer, game.camera, scene, {
+            game.water = new THREE.Water(renderer, camera, scene, {
                 textureWidth: 512,
                 textureHeight: 512,
                 waterNormals: waterNormals,
@@ -172,7 +176,7 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
             game.controls.update();
 
             stats.begin();
-            renderer.render(scene, game.camera);
+            renderer.render(scene, camera);
             stats.end();
         }
     };
