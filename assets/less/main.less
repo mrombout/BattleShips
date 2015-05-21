@@ -1,16 +1,56 @@
 body {
   margin: 0;
   overflow: hidden;
+  font-family: 'Abel', sans-serif;
 }
 
 #hud {
   #ship-select {
     position: absolute;
     top: 25%;
+    left: -165px;
+    transition: left 500ms ease-in 3s;
 
-    ul li {
-      background-color: #000;
-      opacity: 0.5;
+    &:hover {
+      left: 0px;
+      transition-delay: 0ms;
+    }
+
+    li {
+      cursor: pointer;
+      user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+
+      transition: left 500ms ease-in 500ms;
+      position: relative;
+      left: -64px;
+      font-family: 'Black Ops One', cursive;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      line-height: 48px;
+      height: 49px;
+      padding-right: 20px;
+      border-right: 1px solid grey;
+      border-top: 2px solid grey;
+      border-bottom: 2px solid grey;
+
+      img {
+        margin-right: 20px;
+        vertical-align: middle;
+      }
+
+      &:hover {
+        transition-delay: 0ms;
+        left: 0px;
+      }
+      &:first-child {
+        border-top: 4px solid grey;
+      }
+      &:last-child {
+        border-bottom: 4px solid grey;
+      }
     }
   }
 }

@@ -1,5 +1,4 @@
 define(['Stats', 'container'], function(Stats, container) {
-    console.log('stats');
     var stats = new Stats();
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.top = '0px';

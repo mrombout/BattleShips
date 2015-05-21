@@ -11,68 +11,15 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
 
             game.createWater();
 
-            game.loadBattleship();
+            game.createShips();
 
-            game.mouse = new THREE.Vector2();
-            game.mouse3d = new THREE.Vector3();
-            game.INTERSECTED;
-
-            game.projector = new THREE.Projector();
-
-            document.addEventListener('mousemove', game.onDocumentMouseMove, false);
             window.addEventListener('resize', game.onWindowResize, false);
-            //container.addEventListener('mousedown', game.onMouseDown, false);
-            //container.addEventListener('mouseup', game.onMouseUp, false);
-        },
-        onDocumentMouseMove: function(e) {
-            e.preventDefault();
-
-            // 2d mouse
-            game.mouse.x = ( event.clientX / window.innerWidth) * 2 - 1;
-            game.mouse.y = - ( event.clientY / window.innerHeight) * 2 + 1;
-
-            // 3d mouse
-            var pos = new THREE.Vector3(0, 0, 0);
-            var pMouse = new THREE.Vector3(
-                game.mouse.x,
-                game.mouse.y,
-                1
-            );
-
-            game.projector.unprojectVector(pMouse, game.camera);
-
-            var cam = game.camera.position;
-            var m = pMouse.y / (pMouse.y - cam.y);
-
-            game.mouse3d.x = pMouse.x + ( cam.x - pMouse.x ) * m;
-            game.mouse3d.y = 0;
-            game.mouse3d.z = pMouse.z + ( cam.z - pMouse.z ) * m;
-
-            if(game.selectedBoat) {
-                game.selectedBoat.position.x = game.mouse3d.x;
-                game.selectedBoat.position.z = game.mouse3d.z;
-            }
         },
         onWindowResize: function() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
 
             renderer.setSize(window.innerWidth, window.innerHeight);
-        },
-        onMouseDown: function(e) {
-            if(e.button === 0) {
-                game.raycaster.setFromCamera(game.mouse, game.camera);
-                var intersects = game.raycaster.intersectObjects(scene.children);
-                if(intersects.length > 0) {
-                    game.selectedBoat = intersects[0].object;
-
-                    game.controls.enabled = false;
-                }
-            }
-        },
-        onMouseUp: function() {
-            game.controls.enabled = true;
-            game.selectedBoat = null;
         },
         createCamera: function() {
             game.camera = new THREE.PerspectiveCamera(
@@ -81,11 +28,11 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
                 1,          // Near
                 3000000     // Far
             );
-            game.camera.position.set(-15, 10, 10);
+            game.camera.position.set(-250, 200, 200);
             game.camera.lookAt(scene.position);
         },
         createControls: function() {
-            game.controls = new THREE.TrackballControls(game.camera);
+            game.controls = new THREE.TrackballControls(game.camera, renderer.domElement);
             game.controls.rotateSpeed = 2.0;
             game.controls.zoomSpeed = 1.2;
             game.controls.panSpeed = 0.8;
@@ -104,16 +51,6 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
             game.hemiLight.groundColor.setHSL(0.095, 1, 0.75);
             game.hemiLight.position.set(-1, 1, -1);
             scene.add(game.hemiLight);
-        },
-        createGround: function() {
-            var groundGeo = new THREE.PlaneBufferGeometry(10000, 10000);
-            var groundMat = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, specular: 0x050505 });
-            groundMat.color.setHSL(0.095, 1, 0.75);
-
-            var ground = new THREE.Mesh(groundGeo, groundMat);
-            ground.rotation.x = -Math.PI/2;
-            ground.position.y = -33;
-            scene.add(ground);
         },
         createSkydome: function() {
             var uniforms = {
@@ -155,20 +92,6 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
         createRaycaster: function() {
             game.raycaster = new THREE.Raycaster();
         },
-        createBoard: function() {
-            var geometry = new THREE.BoxGeometry(5, 1, 5);
-
-            for(var x = 0; x < 10; x++) {
-                for(var y = 0; y < 10; y++) {
-                    var material = new THREE.MeshLambertMaterial({ color: 0x00FF00 });
-                    var mesh = new THREE.Mesh(geometry, material);
-                    mesh.translateX(5 * x);
-                    mesh.translateZ(5 * y);
-                    mesh.translateY(2);
-                    scene.add(mesh);
-                }
-            }
-        },
         createWater: function() {
             var waterNormals = new THREE.ImageUtils.loadTexture('assets/texture/waternormals.jpg');
             waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
@@ -191,6 +114,25 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
             mirrorMesh.rotation.x = -Math.PI * 0.5;
             scene.add(mirrorMesh);
         },
+        createShips: function() {
+            var aircraftCarrier = game.createShip(0, 0, 5);
+            var battleship = game.createShip(2, 0, 4);
+            var submarine = game.createShip(4, 0, 3);
+            var destroyer = game.createShip(6, 0, 3);
+            var patrolBoat = game.createShip(8, 0, 2);
+        },
+        createShip: function(x, y, size) {
+            var geometry = new THREE.BoxGeometry(20, 10, size * 20);
+            geometry.applyMatrix(new THREE.Matrix4().makeTranslation(10, 0, 10 * size));
+            var material = new THREE.MeshLambertMaterial({ color: 0xFF0000 });
+            var mesh = new THREE.Mesh(geometry, material);
+
+            var vec2 = game.gridToWorld(new THREE.Vector2(x, y));
+            mesh.position.x = vec2.x;
+            mesh.position.z = vec2.y;
+
+            scene.add(mesh);
+        },
         loadBattleship: function() {
             var loader = new THREE.JSONLoader();
 
@@ -203,28 +145,28 @@ define(['three', 'container', 'renderer', 'scene', 'stats', 'shader!skydome.vert
                 scene.add(mesh);
             })
         },
+        worldToGrid: function(vec2) {
+
+        },
+        gridToWorld: function(vec) {
+            var newVec = new THREE.Vector2();
+
+            // normalize
+            newVec.x = 4 * 20;
+            newVec.y = -5 * 20;
+
+            // to position
+            newVec.x -= vec.x * 20;
+            newVec.y -= vec.y * 20;
+
+            return newVec;
+        },
         render: function() {
             window.requestAnimationFrame(game.render);
 
             // render water
             game.water.material.uniforms.time.value += 1.0 / 60.0;
             game.water.render();
-
-            // find selected
-            game.raycaster.setFromCamera(game.mouse, game.camera);
-            var intersects = game.raycaster.intersectObjects(scene.children);
-            if(intersects.length > 0) {
-                if(game.INTERSECTED != intersects[0].object && intersects[0].object.setHex) {
-                    if(game.INTERSECTED) game.INTERSECTED.material.emissive.setHex(game.INTERSECTED.currentHex);
-
-                    game.INTERSECTED = intersects[0].object;
-                    game.INTERSECTED.currentHex = game.INTERSECTED.material.emissive.getHex();
-                    game.INTERSECTED.material.emissive.setHex(0xFF0000);
-                }
-            } else {
-                if ( game.INTERSECTED ) game.INTERSECTED.material.emissive.setHex( game.INTERSECTED.currentHex );
-                game.INTERSECTED = null;
-            }
 
             // update
             game.controls.update();
