@@ -39,6 +39,9 @@ define(['three'], function(THREE) {
                 logo_specular: {
                     url: 'assets/texture/logo_s.png',
                     anisotropy: 16
+                },
+                skydome_diffuse: {
+                    url: 'assets/texture/skydome.jpg'
                 }
             },
             geometries: {

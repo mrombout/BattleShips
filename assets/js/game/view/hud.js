@@ -31,6 +31,7 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', '..
         if(e.button === 0) {
             this.presenter.selectShip($this);
 
+            $this.stop();
             $this.css('opacity', '0');
             $this.animate({
                 height: 0

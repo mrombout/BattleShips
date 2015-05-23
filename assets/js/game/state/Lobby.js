@@ -66,7 +66,12 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skyd
 
         // sky
         var skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
-        var skyMat = new THREE.ShaderMaterial( { vertexShader: skydomeVert.value, fragmentShader: skydomeFrag.value, uniforms: uniforms, side: THREE.BackSide } );
+        var skyMat = new THREE.ShaderMaterial({
+            vertexShader: skydomeVert.value,
+            fragmentShader: skydomeFrag.value,
+            uniforms: uniforms,
+            side: THREE.BackSide
+        });
 
         var sky = new THREE.Mesh( skyGeo, skyMat );
         scene.add( sky );
