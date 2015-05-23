@@ -1,4 +1,4 @@
-define(['container', 'text!/BattleShipsters/assets/html/loading.html', 'presenter/start'], function($container, viewHtml, LoadPresenter) {
+define(['container', 'text!/BattleShipsters/assets/html/loading.html', 'presenter/loading'], function($container, viewHtml, LoadPresenter) {
     var Loading = function() {
         this.domElement = $(viewHtml);
         this.domElement.hide();

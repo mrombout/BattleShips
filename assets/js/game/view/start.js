@@ -1,5 +1,9 @@
-define(['container', 'text!/BattleShipsters/assets/html/start.html', 'presenter/start'], function($container, viewHtml, StartPresenter) {
+"use strict";
+
+define(['container', 'text!/BattleShipsters/assets/html/start.html', 'presenter/start', 'view/View'], function($container, viewHtml, StartPresenter, View) {
     var Start = function() {
+        View.call(this);
+
         this.domElement = $(viewHtml);
         this.domElement.hide();
 
@@ -11,9 +15,11 @@ define(['container', 'text!/BattleShipsters/assets/html/start.html', 'presenter/
 
         $container.prepend(this.domElement);
     };
+    Start.prototype = Object.create(View.prototype);
+    Start.prototype.constructor = Start;
 
     Start.prototype.onButtonClick = function() {
-        this.presenter.goToLobby();
+        $(this).trigger('start_click');
     };
 
     Start.prototype.show = function() {

@@ -3,17 +3,17 @@
 define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skydome.vert', 'shader!skydome.frag', 'assets'], function(State, scene, renderer, camera, startView, skydomeVert, skydomeFrag, assets) {
     var Lobby = function() {
         State.call(this);
-        console.log('creating new lobby');
+        console.info('LOBBY', 'Constructed');
     };
     Lobby.prototype = Object.create(State.prototype);
     Lobby.prototype.constructor = Lobby;
 
     Lobby.prototype.show = function() {
-        console.log('showing lobby');
+        console.info('LOBBY', 'Show');
 
         assets.audio.ocean.play();
         setTimeout(function() {
-            assets.audio.intro.play()
+            //assets.audio.intro.play()
         }, 3000);
 
         this.clock = new THREE.Clock(true);

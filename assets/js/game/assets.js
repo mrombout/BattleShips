@@ -50,6 +50,21 @@ define(['three'], function(THREE) {
                 },
                 logo: {
                     url: 'assets/models/logo.json'
+                },
+                destroyer: {
+                    url: 'assets/models/destroyer.json'
+                },
+                patrol_boat: {
+                    url: 'assets/models/patrol.json'
+                },
+                submarine: {
+                    url: 'assets/models/submarine.json'
+                },
+                battleship_dummy: {
+                    url: 'assets/models/battleship_dummy.json'
+                },
+                aircraft_carrier: {
+                    url: 'assets/models/aircraft_carrier.json'
                 }
             },
             audio: {

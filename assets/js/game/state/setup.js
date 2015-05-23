@@ -1,8 +1,13 @@
 "use strict";
 
-define(['state/State', 'renderer', 'scene', 'camera', 'view/hud'], function(State, renderer, scene, camera, hudView) {
+define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'service/setup', 'factory/ship', 'entity/Board3D', 'model/Board'], function(State, renderer, scene, camera, HUDView, THREE, setupService, ShipFactory, Board3D, Board) {
     var Setup = function() {
         State.call(this);
+
+        this.hudView = new HUDView(this);
+
+        this.mouse = new THREE.Vector2();
+        this.raycaster = new THREE.Raycaster();
     };
     Setup.prototype = Object.create(State.prototype);
     Setup.prototype.constructor = Setup;
@@ -12,9 +17,8 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud'], function(Stat
 
         this.createControls();
         this.createGrid();
-        this.createShips();
 
-        hudView.show();
+        this.hudView.show();
 
         camera.position.set(0, 200, 300);
         camera.lookAt(scene.position);
@@ -25,7 +29,7 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud'], function(Stat
 
     Setup.prototype.hide = function() {
         scene.remove(this.parent);
-    }
+    };
 
     Setup.prototype.createControls = function() {
         this.controls = new THREE.TrackballControls(camera, renderer.domElement);
@@ -43,56 +47,8 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud'], function(Stat
     };
 
     Setup.prototype.createGrid = function() {
-        // create grid
-        var size = 100, step = 20;
-
-        var geometry = new THREE.Geometry();
-        var material = new THREE.LineBasicMaterial( { color: 0xcccccc, opacity: 0.2 } );
-
-        for ( var i = - size; i <= size; i += step ) {
-
-            geometry.vertices.push( new THREE.Vector3( - size, 0, i ) );
-            geometry.vertices.push( new THREE.Vector3(   size, 0, i ) );
-
-            geometry.vertices.push( new THREE.Vector3( i, 0, - size ) );
-            geometry.vertices.push( new THREE.Vector3( i, 0,   size ) );
-
-        }
-
-        var line = new THREE.Line( geometry, material, THREE.LinePieces );
-        line.position.y = 1;
-        this.parent.add(line);
-
-        // create supported plane
-        var planeGeometry = new THREE.PlaneBufferGeometry(200, 200);
-        planeGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
-
-        var planeMesh = new THREE.Mesh(planeGeometry);
-        planeMesh.visible = false;
-        planeMesh.name = "dank";
-
-        this.parent.add(planeMesh);
-    };
-
-    Setup.prototype.createShips = function() {
-        var aircraftCarrier = this.createShip(0, 0, 5);
-        var battleship = this.createShip(2, 0, 4);
-        var submarine = this.createShip(4, 0, 3);
-        var destroyer = this.createShip(6, 0, 3);
-        var patrolBoat = this.createShip(8, 0, 2);
-    };
-
-    Setup.prototype.createShip = function(x, y, size) {
-        var geometry = new THREE.BoxGeometry(20 * size, 10, 20);
-        geometry.applyMatrix(new THREE.Matrix4().makeTranslation(10 * size, 0, 10)); // normalize positions to top-left
-        var material = new THREE.MeshLambertMaterial({ color: 0xFF0000 });
-        var mesh = new THREE.Mesh(geometry, material);
-
-        var vec2 = this.gridToWorld(new THREE.Vector2(x, y));
-        mesh.position.x = vec2.x;
-        mesh.position.z = vec2.y;
-
-        this.parent.add(mesh);
+        this.board = new Board3D(new Board());
+        this.parent.add(this.board.getObject());
     };
 
     Setup.prototype.enableControls = function() {
@@ -101,27 +57,6 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud'], function(Stat
 
     Setup.prototype.disableControls = function() {
         this.controls.enabled = false;
-    };
-
-    Setup.prototype.gridToWorld = function(vec) {
-        var newVec = new THREE.Vector2();
-
-        // normalize
-        newVec.x = -20 * 5;
-        newVec.y = -20 * 5;
-
-        // apply coords
-        newVec.x += vec.y * 20;
-        newVec.y += vec.x * 20;
-
-        return newVec;
-    };
-
-    Setup.prototype.worldToGrid = function(vec3) {
-        var convertorVec = new THREE.Vector2(vec3.x, vec3.z);
-        convertorVec.divideScalar(20).floor().addScalar(5);
-
-        return convertorVec;
     };
 
     Setup.prototype.update = function() {
@@ -133,6 +68,112 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud'], function(Stat
             this.water = scene.getObjectByName("water")
         } else {
             this.water.material.uniforms.time.value += 1.0 / 60.0;
+        }
+    };
+
+    /**
+     * Loads the available ships from the API service and adds them to the
+     * view.
+     */
+    Setup.prototype.loadShips = function() {
+        var me = this;
+
+        setupService.getShips().done(function(ships) {
+            for(var key in ships) {
+                if(ships.hasOwnProperty(key)) {
+                    var ship = ships[key];
+                    me.hudView.addShipItem(ship);
+                }
+            }
+        });
+    };
+
+    Setup.prototype.selectShip = function(ship) {
+        this.isVertical = false;
+
+        this.disableControls();
+
+        this.selectedShip = ShipFactory.create(ship);
+        console.log(this.selectedShip.getObject());
+        scene.add(this.selectedShip.getObject());
+
+        this.onDocumentMouseMoveBind = function(e) {
+            this.onDocumentMouseMove(e);
+        }.bind(this);
+        document.addEventListener('mousemove', this.onDocumentMouseMoveBind, false);
+    };
+
+    Setup.prototype.deselectShip = function() {
+        this.enableControls();
+
+        document.removeEventListener('mousemove', this.onDocumentMouseMoveBind);
+
+        scene.remove(this.selectedShip.getObject());
+
+        this.selectedShip = null;
+    };
+
+    Setup.prototype.placeShip = function() {
+        if(!this.isWithinBoardBounds(this.selectedShip.getObject())) {
+            this.deselectShip();
+            return false;
+        }
+
+        this.board.placeShip(this.selectedShip);
+        this.enableControls();
+        document.removeEventListener('mousemove', this.onDocumentMouseMoveBind);
+        this.selectedShip = null;
+
+        return true;
+    };
+
+    Setup.prototype.isWithinBoardBounds = function(ship) {
+        var box3 = new THREE.Box3();
+        box3.setFromObject(ship);
+
+        var size = box3.size();
+        var coords = this.board.worldToGrid(ship.position);
+
+        // horizontal
+        if(ship.rotation.y === 0) {
+            var length = size.x / 20;
+            return coords.x + length <= 10;
+        } else { // vertical
+            var length = size.z / 20;
+            console.log(coords.y, coords.y + length, length);
+            return coords.y + length <= 10;
+        }
+    };
+
+    Setup.prototype.rotateSelectedShip = function() {
+        if(!this.selectedShip)
+            return;
+
+        if(this.isVertical) {
+            console.log('SETUP', 'Rotating to horizontal position', this.selectedShip);
+            this.selectedShip.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(20, 20, 20));
+            this.selectedShip.getObject().rotation.y = 0;
+        } else {
+            console.log('SETUP', 'Rotating to vertical position', this.selectedShip);
+            this.selectedShip.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(-20, -20, -20));
+            this.selectedShip.getObject().rotation.y = -Math.PI / 2;
+        }
+        this.isVertical = !this.isVertical;
+    };
+
+    Setup.prototype.onDocumentMouseMove = function(e) {
+        e.preventDefault();
+
+        this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+        this.raycaster.setFromCamera(this.mouse, camera);
+
+        var intersects = this.raycaster.intersectObject(scene.getObjectByName("dank"));
+        if(intersects.length > 0) {
+            var intersect = intersects[0];
+
+            console.log('moving that shit', this.selectedShip.getObject());
+            this.selectedShip.getObject().position.copy(intersect.point).add(intersect.face.normal);
+            this.selectedShip.getObject().position.divideScalar(20).floor().multiplyScalar(20).add(new THREE.Vector3(10, 0, 10));
         }
     };
 

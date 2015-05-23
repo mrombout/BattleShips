@@ -1,20 +1,19 @@
 "use strict";
 
-define(function() {
+define(['three'], function(THREE) {
 	var Board = function() {
         this.id = null;
 
-		this.tiles = [];
-		this.boats = [];
+		this.ships = [];
 	};
 
-	Board.prototype.addTile = function(tile) {
-		this.tiles.append(tile);
+	Board.prototype.placeShip = function(x, y, ship) {
+		if(typeof x instanceof THREE.Vector2) {
+
+        }
+
+        console.info('BOARD', 'Placed ship on ', x, y);
 	};
 
-	Board.prototype.addBoat = function(boat) {
-		this.boats.append(boat);
-	};
-
-    return Boat;
+    return Board;
 });

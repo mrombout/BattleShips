@@ -14,8 +14,8 @@ define(['three'], function(THREE) {
             onProgress(e);
         };
 
-        this.jsonLoader.load(url, function(geometry) {
-            onLoad(geometry);
+        this.jsonLoader.load(url, function(geometry, material) {
+            onLoad(geometry, material);
             scope.manager.itemEnd(url);
         });
     }

@@ -29,21 +29,22 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
 
     Loading.prototype.onLoadingManagerProgress = function(url, numLoaded, numTotal) {
         loadingView.setProgress(numLoaded / numTotal);
-        console.log('Loaded ' + url + ' (' + numLoaded + '/' + numTotal + ')');
+        console.log('LOADING', 'Progress ' + url + ' (' + numLoaded + '/' + numTotal + ')');
     };
 
     Loading.prototype.onLoadingManagerLoad = function() {
-        console.log('FINISH!', assets);
+        console.log('LOADING', 'Finished', assets);
         setTimeout(function() {
             game.setState(lobbyState);
         }, 500);
     };
 
     Loading.prototype.onLoadingManagerError = function() {
-        console.log('Error!');
+        console.error('LOADING', 'Error');
     };
 
     Loading.prototype.startLoading = function() {
+        console.info('LOADING', 'Start');
 
         this.loadTextures();
         this.loadGeometries();
@@ -67,7 +68,7 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
             if(config.hasOwnProperty(key)) {
                 var typeConfig = config[key];
                 loader.load(typeConfig.url, (function(key, typeConfig) {
-                    return function(loadedType) {
+                    return function(loadedType, material) {
                         for(var prop in typeConfig) {
                             if(typeConfig.hasOwnProperty(prop) && prop !== 'url') {
                                 loadedType[prop] = typeConfig[prop];
