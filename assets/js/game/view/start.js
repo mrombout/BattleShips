@@ -29,7 +29,7 @@ define(['container', 'text!/BattleShipsters/assets/html/start.html', 'presenter/
     Start.prototype.hide = function() {
         this.domElement.hide();
         this.presenter.hideLobby();
-    }
+    };
 
     return new Start();
 });

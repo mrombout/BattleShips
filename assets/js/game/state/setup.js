@@ -131,16 +131,14 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         var box3 = new THREE.Box3();
         box3.setFromObject(ship);
 
-        var size = box3.size();
         var coords = this.board.worldToGrid(ship.position);
+        var size = box3.size();
+        var length = size.x / 20;
 
         // horizontal
         if(ship.rotation.y === 0) {
-            var length = size.x / 20;
             return coords.x + length <= 10;
         } else { // vertical
-            var length = size.z / 20;
-            console.log(coords.y, coords.y + length, length);
             return coords.y + length <= 10;
         }
     };

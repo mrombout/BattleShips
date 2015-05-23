@@ -64,7 +64,7 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skyd
             bottomColor: { type: "c", value: new THREE.Color( 0xffffff ) },
             offset:		 { type: "f", value: 33 },
             exponent:	 { type: "f", value: 0.6 }
-        }
+        };
         uniforms.topColor.value.copy(hemiLight.color );
 
         scene.fog.color.copy( uniforms.bottomColor.value );
@@ -173,7 +173,7 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skyd
 
         // update battleship
         if(this.battleship) {
-            this.clock.getElapsedTime()
+            this.clock.getElapsedTime();
             this.battleship.rotation.x = Math.sin(this.clock.elapsedTime) / 64;
             this.battleship.rotation.z = Math.sin(this.clock.elapsedTime) / 64;
             this.battleship.rotation.y = -Math.cos(this.clock.elapsedTime) / 64;

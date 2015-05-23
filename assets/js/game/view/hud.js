@@ -16,7 +16,7 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
     HUD.prototype.registerEvents = function() {
         this.$domElement.on('mousedown', 'li', function(e) { this.onMenuItemMouseDown(e); }.bind(this));
         $container.on('mouseup', function(e) { this.onDocumentMouseUp(e); }.bind(this));
-    }
+    };
 
     HUD.prototype.addShipItem = function(ship) {
         var shipItem = $(shipHtml.replace(/\{name\}/g, ship.name)
