@@ -1,13 +1,13 @@
 "use strict";
 
-require(['detector', 'state/lobby', 'game'], function(Detector, lobbyState, game){
+require(['detector', 'state/loading', 'game'], function(Detector, loadingState, game){
     if(!Detector.webgl) {
         Detector.addGetWebGLMessage();
     }
 
     game.init();
 
-    game.setState(lobbyState);
+    game.setState(loadingState);
 
     game.render();
 });

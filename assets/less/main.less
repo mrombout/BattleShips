@@ -25,6 +25,15 @@ body {
   }
 }
 
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0px 0 #00ff00, inset 0 0 0px 0 #00ff00;
+  }
+  100% {
+    box-shadow: 0 0 10px 0 #00ff00, inset 0 0 10px 0 #00ff00;
+  }
+}
+
 .load-spinner {
   display: none;
   position: relative;
@@ -87,6 +96,27 @@ body {
         left: 18%;
         top: 18%;
       }
+    }
+  }
+}
+
+#loading {
+  .load-spinner {
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    .circle,
+    .circle div {
+      animation: pulse 300ms infinite linear;
+      animation-direction: alternate;
+    }
+
+    .sweeper {
+      -webkit-animation: none;
+      animation: none;
     }
   }
 }

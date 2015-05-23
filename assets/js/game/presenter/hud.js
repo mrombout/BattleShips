@@ -69,7 +69,7 @@ define(['three', 'scene', 'camera', 'game', 'service/setup', 'text!/BattleShipst
     HUDController.prototype.onDocumentMouseMove = function(e) {
         e.preventDefault();
 
-        this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
+        this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
         this.raycaster.setFromCamera(this.mouse, camera);
 
         var intersects = this.raycaster.intersectObject(scene.getObjectByName("dank"));

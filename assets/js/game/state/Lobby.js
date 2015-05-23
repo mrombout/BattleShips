@@ -1,8 +1,15 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'util/loader/json', 'view/start', 'shader!skydome.vert', 'shader!skydome.frag'], function(State, scene, renderer, camera, loader, startView, skydomeVert, skydomeFrag) {
+define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skydome.vert', 'shader!skydome.frag', 'assets'], function(State, scene, renderer, camera, startView, skydomeVert, skydomeFrag, assets) {
     var Lobby = function() {
         State.call(this);
+        console.log('creating new lobby');
+    };
+    Lobby.prototype = Object.create(State.prototype);
+    Lobby.prototype.constructor = Lobby;
+
+    Lobby.prototype.show = function() {
+        console.log('showing lobby');
 
         this.clock = new THREE.Clock(true);
         this.clock.start();
@@ -25,8 +32,6 @@ define(['state/State', 'scene', 'renderer', 'camera', 'util/loader/json', 'view/
         camera.lookAt(scene.position);
         camera.updateProjectionMatrix();
     };
-    Lobby.prototype = Object.create(State.prototype);
-    Lobby.prototype.constructor = Lobby;
 
     Lobby.prototype.hide = function() {
         scene.remove(scene.getObjectByName("lobby"));
@@ -68,9 +73,7 @@ define(['state/State', 'scene', 'renderer', 'camera', 'util/loader/json', 'view/
     };
 
     Lobby.prototype.createWater = function() {
-        var waterNormals = new THREE.ImageUtils.loadTexture('assets/texture/waternormals3.jpg');
-        waterNormals.anisotropy = 16;
-        waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+        var waterNormals = assets.textures.water_normal;
 
         this.water = new THREE.Water(renderer.renderer, camera, scene, {
             textureWidth: 512,
@@ -95,79 +98,63 @@ define(['state/State', 'scene', 'renderer', 'camera', 'util/loader/json', 'view/
     Lobby.prototype.loadBattleship = function() {
         var me = this;
 
-        var diffuse = THREE.ImageUtils.loadTexture('assets/texture/battleship.png');
-        diffuse.anisotropy = 16;
+        var diffuse = assets.textures.battleship_diffuse;
+        var bump = assets.textures.battleship_bump;
+        var normal = assets.textures.battleship_normal;
+        var specular = assets.textures.battleship_specular;
+        var battleshipGeometry = assets.geometries.battleship;
 
-        var bump = THREE.ImageUtils.loadTexture('assets/texture/battleship_b.png');
-        bump.anisotropy = 16;
-
-        var normal = THREE.ImageUtils.loadTexture('assets/texture/battleship_n.png');
-        normal.anisotropy = 16;
-
-        var specular = THREE.ImageUtils.loadTexture('assets/texture/battleship_s.png');
-        specular.anisotropy = 16;
-
-        loader.load('assets/models/battleship.json', function(geometry) {
-            var material = new THREE.MeshPhongMaterial({
-                map: diffuse,
-                bumpMap: bump,
-                bumpScale: 10,
-                normalMap: normal,
-                specularMap: specular,
-                normalScale: new THREE.Vector2(0.8, 0.8),
-                shininess: 10,
-                specular: 0x222222,
-                shading: THREE.SmoothShading,
-                colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
-            });
-            me.battleship = new THREE.Mesh(geometry, material);
-            me.battleship.position.z = -15;
-
-            me.parent.add(me.battleship);
+        var material = new THREE.MeshPhongMaterial({
+            map: diffuse,
+            bumpMap: bump,
+            bumpScale: 10,
+            normalMap: normal,
+            specularMap: specular,
+            normalScale: new THREE.Vector2(0.8, 0.8),
+            shininess: 10,
+            specular: 0x222222,
+            shading: THREE.SmoothShading,
+            colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+            colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+            colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
         });
+        me.battleship = new THREE.Mesh(battleshipGeometry, material);
+        me.battleship.position.z = -15;
+
+        me.parent.add(me.battleship);
     };
 
     Lobby.prototype.loadLogo = function() {
         var me = this;
 
-        var diffuse = THREE.ImageUtils.loadTexture('assets/texture/logo.png');
-        diffuse.anisotropy = 16;
+        var diffuse = assets.textures.logo_diffuse;
+        var bump = assets.textures.logo_bump;
+        var normal = assets.textures.logo_normal;
+        var specular = assets.textures.logo_specular;
+        var logoGeometry = assets.geometries.logo;
 
-        var bump = THREE.ImageUtils.loadTexture('assets/texture/logo_b.png');
-        bump.anisotropy = 16;
-
-        var normal = THREE.ImageUtils.loadTexture('assets/texture/logo_n.png');
-        normal.anisotropy = 16;
-
-        var specular = THREE.ImageUtils.loadTexture('assets/texture/logo_s.png');
-        specular.anisotropy = 16;
-
-        loader.load('assets/models/logo.json', function(geometry) {
-            var material = new THREE.MeshPhongMaterial({
-                map: diffuse,
-                bumpMap: bump,
-                bumpScale: 1,
-                normalMap: normal,
-                normalScale: new THREE.Vector2(0.8, 0.8),
-                specularMap: specular,
-                shininess: 10,
-                specular: 0x111111,
-                shading: THREE.SmoothShading,
-                colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
-            });
-            var mesh = new THREE.Mesh(geometry, material);
-            mesh.position.y = 9;
-            mesh.position.x = 0;
-            mesh.position.z = 52;
-            mesh.rotation.x = -Math.PI / 4 / 2;
-            window.test = mesh;
-
-            me.parent.add(mesh);
+        var material = new THREE.MeshPhongMaterial({
+            map: diffuse,
+            bumpMap: bump,
+            bumpScale: 1,
+            normalMap: normal,
+            normalScale: new THREE.Vector2(0.8, 0.8),
+            specularMap: specular,
+            shininess: 10,
+            specular: 0x111111,
+            shading: THREE.SmoothShading,
+            colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+            colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+            colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
         });
+        var mesh = new THREE.Mesh(logoGeometry, material);
+        mesh.position.y = 9;
+        mesh.position.x = 0;
+        mesh.position.z = 52;
+        mesh.rotation.x = -Math.PI / 4 / 2;
+        window.test = mesh;
+
+        me.parent.add(mesh);
     };
 
     Lobby.prototype.update = function() {

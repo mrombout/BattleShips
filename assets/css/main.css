@@ -23,6 +23,14 @@ body {
     transform: rotate(359deg);
   }
 }
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0px 0 #00ff00, inset 0 0 0px 0 #00ff00;
+  }
+  100% {
+    box-shadow: 0 0 10px 0 #00ff00, inset 0 0 10px 0 #00ff00;
+  }
+}
 .load-spinner {
   display: none;
   position: relative;
@@ -81,6 +89,22 @@ body {
   height: 60%;
   left: 18%;
   top: 18%;
+}
+#loading .load-spinner {
+  position: absolute;
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+#loading .load-spinner .circle,
+#loading .load-spinner .circle div {
+  animation: pulse 300ms infinite linear;
+  animation-direction: alternate;
+}
+#loading .load-spinner .sweeper {
+  -webkit-animation: none;
+  animation: none;
 }
 #start {
   width: 100%;
