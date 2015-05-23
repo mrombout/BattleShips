@@ -1,6 +1,6 @@
 "use strict";
 
-define(['three', 'scene', 'camera', 'game', 'service/setup', 'text!/BattleShipsters/assets/html/_ship.html'], function(THREE, scene, camera, game, setupService, shipHtml) {
+define(['three', 'scene', 'camera', 'game', 'service/setup'], function(THREE, scene, camera, game, setupService) {
     var HUDController = function(hudView) {
         this.hudView = hudView;
 
@@ -15,10 +15,7 @@ define(['three', 'scene', 'camera', 'game', 'service/setup', 'text!/BattleShipst
             for(var key in ships) {
                 if(ships.hasOwnProperty(key)) {
                     var ship = ships[key];
-                    var template = shipHtml.replace(/\{name\}/g, ship.name)
-                        .replace(/\{length\}/g, ship.length);
-                    console.log(me);
-                    me.hudView.addShipItem($(template));
+                    me.hudView.addShipItem(ship);
                 }
             }
         });

@@ -54,7 +54,10 @@ define(['three'], function(THREE) {
             },
             audio: {
                 ocean: {
-                    url: 'assets/audio/bgm/ocean.mp3'
+                    url: 'assets/audio/bgm/ocean.wav'
+                },
+                intro: {
+                    url: 'assets/audio/bgm/ghost_division.wav'
                 }
             }
         },

@@ -34,7 +34,9 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
 
     Loading.prototype.onLoadingManagerLoad = function() {
         console.log('FINISH!', assets);
-        game.setState(lobbyState);
+        setTimeout(function() {
+            game.setState(lobbyState);
+        }, 500);
     };
 
     Loading.prototype.onLoadingManagerError = function() {

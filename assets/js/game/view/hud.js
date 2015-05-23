@@ -1,6 +1,6 @@
 "use strict";
 
-define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', '../presenter/hud'], function(container, viewHtml, $, HUDPresenter) {
+define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', '../presenter/hud', 'text!/BattleShipsters/assets/html/_ship.html'], function(container, viewHtml, $, HUDPresenter, shipHtml) {
     var HUD = function() {
         this.domElement = $(viewHtml);
         this.domElement.hide();
@@ -19,7 +19,9 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', '..
         container.append(this.domElement);
     };
 
-    HUD.prototype.addShipItem = function(shipItem) {
+    HUD.prototype.addShipItem = function(ship) {
+        var shipItem = shipHtml.replace(/\{name\}/g, ship.name)
+            .replace(/\{length\}/g, ship.length);
         this.ul.append(shipItem);
     };
 

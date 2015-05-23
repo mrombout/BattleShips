@@ -11,6 +11,11 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skyd
     Lobby.prototype.show = function() {
         console.log('showing lobby');
 
+        assets.audio.ocean.play();
+        setTimeout(function() {
+            assets.audio.intro.play()
+        }, 3000);
+
         this.clock = new THREE.Clock(true);
         this.clock.start();
 

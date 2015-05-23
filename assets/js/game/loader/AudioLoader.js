@@ -11,12 +11,14 @@ define(['three'], function(THREE) {
         loader.setCrossOrigin(this.crossOrigin);
         loader.setResponseType('arraybuffer');
         loader.load(url, function(data) {
+            scope.manager.itemStart(url);
             scope.audioContext.decodeAudioData(data, function(buffer) {
                 var audio = new THREE.Audio({
                     context: scope.audioContext
                 });
                 audio.source.buffer = buffer;
 
+                scope.manager.itemEnd(url);
                 onLoad(audio);
             } );
 
