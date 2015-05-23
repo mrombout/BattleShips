@@ -45,6 +45,8 @@ var require = {
         "text": "../../../bower_components/text/text",
 
         "shader": "../../../vendor/shader/shader",
-        "shaders": "../../shaders"
+        "shaders": "../../shaders",
+
+        'datgui': "../../../vendor/dat.gui/dat.gui"
     }
 };

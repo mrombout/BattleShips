@@ -1,6 +1,6 @@
 "use strict";
 
-define(['three', 'container', 'camera', 'scene'], function(THREE, $container, camera, scene) {
+define(['three', 'container', 'camera', 'scene', 'util/debug'], function(THREE, $container, camera, scene, debug) {
     function updateFXAAResolution() {
         effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
     }
@@ -9,7 +9,7 @@ define(['three', 'container', 'camera', 'scene'], function(THREE, $container, ca
     var renderer= new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.autoClear = false;
+    renderer.autoClear = true;
 
     container.appendChild(renderer.domElement);
 
@@ -18,6 +18,11 @@ define(['three', 'container', 'camera', 'scene'], function(THREE, $container, ca
     var effectBleach = new THREE.ShaderPass(THREE.BleachBypassShader);
     var effectColor = new THREE.ShaderPass(THREE.ColorCorrectionShader);
     var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+    var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+
+    debug.add(effectBleach, 'enabled').name('Bleach Bypass');
+    debug.add(effectColor, 'enabled').name('Color Correction');
+    debug.add(effectFXAA, 'enabled').name('FXAA');
 
     updateFXAAResolution();
     window.addEventListener('resize', updateFXAAResolution, false);
@@ -27,7 +32,8 @@ define(['three', 'container', 'camera', 'scene'], function(THREE, $container, ca
     effectColor.uniforms['powRGB'].value.set(1.4, 1.45, 1.45);
     effectColor.uniforms['mulRGB'].value.set(1.1, 1.1, 1.1);
 
-    effectFXAA.renderToScreen = true;
+    //effectFXAA.renderToScreen = true;
+    effectCopy.renderToScreen = true;
 
     var composer = new THREE.EffectComposer(renderer);
     composer.addPass(renderModel);
@@ -35,6 +41,7 @@ define(['three', 'container', 'camera', 'scene'], function(THREE, $container, ca
     composer.addPass(effectBleach);
     composer.addPass(effectColor);
     composer.addPass(effectFXAA);
+    composer.addPass(effectCopy);
 
     return composer;
 });

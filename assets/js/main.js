@@ -6,8 +6,6 @@ require(['detector', 'state/loading', 'game'], function(Detector, loadingState, 
     }
 
     game.init();
-
     game.setState(loadingState);
-
     game.render();
 });
