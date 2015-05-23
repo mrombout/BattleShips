@@ -133,10 +133,11 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
         var coords = this.board.worldToGrid(ship.position);
         var size = box3.size();
-        var length = size.x / 20;
+        var length = Math.floor(size.x / 20);
 
         // horizontal
         if(ship.rotation.y === 0) {
+            console.log(coords.x + length, coords.x, length);
             return coords.x + length <= 10;
         } else { // vertical
             return coords.y + length <= 10;
