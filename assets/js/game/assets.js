@@ -78,6 +78,7 @@ define(['three'], function(THREE) {
         },
         textures: { },
         geometries: { },
-        audio: { }
+        audio: { },
+        materials: { }
     };
 });

@@ -44,7 +44,7 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
     };
 
     Loading.prototype.startLoading = function() {
-        console.info('LOADING', 'Start');
+        console.info('LOADING', 'Start', assets.config);
 
         this.loadTextures();
         this.loadGeometries();
@@ -56,14 +56,25 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
     };
 
     Loading.prototype.loadGeometries = function() {
-        this.loadType(assets.config.geometries, assets.geometries, this.jsonLoader);
+        this.loadType(assets.config.geometries, assets.geometries, this.jsonLoader, function(name, args) {
+            var materials = args[1];
+            if(materials) {
+                assets.materials[name] = {};
+                for(var key in materials) {
+                    if(materials.hasOwnProperty(key)) {
+                        var material = materials[key];
+                        assets.materials[name][material.name] = material;
+                    }
+                }
+            }
+        });
     };
 
     Loading.prototype.loadAudio = function() {
         this.loadType(assets.config.audio, assets.audio, this.audioLoader);
     };
 
-    Loading.prototype.loadType = function(config, target, loader) {
+    Loading.prototype.loadType = function(config, target, loader, callback) {
         for(var key in config) {
             if(config.hasOwnProperty(key)) {
                 var typeConfig = config[key];
@@ -76,6 +87,7 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
                         }
 
                         target[key] = loadedType;
+                        if(callback) callback(key, arguments);
                     };
                 })(key, typeConfig));
             }

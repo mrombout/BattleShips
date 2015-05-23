@@ -169,7 +169,6 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         if(intersects.length > 0) {
             var intersect = intersects[0];
 
-            console.log('moving that shit', this.selectedShip.getObject());
             this.selectedShip.getObject().position.copy(intersect.point).add(intersect.face.normal);
             this.selectedShip.getObject().position.divideScalar(20).floor().multiplyScalar(20).add(new THREE.Vector3(10, 0, 10));
         }
