@@ -1,6 +1,6 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skydome.vert', 'shader!skydome.frag', 'assets'], function(State, scene, renderer, camera, startView, skydomeVert, skydomeFrag, assets) {
+define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'entity/Skydome'], function(State, scene, renderer, camera, startView, assets, Skydome) {
     var Lobby = function() {
         State.call(this);
         console.info('LOBBY', 'Constructed');
@@ -48,52 +48,27 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skyd
         var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
         directionalLight.position.set(0, 1, 1).normalize();
         scene.add(directionalLight);
-    };
 
-    Lobby.prototype.createSkydome = function() {
         // hemilight
         var hemiLight = new THREE.HemisphereLight( 0x99FF99, 0x18FFBF, 1 );
         hemiLight.color.setHSL(0.6, 1, 0.6);
         hemiLight.groundColor.setHSL(0.095, 1, 0.75);
         hemiLight.position.set(-1, 1, -1);
         scene.add(hemiLight);
+    };
 
-        // sky
-        var skyGeo = new THREE.SphereGeometry(3000, 60, 40);
-        var skyMat = new THREE.ShaderMaterial({
-            vertexShader: skydomeVert.value,
-            fragmentShader: skydomeFrag.value,
-            uniforms: {
-                texture: { type: 't', value: THREE.ImageUtils.loadTexture('assets/texture/skydome.jpg') }
-            },
-            side: THREE.BackSide
-        });
-
-        var sky = new THREE.Mesh( skyGeo, skyMat );
-        sky.rotation.order = 'XYZ';
-        sky.renderDepth = 1000.0;
-        scene.add( sky );
+    Lobby.prototype.createSkydome = function() {
+        this.sky = new Skydome();
+        scene.add(this.sky.getObject());
     };
 
     Lobby.prototype.createWater = function() {
         var waterNormals = assets.textures.water_normal;
 
-        this.water = new THREE.Water(renderer.renderer, camera, scene, {
-            textureWidth: 512,
-            textureHeight: 512,
-            waterNormals: waterNormals,
-            alpha: 1.0,
-            sunColor: 0xFFFFFF,
-            waterColor: 0x001E0F,
-            distortionScale: 50.0
-        });
-
         var mirrorMesh = new THREE.Mesh(
-            new THREE.PlaneBufferGeometry(2000 * 500, 2000 * 500),
-            this.water.material
+            new THREE.PlaneBufferGeometry(2000 * 500, 2000 * 500)
         );
         mirrorMesh.name = "water";
-        mirrorMesh.add(this.water);
         mirrorMesh.rotation.x = -Math.PI * 0.5;
         scene.add(mirrorMesh);
     };
@@ -162,7 +137,6 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skyd
 
     Lobby.prototype.update = function() {
         // update water
-        this.water.material.uniforms.time.value += 1.0 / 60.0;
 
         // update battleship
         if(this.battleship) {

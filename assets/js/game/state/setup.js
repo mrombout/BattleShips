@@ -65,13 +65,6 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
         // update board
         this.board.update();
-
-        // update water
-        if(!this.water) {
-            this.water = scene.getObjectByName("water")
-        } else {
-            this.water.material.uniforms.time.value += 1.0 / 60.0;
-        }
     };
 
     /**
