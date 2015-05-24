@@ -1,6 +1,6 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'entity/Skydome'], function(State, scene, renderer, camera, startView, assets, Skydome) {
+define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'entity/Skydome', 'entity/Water', 'entity/Skybox'], function(State, scene, renderer, camera, startView, assets, Skydome, Water, Skybox) {
     var Lobby = function() {
         State.call(this);
         console.info('LOBBY', 'Constructed');
@@ -26,8 +26,8 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
         this.createSkydome();
         this.createWater();
 
-        this.loadBattleship();
-        this.loadLogo();
+        //this.loadBattleship();
+        //this.loadLogo();
 
         scene.add(this.parent);
 
@@ -44,6 +44,10 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
     };
 
     Lobby.prototype.createLight = function() {
+        // ambient
+        var ambient = new THREE.AmbientLight(0xFFFFFF);
+        scene.add(ambient);
+
         // directional
         var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
         directionalLight.position.set(0, 1, 1).normalize();
@@ -58,19 +62,15 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
     };
 
     Lobby.prototype.createSkydome = function() {
-        this.sky = new Skydome();
+        //this.sky = new Skydome();
+        this.sky = new Skybox();
         scene.add(this.sky.getObject());
     };
 
     Lobby.prototype.createWater = function() {
-        var waterNormals = assets.textures.water_normal;
-
-        var mirrorMesh = new THREE.Mesh(
-            new THREE.PlaneBufferGeometry(2000 * 500, 2000 * 500)
-        );
-        mirrorMesh.name = "water";
-        mirrorMesh.rotation.x = -Math.PI * 0.5;
-        scene.add(mirrorMesh);
+        this.water = new Water();
+        window.water = this.water;
+        scene.add(this.water.getObject());
     };
 
     Lobby.prototype.loadBattleship = function() {
@@ -137,6 +137,7 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
 
     Lobby.prototype.update = function() {
         // update water
+        this.water.update();
 
         // update battleship
         if(this.battleship) {

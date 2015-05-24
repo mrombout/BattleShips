@@ -3,7 +3,7 @@ define(['three'], function(THREE) {
         config: {
             textures: {
                 water_normal: {
-                    url: 'assets/texture/waternormals3.jpg',
+                    url: 'assets/texture/waternormals.jpg',
                     anisotropy: 16,
                     wrapS: THREE.RepeatWrapping,
                     wrapT: THREE.RepeatWrapping

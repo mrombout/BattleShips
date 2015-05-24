@@ -32,7 +32,6 @@ define(['three', 'container', 'camera', 'scene', 'util/debug'], function(THREE, 
     effectColor.uniforms['powRGB'].value.set(1.4, 1.45, 1.45);
     effectColor.uniforms['mulRGB'].value.set(1.1, 1.1, 1.1);
 
-    //effectFXAA.renderToScreen = true;
     effectCopy.renderToScreen = true;
 
     var composer = new THREE.EffectComposer(renderer);

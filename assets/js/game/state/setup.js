@@ -65,6 +65,8 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
         // update board
         this.board.update();
+
+        window.water.update();
     };
 
     /**

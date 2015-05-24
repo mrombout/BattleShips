@@ -5,6 +5,7 @@ var require = {
     shim: {
         "threeCore": { exports: "THREE" },
         "TrackballControls": { deps: ['threeCore'], exports: "THREE" },
+        "OrbitControls": { deps: ['threeCore'], exports: "THREE" },
         "WaterShader": { deps: ['threeCore', 'Mirror'], exports: "THREE" },
         "Mirror": { deps: ['threeCore'], exports: "THREE" },
         "RenderPass": { deps: ['threeCore'], exports: "THREE" },
@@ -18,6 +19,7 @@ var require = {
         "FXAAShader": { deps: ['threeCore'], exports: "THREE" },
         "ConvolutionShader": { deps: ['threeCore'], exports: "THREE" },
         "OceanShaders": { deps: ['threeCore'], exports: "THREE" },
+        "Ocean": { deps: ['threeCore'], exports: "THREE" },
 
         "detector": { exports: "Detector" },
         "Stats": { exports: "Stats" }
@@ -28,7 +30,9 @@ var require = {
         "threeCore": "../../../vendor/three.js/three.min",
 
         "TrackballControls": "../../../vendor/TrackballControls/TrackballControls",
+        "OrbitControls": "../../../vendor/three.js/examples/js/controls/OrbitControls",
         "WaterShader": "../../../vendor/WaterShader/WaterShader",
+        "Ocean": "../../../vendor/Ocean/Ocean",
         "RenderPass": "../../../vendor/three.js/postprocessing/RenderPass",
         "ShaderPass": "../../../vendor/three.js/postprocessing/ShaderPass",
         "MaskPass": "../../../vendor/three.js/postprocessing/MaskPass",
