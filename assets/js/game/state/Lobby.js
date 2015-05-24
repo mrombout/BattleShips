@@ -1,9 +1,8 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'entity/Skydome', 'entity/Water', 'entity/Skybox'], function(State, scene, renderer, camera, startView, assets, Skydome, Water, Skybox) {
+define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'entity/Environment'], function(State, scene, renderer, camera, startView, assets, Environment) {
     var Lobby = function() {
         State.call(this);
-        console.info('LOBBY', 'Constructed');
     };
     Lobby.prototype = Object.create(State.prototype);
     Lobby.prototype.constructor = Lobby;
@@ -23,11 +22,10 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
         this.parent.name = "lobby";
 
         this.createLight();
-        this.createSkydome();
-        this.createWater();
+        this.createEnvironment();
 
-        //this.loadBattleship();
-        //this.loadLogo();
+        this.loadBattleship();
+        this.loadLogo();
 
         scene.add(this.parent);
 
@@ -44,10 +42,6 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
     };
 
     Lobby.prototype.createLight = function() {
-        // ambient
-        var ambient = new THREE.AmbientLight(0xFFFFFF);
-        scene.add(ambient);
-
         // directional
         var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
         directionalLight.position.set(0, 1, 1).normalize();
@@ -61,16 +55,9 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
         scene.add(hemiLight);
     };
 
-    Lobby.prototype.createSkydome = function() {
-        //this.sky = new Skydome();
-        this.sky = new Skybox();
-        scene.add(this.sky.getObject());
-    };
-
-    Lobby.prototype.createWater = function() {
-        this.water = new Water();
-        window.water = this.water;
-        scene.add(this.water.getObject());
+    Lobby.prototype.createEnvironment = function() {
+        this.environment = new Environment();
+        scene.add(this.environment.getObject());
     };
 
     Lobby.prototype.loadBattleship = function() {
@@ -136,8 +123,8 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
     };
 
     Lobby.prototype.update = function() {
-        // update water
-        this.water.update();
+        // update environment
+        this.environment.update();
 
         // update battleship
         if(this.battleship) {
@@ -149,6 +136,10 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
     };
 
     Lobby.prototype.render = function() {
+        // render environment
+        this.environment.render();
+
+        // render
         renderer.render();
     };
 

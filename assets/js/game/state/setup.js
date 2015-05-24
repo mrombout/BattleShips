@@ -15,6 +15,8 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
     Setup.prototype.show = function() {
         this.parent = new THREE.Object3D();
 
+        this.environment = scene.getObjectByName("environment");
+
         this.createControls();
         this.createGrid();
 
@@ -65,8 +67,6 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
         // update board
         this.board.update();
-
-        window.water.update();
     };
 
     /**

@@ -1,7 +1,5 @@
 define(['three'], function(THREE) {
     var Skybox = function() {
-        this.parent = new THREE.Object3D();
-
         // load skybox
         var cubeMap = new THREE.CubeTexture( [] );
         cubeMap.format = THREE.RGBFormat;
@@ -42,30 +40,14 @@ define(['three'], function(THREE) {
             side: THREE.BackSide
         });
 
-        var skyBox = new THREE.Mesh(
+        this.skyBox = new THREE.Mesh(
             new THREE.BoxGeometry( 1000000, 1000000, 1000000 ),
             skyBoxMaterial
         );
-        this.parent.add( skyBox );
-
-        var geometry = new THREE.IcosahedronGeometry( 400, 4 );
-
-        for ( var i = 0, j = geometry.faces.length; i < j; i ++ ) {
-            geometry.faces[ i ].color.setHex( Math.random() * 0xffffff );
-        }
-
-        var material = new THREE.MeshPhongMaterial( {
-            vertexColors: THREE.FaceColors,
-            shininess: 100,
-            envMap: cubeMap
-        } );
-
-        sphere = new THREE.Mesh( geometry, material );
-        this.parent.add(sphere);
     };
 
     Skybox.prototype.getObject = function() {
-        return this.parent;
+        return this.skyBox;
     };
 
     return Skybox;

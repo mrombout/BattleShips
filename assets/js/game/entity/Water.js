@@ -7,7 +7,7 @@ define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!
             textureHeight: 512,
             waterNormals: assets.textures.water_normal,
             alpha: 0.8,
-            sunDirection: camera.position.clone().normalize(),
+            //sunDirection: camera.position.clone().normalize(),
             sunColor: 0xFFFFFF,
             waterColor: 0x001E0F,
             distortionScale: 50.0,
@@ -26,8 +26,10 @@ define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!
 
     Water.prototype.update = function() {
         this.water.material.uniforms.time.value += 0.001;
-        this.water.material.uniforms.eye.value = camera.position;
-        this.water.position.x += 1;
+    };
+
+    Water.prototype.render = function() {
+        this.water.render();
     };
 
     Water.prototype.getObject = function() {
