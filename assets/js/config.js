@@ -17,6 +17,7 @@ var require = {
         "CopyShader": { deps: ['threeCore'], exports: "THREE" },
         "FXAAShader": { deps: ['threeCore'], exports: "THREE" },
         "ConvolutionShader": { deps: ['threeCore'], exports: "THREE" },
+        "OceanShaders": { deps: ['threeCore'], exports: "THREE" },
 
         "detector": { exports: "Detector" },
         "Stats": { exports: "Stats" }
@@ -38,6 +39,7 @@ var require = {
         "CopyShader": "../../../vendor/three.js/shaders/CopyShader",
         "FXAAShader": "../../../vendor/three.js/shaders/FXAAShader",
         "ConvolutionShader": "../../../vendor/three.js/shaders/ConvolutionShader",
+        "OceanShaders": "../../../vendor/three.js/shaders/OceanShaders",
         "Mirror": "../../../vendor/Mirror/Mirror",
         "detector": "../../../vendor/Detector/Detector",
         "Stats": "../../../vendor/stats.js/stats.min",
