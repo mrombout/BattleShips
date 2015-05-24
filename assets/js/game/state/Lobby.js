@@ -52,33 +52,26 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'shader!skyd
 
     Lobby.prototype.createSkydome = function() {
         // hemilight
-        var hemiLight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+        var hemiLight = new THREE.HemisphereLight( 0x99FF99, 0x18FFBF, 1 );
         hemiLight.color.setHSL(0.6, 1, 0.6);
         hemiLight.groundColor.setHSL(0.095, 1, 0.75);
         hemiLight.position.set(-1, 1, -1);
         scene.add(hemiLight);
 
-        // fog
-        var uniforms = {
-            topColor: 	 { type: "c", value: new THREE.Color( 0x0077ff ) },
-            bottomColor: { type: "c", value: new THREE.Color( 0xffffff ) },
-            offset:		 { type: "f", value: 33 },
-            exponent:	 { type: "f", value: 0.6 }
-        };
-        uniforms.topColor.value.copy(hemiLight.color );
-
-        scene.fog.color.copy( uniforms.bottomColor.value );
-
         // sky
-        var skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
+        var skyGeo = new THREE.SphereGeometry(3000, 60, 40);
         var skyMat = new THREE.ShaderMaterial({
             vertexShader: skydomeVert.value,
             fragmentShader: skydomeFrag.value,
-            uniforms: uniforms,
+            uniforms: {
+                texture: { type: 't', value: THREE.ImageUtils.loadTexture('assets/texture/skydome.jpg') }
+            },
             side: THREE.BackSide
         });
 
         var sky = new THREE.Mesh( skyGeo, skyMat );
+        sky.rotation.order = 'XYZ';
+        sky.renderDepth = 1000.0;
         scene.add( sky );
     };
 
