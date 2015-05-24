@@ -14,7 +14,8 @@ define( [
     "OrbitControls",
     "BokehPass",
     "FilmPass",
-    "VignetteShader"
+    "VignetteShader",
+    "DotScreenPass"
 ], function( threeCore ) {
     return threeCore;
 } );

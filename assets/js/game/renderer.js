@@ -9,11 +9,8 @@ define(['three', 'container', 'camera', 'scene', 'util/debug'], function(THREE, 
 
     // create renderer
     var renderer= new THREE.WebGLRenderer();
-    renderer.setClearColor(0x000000);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.gammaInput = true;
-    renderer.gammaOutput = true;
 
     container.appendChild(renderer.domElement);
 
@@ -22,35 +19,34 @@ define(['three', 'container', 'camera', 'scene', 'util/debug'], function(THREE, 
 
     // RenderPass
     var renderPass = new THREE.RenderPass(scene, camera);
-    renderPass.renderToScreen = false;
     composer.addPass(renderPass);
 
-    
-    var filmPass = new THREE.FilmPass(0.35, 0.025, 648, false);
-    filmPass.renderToScreen = true;
-
+    // BeachBypassShader
     var effectBleach = new THREE.ShaderPass(THREE.BleachBypassShader);
-    var effectColor = new THREE.ShaderPass(THREE.ColorCorrectionShader);
-    var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
-    var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-
+    effectBleach.uniforms['opacity'].value = 0.4;
+    composer.addPass(effectBleach);
     debug.add(effectBleach, 'enabled').name('Bleach Bypass');
+
+    // ColorCorrectionShader
+    var effectColor = new THREE.ShaderPass(THREE.ColorCorrectionShader);
+    effectColor.uniforms['powRGB'].value.set(1.4, 1.45, 1.45);
+    effectColor.uniforms['mulRGB'].value.set(1.1, 1.1, 1.1);
+    composer.addPass(effectColor);
     debug.add(effectColor, 'enabled').name('Color Correction');
-    debug.add(effectFXAA, 'enabled').name('FXAA');
+
+    // FXAA
+    var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+    composer.addPass(effectFXAA);
 
     updateFXAAResolution();
     window.addEventListener('resize', updateFXAAResolution, false);
 
-    effectBleach.uniforms['opacity'].value = 0.4;
+    debug.add(effectFXAA, 'enabled').name('FXAA');
 
-    effectColor.uniforms['powRGB'].value.set(1.4, 1.45, 1.45);
-    effectColor.uniforms['mulRGB'].value.set(1.1, 1.1, 1.1);
-
-    composer.addPass(effectBleach);
-    composer.addPass(effectColor);
-    composer.addPass(effectFXAA);
-    composer.addPass(effectCopy);
+    // CopyShader
+    var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
     effectCopy.renderToScreen = true;
+    composer.addPass(effectCopy);
 
     return composer;
 });

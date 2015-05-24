@@ -16,11 +16,6 @@ define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!
             eye: camera.position
         });
 
-        console.log(this.water.material.uniforms.waterColor.value);
-        debug.add(this.water.material.uniforms.waterColor.value, "r", 0, 1);
-        debug.add(this.water.material.uniforms.waterColor.value, "g", 0, 1);
-        debug.add(this.water.material.uniforms.waterColor.value, "b", 0, 1);
-
         this.mirrorMesh = new THREE.Mesh(
             new THREE.PlaneBufferGeometry(2000 * 500, 2000 * 500),
             this.water.material
