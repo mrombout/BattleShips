@@ -5,6 +5,8 @@ define(['three', 'renderer', 'camera', 'stats'], function(THREE, renderer, camer
         init: function() {
             this.onWindowResize();
             window.addEventListener('resize', game.onWindowResize, false);
+
+            game.clock = new THREE.Clock();
         },
         onWindowResize: function() {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -25,8 +27,8 @@ define(['three', 'renderer', 'camera', 'stats'], function(THREE, renderer, camer
 
             if(game.state) {
                 stats.begin();
-                game.state.update();
-                game.state.render();
+                game.state.update(game.clock);
+                game.state.render(game.clock);
                 stats.end();
             }
         }

@@ -1,8 +1,10 @@
 "use strict";
 
-define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'service/setup', 'factory/ship', 'entity/Board3D', 'model/Board'], function(State, renderer, scene, camera, HUDView, THREE, setupService, ShipFactory, Board3D, Board) {
+define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'service/setup', 'factory/ship', 'entity/Board3D', 'model/Board', 'entity/Environment'], function(State, renderer, scene, camera, HUDView, THREE, setupService, ShipFactory, Board3D, Board, Environment) {
     var Setup = function() {
         State.call(this);
+
+        this.parent = new THREE.Object3D();
 
         this.hudView = new HUDView(this);
 
@@ -13,10 +15,8 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
     Setup.prototype.constructor = Setup;
 
     Setup.prototype.show = function() {
-        this.parent = new THREE.Object3D();
-
-        this.environment = scene.getObjectByName("environment");
-
+        this.createLight();
+        this.createEnvironment();
         this.createControls();
         this.createGrid();
 
@@ -31,6 +31,25 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
     Setup.prototype.hide = function() {
         scene.remove(this.parent);
+    };
+
+    Setup.prototype.createLight = function() {
+        // directional
+        var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+        directionalLight.position.set(0, 1, 1).normalize();
+        this.parent.add(directionalLight);
+
+        // hemilight
+        var hemiLight = new THREE.HemisphereLight( 0x99FF99, 0x18FFBF, 1 );
+        hemiLight.color.setHSL(0.6, 1, 0.6);
+        hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+        hemiLight.position.set(-1, 1, -1);
+        this.parent.add(hemiLight);
+    };
+
+    Setup.prototype.createEnvironment = function() {
+        this.environment = new Environment();
+        this.parent.add(this.environment.getObject());
     };
 
     Setup.prototype.createControls = function() {
@@ -61,7 +80,10 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         this.controls.enabled = false;
     };
 
-    Setup.prototype.update = function() {
+    Setup.prototype.update = function(clock) {
+        // update environment
+        this.environment.update(clock);
+
         // update controls
         this.controls.update();
 
@@ -99,7 +121,7 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
         this.selectedShip = ShipFactory.create(ship);
         console.log(this.selectedShip.getObject());
-        scene.add(this.selectedShip.getObject());
+        this.parent.add(this.selectedShip.getObject());
 
         this.onDocumentMouseMoveBind = function(e) {
             this.onDocumentMouseMove(e);
@@ -115,7 +137,7 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
         document.removeEventListener('mousemove', this.onDocumentMouseMoveBind);
 
-        scene.remove(this.selectedShip.getObject());
+        this.parent.remove(this.selectedShip.getObject());
 
         this.selectedShip = null;
     };
@@ -165,8 +187,10 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         }
     };
 
-    Setup.prototype.render = function() {
-        renderer.render();
+    Setup.prototype.render = function(clock) {
+        this.environment.render();
+
+        renderer.render(clock.getDelta());
     };
 
     return new Setup();

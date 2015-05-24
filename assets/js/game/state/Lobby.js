@@ -10,24 +10,15 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
     Lobby.prototype.show = function() {
         console.info('LOBBY', 'Show');
 
-        assets.audio.ocean.play();
-        setTimeout(function() {
-            //assets.audio.intro.play()
-        }, 3000);
-
-        this.clock = new THREE.Clock(true);
-        this.clock.start();
-
         this.parent = new THREE.Object3D();
         this.parent.name = "lobby";
+        scene.add(this.parent);
 
         this.createLight();
         this.createEnvironment();
 
         this.loadBattleship();
         this.loadLogo();
-
-        scene.add(this.parent);
 
         startView.show();
 
@@ -45,19 +36,19 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
         // directional
         var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
         directionalLight.position.set(0, 1, 1).normalize();
-        scene.add(directionalLight);
+        this.parent.add(directionalLight);
 
         // hemilight
         var hemiLight = new THREE.HemisphereLight( 0x99FF99, 0x18FFBF, 1 );
         hemiLight.color.setHSL(0.6, 1, 0.6);
         hemiLight.groundColor.setHSL(0.095, 1, 0.75);
         hemiLight.position.set(-1, 1, -1);
-        scene.add(hemiLight);
+        this.parent.add(hemiLight);
     };
 
     Lobby.prototype.createEnvironment = function() {
         this.environment = new Environment();
-        scene.add(this.environment.getObject());
+        this.parent.add(this.environment.getObject());
     };
 
     Lobby.prototype.loadBattleship = function() {
@@ -122,25 +113,25 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
         me.parent.add(mesh);
     };
 
-    Lobby.prototype.update = function() {
+    Lobby.prototype.update = function(clock) {
         // update environment
-        this.environment.update();
+        this.environment.update(clock);
 
         // update battleship
         if(this.battleship) {
-            this.clock.getElapsedTime();
-            this.battleship.rotation.x = Math.sin(this.clock.elapsedTime) / 64;
-            this.battleship.rotation.z = Math.sin(this.clock.elapsedTime) / 64;
-            this.battleship.rotation.y = -Math.cos(this.clock.elapsedTime) / 64;
+            clock.getElapsedTime();
+            this.battleship.rotation.x = Math.sin(clock.elapsedTime) / 64;
+            this.battleship.rotation.z = Math.sin(clock.elapsedTime) / 64;
+            this.battleship.rotation.y = -Math.cos(clock.elapsedTime) / 64;
         }
     };
 
-    Lobby.prototype.render = function() {
+    Lobby.prototype.render = function(clock) {
         // render environment
         this.environment.render();
 
         // render
-        renderer.render();
+        renderer.render(clock.getDelta());
     };
 
     return new Lobby();

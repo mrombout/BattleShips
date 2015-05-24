@@ -9,12 +9,17 @@ define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!
             alpha: 0.8,
             //sunDirection: camera.position.clone().normalize(),
             sunColor: 0xFFFFFF,
-            waterColor: 0x001E0F,
+            waterColor: 0x002600,
             distortionScale: 50.0,
             //noiseScale: 1,
             fog: false,
             eye: camera.position
         });
+
+        console.log(this.water.material.uniforms.waterColor.value);
+        debug.add(this.water.material.uniforms.waterColor.value, "r", 0, 1);
+        debug.add(this.water.material.uniforms.waterColor.value, "g", 0, 1);
+        debug.add(this.water.material.uniforms.waterColor.value, "b", 0, 1);
 
         this.mirrorMesh = new THREE.Mesh(
             new THREE.PlaneBufferGeometry(2000 * 500, 2000 * 500),
@@ -24,8 +29,8 @@ define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!
         this.mirrorMesh.rotation.x = -Math.PI / 2;
     };
 
-    Water.prototype.update = function() {
-        this.water.material.uniforms.time.value += 0.001;
+    Water.prototype.update = function(clock) {
+        this.water.material.uniforms.time.value += clock.getDelta();
     };
 
     Water.prototype.render = function() {

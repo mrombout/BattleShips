@@ -3,7 +3,7 @@ define(['three', 'shader!skydome.vert', 'shader!skydome.frag', ], function(THREE
         this.parent = new THREE.Object3D();
 
         // sky
-        var skyGeometry = new THREE.SphereGeometry(1000 * 500);
+        var skyGeometry = new THREE.SphereGeometry(1000 * 500, 60, 40);
         var skyMaterial = new THREE.ShaderMaterial({
             vertexShader: skydomeVert.value,
             fragmentShader: skydomeFrag.value,

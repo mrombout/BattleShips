@@ -6,7 +6,7 @@ define(['three'], function(THREE) {
         cubeMap.flipY = false;
 
         var loader = new THREE.ImageLoader();
-        loader.load( 'assets/texture/skyboxsun25degtest.png', function ( image ) {
+        loader.load( 'assets/texture/Above_The_Sea.jpg', function ( image ) {
             var getSide = function ( x, y ) {
                 var size = 1024;
 
