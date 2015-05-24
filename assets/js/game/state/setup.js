@@ -63,6 +63,9 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         // update controls
         this.controls.update();
 
+        // update board
+        this.board.update();
+
         // update water
         if(!this.water) {
             this.water = scene.getObjectByName("water")
@@ -88,6 +91,12 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         });
     };
 
+    /**
+     * Selects a ship by adding it to the scene allowing the user to place it
+     * on the board.
+     *
+     * @param ship
+     */
     Setup.prototype.selectShip = function(ship) {
         this.isVertical = false;
 
@@ -103,6 +112,9 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         document.addEventListener('mousemove', this.onDocumentMouseMoveBind, false);
     };
 
+    /**
+     * Deselects a ship by removing it from the scene.
+     */
     Setup.prototype.deselectShip = function() {
         this.enableControls();
 
@@ -113,8 +125,15 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         this.selectedShip = null;
     };
 
+    /**
+     * Places a ship on the board if the selected position is valid. A position
+     * is valid is it is within the bounds of the board and the ship does not
+     * overlap other ships.
+     *
+     * @returns {boolean}
+     */
     Setup.prototype.placeShip = function() {
-        if(!this.isWithinBoardBounds(this.selectedShip.getObject())) {
+        if(!this.board.isWithinBounds(this.selectedShip.getObject())) {
             this.deselectShip();
             return false;
         }
@@ -127,37 +146,11 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         return true;
     };
 
-    Setup.prototype.isWithinBoardBounds = function(ship) {
-        var box3 = new THREE.Box3();
-        box3.setFromObject(ship);
-
-        var coords = this.board.worldToGrid(ship.position);
-        var size = box3.size();
-        var length = Math.floor(size.x / 20);
-
-        // horizontal
-        if(ship.rotation.y === 0) {
-            console.log(coords.x + length, coords.x, length);
-            return coords.x + length <= 10;
-        } else { // vertical
-            return coords.y + length <= 10;
-        }
-    };
-
     Setup.prototype.rotateSelectedShip = function() {
         if(!this.selectedShip)
             return;
 
-        if(this.isVertical) {
-            console.log('SETUP', 'Rotating to horizontal position', this.selectedShip);
-            this.selectedShip.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(20, 20, 20));
-            this.selectedShip.getObject().rotation.y = 0;
-        } else {
-            console.log('SETUP', 'Rotating to vertical position', this.selectedShip);
-            this.selectedShip.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(-20, -20, -20));
-            this.selectedShip.getObject().rotation.y = -Math.PI / 2;
-        }
-        this.isVertical = !this.isVertical;
+        this.selectedShip.rotate();
     };
 
     Setup.prototype.onDocumentMouseMove = function(e) {
@@ -165,6 +158,8 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
         this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
         this.raycaster.setFromCamera(this.mouse, camera);
+
+        this.selectedShip.setInvalid(!this.board.isWithinBounds(this.selectedShip.getObject()) || this.board.isOverlapping(this.selectedShip));
 
         var intersects = this.raycaster.intersectObject(scene.getObjectByName("dank"));
         if(intersects.length > 0) {

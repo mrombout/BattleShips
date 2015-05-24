@@ -2,6 +2,7 @@ define(['three'], function(THREE) {
     var Board3D = function(model) {
         this.model = model;
         this.parent = new THREE.Object3D();
+        this.ships = [];
 
         this.createGrid();
     };
@@ -49,10 +50,46 @@ define(['three'], function(THREE) {
         this.parent.add(planeMesh);
     };
 
+    Board3D.prototype.update = function() {
+        for(var key in this.ships) {
+            if(this.ships.hasOwnProperty(key)) {
+                var ship = this.ships[key];
+                ship.update();
+            }
+        }
+    };
+
     Board3D.prototype.placeShip = function(ship) {
         var coords = this.worldToGrid(ship.getObject().position);
 
-        this.model.placeShip(coords);
+        this.ships.push(ship);
+        this.model.placeShip(coords, ship.model);
+    };
+
+    Board3D.prototype.isWithinBounds = function(ship) {
+        var box3 = new THREE.Box3();
+        box3.setFromObject(ship);
+
+        // TODO Rewrite, we have access to the model now
+
+        var coords = this.worldToGrid(ship.position);
+        var size = box3.size();
+
+        // horizontal
+        if(ship.rotation.y === 0) {
+            var length = Math.floor(size.x / 20);
+            return coords.x + length <= 10;
+        } else { // vertical
+            var length = Math.floor(size.z / 20);
+            return coords.y + length <= 10;
+        }
+    };
+
+    Board3D.prototype.isOverlapping = function(ship) {
+        var length = ship.model.length;
+        var vec2 = this.worldToGrid(ship.getObject().position);
+
+        return this.model.isOverlapping(vec2.x, vec2.y, length, ship.model.isVertical);
     };
 
     Board3D.prototype.gridToWorld = function(vec) {

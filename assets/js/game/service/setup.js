@@ -14,12 +14,14 @@ define(['service/api', 'jquery', 'model/Ship'], function(API, $, Ship) {
         API.ships().fail(function(jqXhr, textStatus, errorThrown) {
             deferred.reject();
         }).done(function(data, textStatus, jqXhr) {
+            var ships = [];
             for(var key in data) {
-                var ship = data[key];
-                ship.prototype = Object.create(Ship.prototype);
+                var shipJson = data[key];
+                ships.push(new Ship(shipJson));
             }
 
-            deferred.resolve(data);
+            console.log(ships);
+            deferred.resolve(ships);
         });
 
         return deferred;
