@@ -150,7 +150,7 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
      * @returns {boolean}
      */
     Setup.prototype.placeShip = function() {
-        if(!this.board.isWithinBounds(this.selectedShip.getObject())) {
+        if(this.selectedShip.isInvalid()) {
             this.deselectShip();
             return false;
         }

@@ -1,4 +1,4 @@
-define(['three', 'shader!skydome.vert', 'shader!skydome.frag', ], function(THREE, skydomeVert, skydomeFrag) {
+define(['three', 'shader!skydome.vert', 'shader!skydome.frag', 'assets'], function(THREE, skydomeVert, skydomeFrag, assets) {
     var Skydome = function() {
         this.parent = new THREE.Object3D();
 
@@ -8,7 +8,7 @@ define(['three', 'shader!skydome.vert', 'shader!skydome.frag', ], function(THREE
             vertexShader: skydomeVert.value,
             fragmentShader: skydomeFrag.value,
             uniforms: {
-                texture: { type: 't', value: THREE.ImageUtils.loadTexture('assets/texture/skydome.jpg') }
+                texture: { type: 't', value: assets.textures.skydome_diffuse }
             },
             side: THREE.BackSide,
             depthWrite: false

@@ -38,6 +38,7 @@ define(['three'], function(THREE) {
     };
 
     Ship3D.prototype.setInvalid = function(invalid) {
+        this.invalid = invalid;
         if(invalid) {
             this.getObject().traverseVisible(function(object) {
                 if(object.material) {
@@ -64,6 +65,10 @@ define(['three'], function(THREE) {
             });
         }
     };
+
+    Ship3D.prototype.isInvalid = function() {
+        return this.invalid;
+    }
 
     return Ship3D;
 });
