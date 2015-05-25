@@ -10,12 +10,13 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
         this.mouse = new THREE.Vector2();
         this.raycaster = new THREE.Raycaster();
+
+        this.availableShips = [];
     };
     Setup.prototype = Object.create(State.prototype);
     Setup.prototype.constructor = Setup;
 
     Setup.prototype.show = function() {
-        this.createLight();
         this.createEnvironment();
         this.createControls();
         this.createGrid();
@@ -30,28 +31,17 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         scene.add(this.parent);
     };
 
-    Setup.prototype.registerListeners = function() {
-        this.hudView.on('rotateShip', function() {
-            this.rotateShip();
-        }.bind(this));
-    };
-
     Setup.prototype.hide = function() {
         scene.remove(this.parent);
     };
 
-    Setup.prototype.createLight = function() {
-        // directional
-        var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
-        directionalLight.position.set(0, 1, 1).normalize();
-        this.parent.add(directionalLight);
-
-        // hemilight
-        var hemiLight = new THREE.HemisphereLight( 0x99FF99, 0x18FFBF, 1 );
-        hemiLight.color.setHSL(0.6, 1, 0.6);
-        hemiLight.groundColor.setHSL(0.095, 1, 0.75);
-        hemiLight.position.set(-1, 1, -1);
-        this.parent.add(hemiLight);
+    Setup.prototype.registerListeners = function() {
+        this.hudView.on('rotateShip', function() {
+            this.rotateShip();
+        }.bind(this));
+        this.hudView.on('ready', function() {
+            this.onReady();
+        }.bind(this));
     };
 
     Setup.prototype.createEnvironment = function() {
@@ -106,6 +96,7 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         var me = this;
 
         setupService.getShips().done(function(ships) {
+            me.availableShips = ships;
             for(var key in ships) {
                 if(ships.hasOwnProperty(key)) {
                     var ship = ships[key];
@@ -127,7 +118,6 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         this.disableControls();
 
         this.selectedShip = ShipFactory.create(ship);
-        console.log(this.selectedShip.getObject());
         this.parent.add(this.selectedShip.getObject());
 
         this.onDocumentMouseMoveBind = function(e) {
@@ -162,10 +152,14 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
             return false;
         }
 
+        this.availableShips.splice(this.availableShips.indexOf(this.selectedShip), 1);
         this.board.placeShip(this.selectedShip);
         this.enableControls();
         document.removeEventListener('mousemove', this.onDocumentMouseMoveBind);
         this.selectedShip = null;
+
+        if(this.availableShips.length === 0)
+            this.hudView.setIsReady(true);
 
         return true;
     };
@@ -196,6 +190,10 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
             this.selectedShip.getObject().position.copy(intersect.point).add(intersect.face.normal);
             this.selectedShip.getObject().position.divideScalar(20).floor().multiplyScalar(20).add(new THREE.Vector3(10, 0, 10));
         }
+    };
+
+    Setup.prototype.onReady = function() {
+        console.log(this.board);
     };
 
     Setup.prototype.render = function(clock) {

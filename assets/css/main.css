@@ -177,6 +177,15 @@ body {
   padding: 20px;
   font-size: 20px;
 }
+#hud #setup-ready:hover {
+  background-color: red;
+}
+#hud #setup-ready:active {
+  background-color: green;
+}
+#hud #setup-ready:disabled {
+  background-color: grey;
+}
 #hud #ship-select {
   position: absolute;
   top: 25%;

@@ -17,11 +17,15 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
         $container.append(this.$domElement);
 
         this.$ul = this.$domElement.find('ul');
+
+        this.$button = this.$domElement.find('button');
+        this.$button.prop('disabled', true);
     };
 
     HUD.prototype.registerEvents = function() {
         this.$domElement.on('mousedown', 'li', function(e) { this.onMenuItemMouseDown(e); }.bind(this));
         $container.on('mouseup', function(e) { this.onDocumentMouseUp(e); }.bind(this));
+        this.$button.on('click', function(e) { this.onReadyClick(e); }.bind(this));
     };
 
     /**
@@ -34,6 +38,10 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
             .replace(/\{length\}/g, ship.length));
         shipItem.data('ship', ship);
         this.$ul.append(shipItem);
+    };
+
+    HUD.prototype.setIsReady = function() {
+        this.$button.prop('disabled', false);
     };
 
     HUD.prototype.onMenuItemMouseDown = function(e) {
@@ -75,6 +83,10 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
         if(e.button === 2 && this.$selectedShip) {
             $(this).trigger('rotateShip', this.$selectedShip.data('ship'));
         }
+    };
+
+    HUD.prototype.onReadyClick = function() {
+        $(this).trigger('ready');
     };
 
     HUD.prototype.show = function() {
