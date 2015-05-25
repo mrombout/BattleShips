@@ -19,6 +19,7 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         this.createEnvironment();
         this.createControls();
         this.createGrid();
+        this.registerListeners();
 
         this.hudView.show();
 
@@ -27,6 +28,12 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         camera.updateProjectionMatrix();
 
         scene.add(this.parent);
+    };
+
+    Setup.prototype.registerListeners = function() {
+        this.hudView.on('rotateShip', function() {
+            this.rotateShip();
+        }.bind(this));
     };
 
     Setup.prototype.hide = function() {
@@ -163,7 +170,11 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         return true;
     };
 
-    Setup.prototype.rotateSelectedShip = function() {
+    /**
+     * Rotates the selected ship by toggling between horizontal and vertical
+     * positions.
+     */
+    Setup.prototype.rotateShip = function() {
         if(!this.selectedShip)
             return;
 

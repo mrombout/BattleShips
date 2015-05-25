@@ -1,16 +1,22 @@
 "use strict";
 
-define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'text!/BattleShipsters/assets/html/_ship.html'], function($container, viewHtml, $, shipHtml) {
+define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'text!/BattleShipsters/assets/html/_ship.html', 'view/View'], function($container, viewHtml, $, shipHtml, View) {
     var HUD = function(presenter) {
+        View.call(this);
         this.presenter = presenter;
 
+        this.selectElements();
+        this.registerEvents();
+    };
+    HUD.prototype = Object.create(View.prototype);
+    HUD.prototype.constructor = HUD;
+
+    HUD.prototype.selectElements = function() {
         this.$domElement = $(viewHtml);
         this.$domElement.hide();
         $container.append(this.$domElement);
 
         this.$ul = this.$domElement.find('ul');
-
-        this.registerEvents();
     };
 
     HUD.prototype.registerEvents = function() {
@@ -18,11 +24,15 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
         $container.on('mouseup', function(e) { this.onDocumentMouseUp(e); }.bind(this));
     };
 
+    /**
+     * Adds a new ship elements to the menu.
+     *
+     * @param ship
+     */
     HUD.prototype.addShipItem = function(ship) {
         var shipItem = $(shipHtml.replace(/\{name\}/g, ship.name)
             .replace(/\{length\}/g, ship.length));
         shipItem.data('ship', ship);
-        shipItem.data('test', {cool:'nice'});
         this.$ul.append(shipItem);
     };
 
@@ -63,7 +73,7 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
         }
 
         if(e.button === 2 && this.$selectedShip) {
-            this.presenter.rotateSelectedShip();
+            $(this).trigger('rotateShip', this.$selectedShip.data('ship'));
         }
     };
 
