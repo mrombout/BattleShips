@@ -29,7 +29,9 @@ var require = {
         "Ocean": { deps: ['threeCore'], exports: "THREE" },
 
         "detector": { exports: "Detector" },
-        "Stats": { exports: "Stats" }
+        "Stats": { exports: "Stats" },
+
+        "spe": { exports: "SPE" }
     },
     paths: {
         "jquery": ["https://code.jquery.com/jquery-2.1.4", "../../../bower_components/dist/jquery"],
@@ -67,6 +69,8 @@ var require = {
         "shader": "../../../vendor/shader/shader",
         "shaders": "../../shaders",
 
-        'datgui': "../../../vendor/dat.gui/dat.gui"
+        'datgui': "../../../vendor/dat.gui/dat.gui",
+
+        "spe": "../../../vendor/ShaderParticles/ShaderParticles"
     }
 };

@@ -37,7 +37,6 @@ define(function() {
                 return {
                     gameboards: {
                         post: function(board) {
-                            $.post(api.baseUrl + 'games/' + gameId + '/gameboards' + api.token);
                             return $.ajax({
                                 method: 'POST',
                                 dataType: 'json',

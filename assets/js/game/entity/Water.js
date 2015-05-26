@@ -22,6 +22,7 @@ define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!
         );
         this.mirrorMesh.add(this.water);
         this.mirrorMesh.rotation.x = -Math.PI / 2;
+        this.mirrorMesh.renderDepth = 1000;
     };
 
     Water.prototype.update = function(clock) {

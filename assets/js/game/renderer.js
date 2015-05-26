@@ -5,12 +5,11 @@ define(['three', 'container', 'camera', 'scene', 'util/debug'], function(THREE, 
         effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
     }
 
-    var material_depth = new THREE.MeshDepthMaterial();
-
     // create renderer
     var renderer= new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.sortObjects = false;
 
     container.appendChild(renderer.domElement);
 

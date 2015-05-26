@@ -42,6 +42,9 @@ define(['three'], function(THREE) {
                 },
                 skydome_diffuse: {
                     url: 'assets/texture/skydome.jpg'
+                },
+                smoke_particle: {
+                    url: 'assets/texture/smokeparticle.png'
                 }
             },
             geometries: {

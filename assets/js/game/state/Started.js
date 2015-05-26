@@ -1,4 +1,4 @@
-define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API) {
+define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets) {
     var Started = function(game) {
         this.game = game;
         this.parent = new THREE.Object3D();
@@ -53,9 +53,12 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
     Started.prototype.update = function(clock) {
         this.controls.update();
         this.environment.update(clock);
+
+        this.playerBoard.update(clock);
+        this.enemyBoard.update(clock);
     };
 
-    Started.prototype.render = function() {
+    Started.prototype.render = function(clock) {
         this.environment.render();
 
         renderer.render(scene, camera);
