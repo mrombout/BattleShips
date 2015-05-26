@@ -5,24 +5,68 @@ define(function() {
 
         user: {
             me: {
-                games: function() {
-                    return $.ajax({
-                        url: api.baseUrl + 'users/me/games' + api.token
-                    });
+                games: {
+                    get: function() {
+                        return $.ajax({
+                            url: api.baseUrl + 'users/me/games' + api.token
+                        });
+                    }
                 }
             }
         },
-        games: function(id) {
-            return $.ajax({
-                url: api.baseUrl + 'games' + api.token
-            });
+        games: {
+            get: function(id) {
+                if(id) {
+                    return $.ajax({
+                        url: api.baseUrl + 'games/' + id + api.token
+                    });
+                } else {
+                    return $.ajax({
+                        url: api.baseUrl + 'games' + api.token
+                    })
+                }
+            },
+            ai: {
+                get: function() {
+                    return $.ajax({
+                        url: api.baseUrl + 'games' + api.token
+                    });
+                }
+            },
+            id: function(gameId) {
+                return {
+                    gameboards: {
+                        post: function(board) {
+                            $.post(api.baseUrl + 'games/' + gameId + '/gameboards' + api.token);
+                            return $.ajax({
+                                method: 'POST',
+                                dataType: 'json',
+                                data: JSON.stringify(board),
+                                url: api.baseUrl + 'games/' + gameId + '/gameboards' + api.token
+                            });
+                        }
+                    },
+                    shots: {
+                        post: function(tile) {
+                            return $.ajax({
+                                method: 'POST',
+                                data: $.param(tile),
+                                url: api.baseUrl + 'games/' + gameId + '/shots' + api.token
+                            });
+                        }
+                    }
+                };
+            }
         },
-        ships: function() {
-            return $.ajax({
-                url: api.baseUrl + 'ships' + api.token
-            });
+        ships: {
+            get: function() {
+                return $.ajax({
+                    url: api.baseUrl + 'ships' + api.token
+                });
+            }
         }
     };
 
+    window.api = api;
     return api;
 });

@@ -1,8 +1,10 @@
 "use strict";
 
-define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'service/setup', 'factory/ship', 'entity/Board3D', 'model/Board', 'entity/Environment'], function(State, renderer, scene, camera, HUDView, THREE, setupService, ShipFactory, Board3D, Board, Environment) {
-    var Setup = function() {
+define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'service/setup', 'factory/ship', 'entity/Board3D', 'model/Board', 'entity/Environment', 'model/GameStatus', 'state/Started', 'game'], function(State, renderer, scene, camera, HUDView, THREE, setupService, ShipFactory, Board3D, Board, Environment, GameStatus, Started, game) {
+    var Setup = function(game) {
         State.call(this);
+
+        this.game = game;
 
         this.parent = new THREE.Object3D();
 
@@ -193,7 +195,16 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
     };
 
     Setup.prototype.onReady = function() {
-        console.log(this.board);
+        //game.setState(new Started());
+        setupService.saveBoard(this.game.id, this.board.model).done(function(data) {
+            if(data.status === GameStatus.SETUP) {
+                console.log('We\'ll remain in setup, but keep polling for gamestate changes');
+            } else if(data.status === GameStatus.STARTED) {
+                console.log('Game has started! We move to started state!');
+            }
+        }).fail(function(data) {
+            console.error(data);
+        });
     };
 
     Setup.prototype.render = function(clock) {
@@ -202,5 +213,5 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         renderer.render(clock.getDelta());
     };
 
-    return new Setup();
+    return Setup;
 });

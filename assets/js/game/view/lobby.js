@@ -1,5 +1,7 @@
-define(['container', 'text!/BattleShipsters/assets/html/lobby.html', 'presenter/lobby', 'jquery'], function($container, viewHtml, LobbyPresenter, $) {
-    var Start = function() {
+define(['container', 'text!/BattleShipsters/assets/html/lobby.html', 'jquery'], function($container, viewHtml, $) {
+    var Lobby = function(presenter) {
+        this.presenter = presenter;
+
         this.domElement = $(viewHtml);
         this.domElement.hide();
 
@@ -14,33 +16,31 @@ define(['container', 'text!/BattleShipsters/assets/html/lobby.html', 'presenter/
             this.onJoinButtonClick(e);
         }.bind(this));
 
-        this.presenter = new LobbyPresenter(this);
-
         $container.prepend(this.domElement);
     };
 
-    Start.prototype.onRefreshButtonClick = function() {
+    Lobby.prototype.onRefreshButtonClick = function() {
         this.spinner.show();
         this.presenter.loadGames();
     };
 
-    Start.prototype.onJoinButtonClick = function(e) {
+    Lobby.prototype.onJoinButtonClick = function(e) {
         var $joinButton = $(e.target);
         var gameId = $joinButton.data('id');
 
         this.presenter.joinGame(gameId);
     };
 
-    Start.prototype.addGameItem = function(gameItem) {
+    Lobby.prototype.addGameItem = function(gameItem) {
         this.tbody.append(gameItem);
         this.spinner.hide();
     };
 
-    Start.prototype.clearGameItems = function() {
+    Lobby.prototype.clearGameItems = function() {
         this.tbody.empty();
     };
 
-    Start.prototype.show = function() {
+    Lobby.prototype.show = function() {
         this.domElement.show();
 
         this.spinner.show();
@@ -48,10 +48,10 @@ define(['container', 'text!/BattleShipsters/assets/html/lobby.html', 'presenter/
         this.presenter.loadGames();
     };
 
-    Start.prototype.hide = function() {
+    Lobby.prototype.hide = function() {
         this.domElement.hide();
         this.spinner.hide();
     };
 
-    return new Start();
+    return Lobby;
 });

@@ -1,6 +1,6 @@
 "use strict";
 
-define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'view/loading', 'loader/AudioLoader', 'loader/JSONLoader'], function(State, renderer, assets, THREE, game, lobbyState, loadingView, AudioLoader, JSONLoader) {
+define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'view/loading', 'loader/AudioLoader', 'loader/JSONLoader', 'state/Started'], function(State, renderer, assets, THREE, game, lobbyState, loadingView, AudioLoader, JSONLoader, StartedState) {
     var Loading = function() {
         State.call(this);
 
@@ -35,7 +35,8 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
     Loading.prototype.onLoadingManagerLoad = function() {
         console.log('LOADING', 'Finished', assets);
         setTimeout(function() {
-            game.setState(lobbyState);
+            game.setState(new StartedState());
+            //game.setState(lobbyState);
         }, 500);
     };
 

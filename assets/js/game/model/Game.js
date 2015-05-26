@@ -1,13 +1,16 @@
 "use strict";
 
 define(function() {
-    var Game = function() {
-        this.id = null;
-        this.state = null;
-        this.yourTurn = null;
+    var Game = function(data) {
+        console.log('data', data);
+        this.id = data._id;
+        this.status = data.status;
+        this.yourTurn = data.yourTurn;
 
-        this.enemyId = null;
-        this.enemyName = null;
+        this.youWon = data.youWon;
+
+        this.enemyId = data.enemyId;
+        this.enemyName = data.enemyName;
 
         this.player1 = null;
         this.player2 = null;

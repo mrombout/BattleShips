@@ -13,7 +13,7 @@ define(['service/api', 'jquery', 'model/Game'], function(API, $, Game) {
     LobbyService.prototype.getGames = function() {
         var deferred = $.Deferred();
 
-        API.user.me.games().fail(function(jqXhr, textStatus, errorThrown) {
+        API.user.me.games.get().fail(function(jqXhr, textStatus, errorThrown) {
             deferred.reject();
         }).done(function(data, textStatus, jqXhr) {
             for(var key in data) {
@@ -30,10 +30,11 @@ define(['service/api', 'jquery', 'model/Game'], function(API, $, Game) {
     LobbyService.prototype.getGame = function(id) {
         var deferred = $.Deferred();
 
-        API.games(id).fail(function(jqXhr, textStatus, errorThrown) {
+        API.games.get(id).fail(function(jqXhr, textStatus, errorThrown) {
             deferred.reject();
         }).done(function(data, textStatus, jqXhr) {
-            deferred.resolve();
+            var game = new Game(data);
+            deferred.resolve(game);
         });
 
         return deferred;

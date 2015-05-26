@@ -1,11 +1,43 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'entity/Environment'], function(State, scene, renderer, camera, startView, assets, Environment) {
+define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!/BattleShipsters/assets/html/_game.html', 'model/GameStatus', 'game', 'state/Setup'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup) {
     var Lobby = function() {
         State.call(this);
+
+        this.view = new LobbyView(this);
     };
     Lobby.prototype = Object.create(State.prototype);
     Lobby.prototype.constructor = Lobby;
+
+    Lobby.prototype.loadGames = function() {
+        var me = this;
+
+        this.view.clearGameItems();
+
+        lobbyService.getGames().done(function(data) {
+            for(var key in data) {
+                if(data.hasOwnProperty(key)) {
+                    var game = data[key];
+                    var template = gameHtml.replace('{enemy}', game.enemyName)
+                        .replace('{status}', game.status)
+                        .replace('{id}', game._id);
+                    me.view.addGameItem($(template));
+                }
+            }
+        });
+    };
+
+    Lobby.prototype.joinGame = function(gameId) {
+        var me = this;
+        lobbyService.getGame(gameId).done(function(gameModel) {
+            console.log('wth', gameModel.status === GameStatus.SETUP, gameModel.status, GameStatus.SETUP);
+            if(gameModel.status === GameStatus.SETUP) {
+                game.setState(new Setup(gameModel));
+            } else if(gameModel.status === GameStatus.STARTED) {
+                console.warn('GameStatus started not implemented yet.');
+            }
+        });
+    };
 
     Lobby.prototype.show = function() {
         console.info('LOBBY', 'Show');
@@ -14,13 +46,12 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
         this.parent.name = "lobby";
         scene.add(this.parent);
 
-        this.createLight();
         this.createEnvironment();
 
         this.loadBattleship();
         this.loadLogo();
 
-        startView.show();
+        this.view.show();
 
         camera.position.set(0, 20, 70);
         camera.lookAt(scene.position);
@@ -29,21 +60,7 @@ define(['state/State', 'scene', 'renderer', 'camera', 'view/start', 'assets', 'e
 
     Lobby.prototype.hide = function() {
         scene.remove(scene.getObjectByName("lobby"));
-        startView.hide();
-    };
-
-    Lobby.prototype.createLight = function() {
-        // directional
-        var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
-        directionalLight.position.set(0, 1, 1).normalize();
-        this.parent.add(directionalLight);
-
-        // hemilight
-        var hemiLight = new THREE.HemisphereLight( 0x99FF99, 0x18FFBF, 1 );
-        hemiLight.color.setHSL(0.6, 1, 0.6);
-        hemiLight.groundColor.setHSL(0.095, 1, 0.75);
-        hemiLight.position.set(-1, 1, -1);
-        this.parent.add(hemiLight);
+        this.view.hide();
     };
 
     Lobby.prototype.createEnvironment = function() {

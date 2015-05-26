@@ -11,7 +11,7 @@ define(['service/api', 'jquery', 'model/Ship'], function(API, $, Ship) {
     SetupService.prototype.getShips = function() {
         var deferred = $.Deferred();
 
-        API.ships().fail(function(jqXhr, textStatus, errorThrown) {
+        API.ships.get().fail(function(jqXhr, textStatus, errorThrown) {
             deferred.reject();
         }).done(function(data, textStatus, jqXhr) {
             var ships = [];
@@ -35,10 +35,14 @@ define(['service/api', 'jquery', 'model/Ship'], function(API, $, Ship) {
     SetupService.prototype.saveBoard = function(id, board) {
         var deferred = $.Deferred();
 
-        API.games.gameboards(id, board).fail(function(jqXhr, textStatus, errorThrown) {
-            deferred.reject();
+        API.games.id(id).gameboards.post(board).fail(function(jqXhr, textStatus, errorThrown) {
+            deferred.reject({ msg: textStatus });
         }).done(function(data, textStatus, jqXhr) {
-            deferred.resolve(data);
+            if(data.msg === "success") {
+                deferred.resolve(data);
+            } else {
+                deferred.reject(data);
+            }
         });
 
         return deferred;
