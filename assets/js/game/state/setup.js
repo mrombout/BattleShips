@@ -183,7 +183,7 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
         this.raycaster.setFromCamera(this.mouse, camera);
 
-        this.selectedShip.setInvalid(!this.board.isWithinBounds(this.selectedShip.getObject()) || this.board.isOverlapping(this.selectedShip));
+        this.selectedShip.setInvalid(!this.board.isWithinBounds(this.selectedShip) || this.board.isOverlapping(this.selectedShip));
 
         var intersects = this.raycaster.intersectObject(scene.getObjectByName("dank"));
         if(intersects.length > 0) {
@@ -196,6 +196,7 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
     Setup.prototype.onReady = function() {
         //game.setState(new Started());
+        debugger;
         setupService.saveBoard(this.game.id, this.board.model).done(function(data) {
             if(data.status === GameStatus.SETUP) {
                 console.log('We\'ll remain in setup, but keep polling for gamestate changes');

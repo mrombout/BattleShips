@@ -114,20 +114,13 @@ define(['three', 'spe', 'assets'], function(THREE, SPE, assets) {
     };
 
     Board3D.prototype.isWithinBounds = function(ship) {
-        var box3 = new THREE.Box3();
-        box3.setFromObject(ship);
-
-        // TODO Rewrite, we have access to the model now
-
-        var coords = this.worldToGrid(ship.position);
-        var size = box3.size();
+        var coords = this.worldToGrid(ship.getObject().position);
+        var length = ship.model.length;
 
         // horizontal
-        if(ship.rotation.y === 0) {
-            var length = Math.floor(size.x / 20);
+        if(ship.getObject().rotation.y === 0) {
             return coords.x + length <= 10;
         } else { // vertical
-            var length = Math.floor(size.z / 20);
             return coords.y + length <= 10;
         }
     };
