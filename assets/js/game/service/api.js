@@ -37,6 +37,7 @@ define(function() {
                 return {
                     gameboards: {
                         post: function(board) {
+                            debugger;
                             return $.ajax({
                                 method: 'POST',
                                 dataType: 'json',

@@ -1,6 +1,6 @@
 "use strict";
 
-define(['three'], function(THREE) {
+define(['three', 'model/Cell'], function(THREE, Cell) {
 	var Board = function() {
         this.id = null;
 
@@ -11,12 +11,12 @@ define(['three'], function(THREE) {
 		if(x instanceof THREE.Vector2) {
             var vec2 = x;
             var ship = y;
-            ship.startCell = { x: vec2.x, y: vec2.y};
+            ship.startCell = new Cell(vec2.x, vec2.y);
             this.ships.push(ship);
             return;
         }
 
-        ship.startCell = { x: x, y: y };
+        ship.startCell = new Cell(x, y);
         this.ships.push(ship);
         console.info('BOARD', 'Placed ship on ', x, y);
 	};

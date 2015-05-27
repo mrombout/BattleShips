@@ -2,10 +2,12 @@
 
 define(function() {
 	var Ship = function(shipJson) {
+        this._id = shipJson._id;
         this.name = shipJson.name;
         this.length = shipJson.length;
         this.startCell = null;
         this.isVertical = false;
+        this.__v = 0;
 	};
 
     Ship.prototype.isOverlapping = function(x, y, length, isVertical) {
