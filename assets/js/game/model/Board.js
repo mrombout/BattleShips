@@ -2,7 +2,7 @@
 
 define(['three', 'model/Cell'], function(THREE, Cell) {
 	var Board = function() {
-        this.id = null;
+        //this.id = null;
 
 		this.ships = [];
 	};

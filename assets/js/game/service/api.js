@@ -37,11 +37,10 @@ define(function() {
                 return {
                     gameboards: {
                         post: function(board) {
-                            debugger;
                             return $.ajax({
                                 method: 'POST',
                                 dataType: 'json',
-                                data: JSON.stringify(board),
+                                data: JSON.parse(JSON.stringify(board)),
                                 url: api.baseUrl + 'games/' + gameId + '/gameboards' + api.token
                             });
                         }

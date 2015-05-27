@@ -10,7 +10,7 @@ define(['entity/Ship3D', 'assets'], function(Ship3D, assets) {
         var shipLength = ship.length;
         var material = new THREE.MeshLambertMaterial({ color: 0xFF0000 });
         var geometry = new THREE.BoxGeometry(20 * shipLength, 20, 20);
-        if(ship.name === 'Destoryer') {
+        if(ship.name === 'Destroyer') {
             geometry = assets.geometries.destroyer;
             material = assets.materials.destroyer.default;
         } else if(ship.name === 'Patrol boat') {

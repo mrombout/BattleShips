@@ -196,7 +196,6 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
 
     Setup.prototype.onReady = function() {
         //game.setState(new Started());
-        debugger;
         setupService.saveBoard(this.game.id, this.board.model).done(function(data) {
             if(data.status === GameStatus.SETUP) {
                 console.log('We\'ll remain in setup, but keep polling for gamestate changes');
