@@ -1,12 +1,15 @@
 "use strict";
 
-define(function() {
+define(['model/Cell'], function(Cell) {
 	var Ship = function(shipJson) {
         this._id = shipJson._id;
         this.name = shipJson.name;
         this.length = shipJson.length;
-        this.startCell = null;
-        this.isVertical = false;
+
+        if(shipJson.startCell) {
+            this.startCell = new Cell(shipJson.startCell);
+        }
+        this.isVertical = shipJson.isVertical;
         this.__v = 0;
 	};
 

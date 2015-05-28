@@ -1,8 +1,8 @@
 "use strict";
 
-define(function() {
+define(['model/Board'], function(Board) {
     var Game = function(data) {
-        console.log('data', data);
+        console.log('game data', data);
         this.id = data._id;
         this.status = data.status;
         this.yourTurn = data.yourTurn;
@@ -17,8 +17,8 @@ define(function() {
 
         this.isAI = null;
 
-        this.myGameboard = null;
-        this.enemyGameboard = null;
+        this.myGameboard = new Board(data.myGameboard);
+        this.enemyGameboard = new Board(data.enemyGameboard);
     };
 
     return Game;

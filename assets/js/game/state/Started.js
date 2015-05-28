@@ -1,6 +1,6 @@
-define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets) {
-    var Started = function(game) {
-        this.game = game;
+define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory) {
+    var Started = function(gameModel) {
+        this.game = gameModel;
         this.parent = new THREE.Object3D();
     };
     Started.prototype = Object.create(State.prototype);
@@ -40,12 +40,13 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
     };
 
     Started.prototype.createPlayerGrid = function() {
-        this.playerBoard = new Board3D(new Board());
+        this.playerBoard = boardFactory.create(this.game.myGameboard);
+        console.log(this.playerBoard);
         this.parent.add(this.playerBoard.getObject());
     };
 
     Started.prototype.createEnemyGrid = function() {
-        this.enemyBoard = new Board3D(new Board());
+        this.enemyBoard = boardFactory.create(this.game.enemyGameboard);
         this.enemyBoard.getObject().position.x = 400;
         this.parent.add(this.enemyBoard.getObject());
     };
@@ -54,8 +55,8 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         this.controls.update();
         this.environment.update(clock);
 
-        this.playerBoard.update(clock);
-        this.enemyBoard.update(clock);
+        //this.playerBoard.update(clock);
+        //this.enemyBoard.update(clock);
     };
 
     Started.prototype.render = function(clock) {

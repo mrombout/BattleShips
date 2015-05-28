@@ -1,6 +1,6 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!/BattleShipsters/assets/html/_game.html', 'model/GameStatus', 'game', 'state/Setup'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup) {
+define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!/BattleShipsters/assets/html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started) {
     var Lobby = function() {
         State.call(this);
 
@@ -30,11 +30,10 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     Lobby.prototype.joinGame = function(gameId) {
         var me = this;
         lobbyService.getGame(gameId).done(function(gameModel) {
-            console.log('wth', gameModel.status === GameStatus.SETUP, gameModel.status, GameStatus.SETUP);
             if(gameModel.status === GameStatus.SETUP) {
                 game.setState(new Setup(gameModel));
             } else if(gameModel.status === GameStatus.STARTED) {
-                console.warn('GameStatus started not implemented yet.');
+                game.setState(new Started(gameModel));
             }
         });
     };

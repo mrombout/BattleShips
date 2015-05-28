@@ -1,8 +1,22 @@
-define(['three', 'spe', 'assets'], function(THREE, SPE, assets) {
+define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THREE, SPE, assets, Ship3D, shipFactory) {
     var Board3D = function(model) {
         this.model = model;
         this.parent = new THREE.Object3D();
+
         this.ships = [];
+        if(model.ships) {
+            for(var key in model.ships) {
+                if(model.ships.hasOwnProperty(key)) {
+                    var ship = model.ships[key];
+                    var ship3d = shipFactory.create(ship);
+
+                    ship3d.getObject().position.copy(this.gridToWorld(ship.startCell));
+
+                    this.parent.add(ship3d.getObject());
+                    this.ships.push(ship3d);
+                }
+            }
+        }
 
         this.createGrid();
         this.createParticles();
@@ -133,15 +147,15 @@ define(['three', 'spe', 'assets'], function(THREE, SPE, assets) {
     };
 
     Board3D.prototype.gridToWorld = function(vec) {
-        var newVec = new THREE.Vector2();
+        var newVec = new THREE.Vector3();
 
         // normalize
-        newVec.x = -20 * 5;
-        newVec.y = -20 * 5;
+        newVec.x = -20 * 5 + 10;
+        newVec.z = -20 * 5 + 10;
 
         // apply coords
-        newVec.x += vec.y * 20;
-        newVec.y += vec.x * 20;
+        newVec.x += vec.x * 20;
+        newVec.z += vec.y * 20;
 
         return newVec;
     };

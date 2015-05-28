@@ -2,6 +2,13 @@ define(['three'], function(THREE) {
     var Ship3D = function(model) {
         this.model = model;
         this.parent = new THREE.Object3D();
+
+        if(model.isVertical) {
+            this.rotateToVertical();
+        } else {
+            this.rotateToHorizontal();
+        }
+
         this.clock = new THREE.Clock(true);
         this.clock.start();
     };
@@ -26,15 +33,23 @@ define(['three'], function(THREE) {
 
     Ship3D.prototype.rotate = function() {
         if(this.model.isVertical) {
-            console.log('SHIP3D', 'Rotating to horizontal position', this);
-            this.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(20, 20, 20));
-            this.getObject().rotation.y = 0;
+            this.rotateToHorizontal();
         } else {
-            console.log('SHIP3D', 'Rotating to vertical position', this);
-            this.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(-20, -20, -20));
-            this.getObject().rotation.y = -Math.PI / 2;
+            this.rotateToVertical();
         }
         this.model.isVertical = !this.model.isVertical;
+    };
+
+    Ship3D.prototype.rotateToHorizontal = function() {
+        console.log('SHIP3D', 'Rotating to horizontal position', this);
+        this.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(20, 20, 20));
+        this.getObject().rotation.y = 0;
+    };
+
+    Ship3D.prototype.rotateToVertical = function() {
+        console.log('SHIP3D', 'Rotating to vertical position', this);
+        this.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(-20, -20, -20));
+        this.getObject().rotation.y = -Math.PI / 2;
     };
 
     Ship3D.prototype.setInvalid = function(invalid) {

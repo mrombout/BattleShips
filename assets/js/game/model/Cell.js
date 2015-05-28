@@ -1,7 +1,11 @@
-define(function() {
-    var Cell = function(x, y) {
-        this.x = x;
-        this.y = y;
+define(['jquery'], function($) {
+    var Cell = function(cell) {
+        if($.type(cell.x) === 'string') {
+            this.x = cell.x.charCodeAt(0) - 97;
+        } else {
+            this.x = cell.x;
+        }
+        this.y = cell.y;
     };
 
     Cell.prototype.getX = function() {
