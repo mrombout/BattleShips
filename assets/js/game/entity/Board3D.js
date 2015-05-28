@@ -45,9 +45,9 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THR
         var planeGeometry = new THREE.PlaneBufferGeometry(200, 200);
         planeGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
 
-        var planeMesh = new THREE.Mesh(planeGeometry);
-        planeMesh.visible = false;
-        planeMesh.name = "dank";
+        this.planeMesh = new THREE.Mesh(planeGeometry);
+        this.planeMesh.visible = false;
+        this.planeMesh.name = "dank";
 
         // create tiles
         for(var i = -size; i < size; i += step) {
@@ -62,7 +62,7 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THR
             }
         }
 
-        this.parent.add(planeMesh);
+        this.parent.add(this.planeMesh);
     };
 
     Board3D.prototype.createParticles = function() {
@@ -170,6 +170,10 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THR
     Board3D.prototype.getObject = function() {
         return this.parent;
     };
+
+    Board3D.prototype.getSupport = function() {
+        return this.planeMesh;
+    }
 
     return Board3D;
 });

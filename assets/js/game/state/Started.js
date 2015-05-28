@@ -1,7 +1,11 @@
 define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory) {
     var Started = function(gameModel) {
         this.game = gameModel;
+
         this.parent = new THREE.Object3D();
+
+        this.mouse = new THREE.Vector2();
+        this.raycaster = new THREE.Raycaster();
     };
     Started.prototype = Object.create(State.prototype);
     Started.prototype.constructor = Started;
@@ -11,12 +15,21 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         this.createControls();
         this.createPlayerGrid();
         this.createEnemyGrid();
+        this.createCursor();
+
+        this.registerEvents();
 
         scene.add(this.parent);
     };
 
     Started.prototype.hide = function() {
 
+    };
+
+    Started.prototype.registerEvents = function() {
+        document.addEventListener('mousemove', function(e) {
+            this.onDocumentMouseMove(e);
+        }.bind(this), false);
     };
 
     Started.prototype.createEnvironment = function() {
@@ -49,6 +62,29 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         this.enemyBoard = boardFactory.create(this.game.enemyGameboard);
         this.enemyBoard.getObject().position.x = 400;
         this.parent.add(this.enemyBoard.getObject());
+    };
+
+    Started.prototype.createCursor = function() {
+        var material = new THREE.MeshLambertMaterial();
+        var geometry = new THREE.CircleGeometry(10, 20);
+        geometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
+        geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 1, 0));
+        this.cursor = new THREE.Mesh(geometry, material);
+        this.parent.add(this.cursor);
+    };
+
+    Started.prototype.onDocumentMouseMove = function(e) {
+        this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+        this.raycaster.setFromCamera(this.mouse, camera);
+
+        var intersects = this.raycaster.intersectObject(this.enemyBoard.getSupport());
+        console.log(intersects);
+        if(intersects.length > 0) {
+            var intersect = intersects[0];
+
+            this.cursor.position.copy(intersect.point).add(intersect.face.normal);
+            this.cursor.position.divideScalar(20).floor().multiplyScalar(20).add(new THREE.Vector3(10, 0, 10));
+        }
     };
 
     Started.prototype.update = function(clock) {
