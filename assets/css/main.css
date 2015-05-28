@@ -3,6 +3,9 @@ body {
   overflow: hidden;
   font-family: 'Abel', sans-serif;
 }
+.clear {
+  clear: both;
+}
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
@@ -228,4 +231,43 @@ body {
 }
 #hud #ship-select li:last-child {
   border-bottom: 4px solid grey;
+}
+#started #scoreboard {
+  position: absolute;
+  width: 300px;
+  height: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#started #scoreboard #playerscore,
+#started #scoreboard #enemyscore {
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 54px;
+  color: #ffffff;
+  text-align: center;
+  width: 50%;
+  float: left;
+}
+#started #scoreboard #playerscore {
+  border-bottom: 4px solid red;
+}
+#started #scoreboard #enemyscore {
+  border-bottom: 4px solid blue;
+}
+#started #scoreboard #turn {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+}
+#started #scoreboard .progressbar {
+  background-color: rgba(0, 0, 0, 0.2);
+  height: 4px;
+}
+#started #scoreboard .progressbar .progress {
+  height: 4px;
+  background-color: green;
+  width: 30%;
+  float: right;
 }

@@ -1,4 +1,4 @@
-define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory) {
+define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board', 'view/started'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory, startedView) {
     var Started = function(gameModel) {
         this.game = gameModel;
 
@@ -18,6 +18,8 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         this.createCursor();
 
         this.registerEvents();
+
+        startedView.show();
 
         scene.add(this.parent);
     };
@@ -78,7 +80,6 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         this.raycaster.setFromCamera(this.mouse, camera);
 
         var intersects = this.raycaster.intersectObject(this.enemyBoard.getSupport());
-        console.log(intersects);
         if(intersects.length > 0) {
             var intersect = intersects[0];
 
