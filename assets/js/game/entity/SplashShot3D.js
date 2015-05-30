@@ -1,4 +1,4 @@
-define(['entity/Shot3D', 'particles/Splash'], function(Shot3D, Splash) {
+define(['entity/Shot3D', 'particles/Splash', 'assets'], function(Shot3D, Splash, assets) {
     var SplashShot3D = function(shot) {
         Shot3D.call(this, shot);
 
@@ -8,12 +8,18 @@ define(['entity/Shot3D', 'particles/Splash'], function(Shot3D, Splash) {
     SplashShot3D.prototype.constructor = SplashShot3D;
 
     SplashShot3D.prototype.createEmitter = function() {
-        this.splash = new Splash();
-        this.parent.add(this.splash.getObject());
+        var geometry = assets.geometries.splash;
+        var material = new THREE.MeshLambertMaterial({
+            map: assets.textures.splash
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.y = 2;
+
+        this.parent.add(mesh);
     };
 
     SplashShot3D.prototype.update = function(delta) {
-        this.splash.update(delta)
+
     };
 
     return SplashShot3D;

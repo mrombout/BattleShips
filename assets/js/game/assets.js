@@ -48,6 +48,9 @@ define(['three'], function(THREE) {
                 },
                 water_particle: {
                     url: 'assets/texture/waterparticle.png'
+                },
+                splash: {
+                    url: 'assets/texture/splash.png'
                 }
             },
             geometries: {
@@ -71,6 +74,9 @@ define(['three'], function(THREE) {
                 },
                 aircraft_carrier: {
                     url: 'assets/models/aircraft_carrier.json'
+                },
+                splash: {
+                    url: 'assets/models/splash.json'
                 }
             },
             audio: {
