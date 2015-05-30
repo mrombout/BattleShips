@@ -49,7 +49,7 @@ define(function() {
                         post: function(tile) {
                             return $.ajax({
                                 method: 'POST',
-                                data: $.param(tile),
+                                data: JSON.parse(JSON.stringify(tile)),
                                 url: api.baseUrl + 'games/' + gameId + '/shots' + api.token
                             });
                         }

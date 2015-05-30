@@ -1,4 +1,4 @@
-define(['three'], function(THREE) {
+define(['three', 'service/api', 'model/Cell'], function(THREE, API, Cell) {
     var Started = function() {
 
     };
@@ -6,7 +6,7 @@ define(['three'], function(THREE) {
     Started.prototype.shoot = function(gameId, x, y) {
         var deferred = $.Deferred();
 
-        API.games.id(gameId).shots.post().fail(function(jqXhr, textStatus, errorThrown) {
+        API.games.id(gameId).shots.post(new Cell({ x: x, y: y })).fail(function(jqXhr, textStatus, errorThrown) {
             deferred.reject();
         }).done(function(data, textStatus, jqXhr) {
             deferred.resolve(data);

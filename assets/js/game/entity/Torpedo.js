@@ -1,4 +1,4 @@
-define(['three'], function(THREE) {
+define(['three', 'particles/SmokeTrail'], function(THREE, SmokeTrail) {
     var Torpedo = function(origin, target) {
         this.parent = new THREE.Object3D();
 
@@ -15,13 +15,15 @@ define(['three'], function(THREE) {
     Torpedo.prototype.createShell = function() {
         var material = new THREE.MeshLambertMaterial();
         var geometry = new THREE.SphereGeometry(5, 32, 32);
-        var mesh = new THREE.Mesh(geometry, material);
+        this.projectile = new THREE.Mesh(geometry, material);
 
-        this.parent.add(mesh);
+        this.parent.add(this.projectile);
     };
 
     Torpedo.prototype.createEmitter = function() {
-        // TODO Create smoke and fire emitter
+        this.smokeTrail = new SmokeTrail();
+        this.smokeTrail.attach(this.projectile);
+        this.parent.add(this.smokeTrail.getObject());
     };
 
     Torpedo.prototype.shoot = function() {
@@ -32,12 +34,13 @@ define(['three'], function(THREE) {
     };
 
     Torpedo.prototype.update = function(delta) {
+        this.smokeTrail.update();
+
         if(this.isShot) {
             var curDirection = this.direction.clone();
-            this.parent.position.add(curDirection.multiplyScalar(1).multiplyScalar(delta));
-            console.log('updating position', delta);
-            this.travel = this.origin.distanceTo(this.parent.position);
-            this.parent.position.y = Math.sin(Math.PI * (this.travel / this.distance)) * 100;
+            this.projectile.position.add(curDirection.multiplyScalar(0.5).multiplyScalar(delta));
+            this.travel = this.origin.distanceTo(this.projectile.position);
+            this.projectile.position.y = Math.sin(Math.PI * (this.travel / this.distance)) * 100;
 
             if(this.travel > this.distance) {
                 this.explode();

@@ -1,4 +1,4 @@
-define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board', 'view/started', 'service/started', 'entity/Torpedo'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory, startedView, startedService, Torpedo) {
+define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board', 'view/started', 'service/started', 'entity/Torpedo', 'model/Shot'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory, startedView, startedService, Torpedo, Shot) {
     var Started = function(gameModel) {
         this.game = gameModel;
 
@@ -93,31 +93,24 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
     };
 
     Started.prototype.onDocumentMouseClick = function(e) {
+        var me = this;
         var intersects = this.raycaster.intersectObject(this.enemyBoard.getSupport());
         if(intersects.length > 0) {
-            console.log('Shooting');
-
-            this.torpedo = new Torpedo(this.playerBoard.getObject(), this.cursor);
-            this.torpedo.shoot();
-            this.parent.add(this.torpedo.getObject());
-            /*
             var shootPosition = this.enemyBoard.worldToGrid(this.cursor.position);
             startedService.shoot(this.game.id, shootPosition.x, shootPosition.y).done(function(data) {
-                if(data === Shot.BOOM) {
-                    this.torpedo = new Torpedo(this.playerBoard, shootPosition.x, shootPosition.y);
-                    this.torpedo.shoot();
+                if(data === Shot.BOOM || data === Shot.SPLASH) {
+                    if(me.torpedo) {
+                        me.parent.remove(me.torpedo.getObject());
+                    }
 
-                    this.parent.add(this.torpedo.getObject());
-                } else if(data === Shot.SPLASH) {
-                    this.torpedo = new Torpedo(this.playerBoard, shootPosition.x, shootPosition.y);
-                    this.torpedo.shoot();
-
-                    this.parent.add(this.torpedo.getObject());
+                    me.torpedo = new Torpedo(me.playerBoard.getObject(), me.cursor);
+                    me.torpedo.shoot();
+                    me.parent.add(me.torpedo.getObject());
                 } else {
                     // fail
+                    console.error('Its not your turn! Silly!');
                 }
             });
-            */
         }
     };
 
