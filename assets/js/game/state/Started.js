@@ -44,15 +44,19 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
     };
 
     Started.prototype.createControls = function() {
-        this.controls = new THREE.TrackballControls(camera, renderer.domElement);
-        this.controls.rotateSpeed = 2.0;
+        this.controls = new THREE.OrbitControls(camera, renderer.domElement);
+        this.controls.rotateSpeed = 1.5;
         this.controls.zoomSpeed = 1.2;
         this.controls.panSpeed = 0.8;
 
-        this.controls.noZoom = false;
-        this.controls.noPan = false;
+        this.controls.minDistance = 150;
+        this.controls.maxDistance = 350;
+        this.controls.noPan = true;
 
-        this.controls.staticMoving = true;
+        this.controls.minPolarAngle = 0; // radians
+        this.controls.maxPolarAngle = Math.PI / 2 - 0.1; // radians
+
+        this.controls.staticMoving = false;
         this.controls.dynamicDampingFactor = 0.3;
 
         this.controls.keys = [ 65, 83, 68 ];

@@ -11,6 +11,7 @@ define(['three', 'assets'], function(THREE, assets) {
         this.particleGroup = new SPE.Group({
             texture: assets.textures.smoke_particle,
             maxAge: 2,
+            alphaTest: 1,
             blending: THREE.NormalBlending
         });
 
@@ -34,8 +35,8 @@ define(['three', 'assets'], function(THREE, assets) {
             sizeStart: 1,
             sizeEnd: 128,
 
-            opacityStart: 1,
-            opacityEnd: 0.0,
+            //opacityStart: 1,
+            //opacityEnd: 0.0,
 
             colorStart: new THREE.Color(0.4, 0.4, 0.4),
             colorEnd: new THREE.Color(0.8, 0.8, 0.8),

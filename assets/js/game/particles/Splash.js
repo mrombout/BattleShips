@@ -9,30 +9,27 @@ define(['three', 'assets'], function(THREE, assets) {
         // create particle group
         this.particleGroup = new SPE.Group({
             texture: assets.textures.water_particle,
-            maxAge: 1,
+            maxAge: 2,
             blending: THREE.NormalBlending
         });
 
         // create a single emitter
         this.particleEmitter = new SPE.Emitter({
-            type: 'disk',
+            position: new THREE.Vector3(0, 0, 0),
 
-            radius: 2,
-            speed: 5,
+            acceleration: new THREE.Vector3(0, -5, 0),
+            accelerationSpread: new THREE.Vector3(5, 0, 5),
 
-            acceleration: new THREE.Vector3(5, 5, 5),
+            velocity: new THREE.Vector3(0, 10, 0),
 
-            sizeStart: 15,
+            sizeStart: 5,
+            sizeEnd: 0,
 
-            colorStart: new THREE.Color('white'),
-            colorEnd: new THREE.Color('cyan'),
-
-            particleCount: 800
+            particleCount: 1500
         });
 
         // add the emitter to the group
         this.particleGroup.addEmitter(this.particleEmitter);
-        this.particleGroup.mesh.rotation.x = Math.PI / 2;
         this.particleGroup.mesh.position.y = 0.2;
 
         // add the particle group to the scene so it can be drawn
