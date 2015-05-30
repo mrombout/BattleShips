@@ -1,8 +1,9 @@
 "use strict";
 
-define(['three', 'model/Cell', 'model/Ship'], function(THREE, Cell, Ship) {
+define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell, Ship, Shot) {
 	var Board = function(board) {
         this.ships = [];
+        this.shots = [];
 
         if(board) {
             this._id = board._id;
@@ -12,6 +13,16 @@ define(['three', 'model/Cell', 'model/Ship'], function(THREE, Cell, Ship) {
                     if(board.ships.hasOwnProperty(key)) {
                         var ship = new Ship(board.ships[key]);
                         this.ships.push(ship);
+                    }
+                }
+            }
+
+            if(board.shots) {
+                for(var key in board.shots) {
+                    if(board.shots.hasOwnProperty(key)) {
+                        var shot = board.shots[key];
+                        var cell = new Shot(shot);
+                        this.shots.push(cell);
                     }
                 }
             }

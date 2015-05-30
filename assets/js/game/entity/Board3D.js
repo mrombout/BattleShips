@@ -1,4 +1,4 @@
-define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THREE, SPE, assets, Ship3D, shipFactory) {
+define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot'], function(THREE, SPE, assets, Ship3D, shipFactory, shotFactory) {
     var Board3D = function(model) {
         this.model = model;
         this.parent = new THREE.Object3D();
@@ -18,8 +18,22 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THR
             }
         }
 
+        this.shots = [];
+        if(model.shots) {
+            for(var key in model.shots) {
+                if(model.shots.hasOwnProperty(key)) {
+                    var shot = model.shots[key];
+                    var shot3d = shotFactory.create(shot);
+
+                    shot3d.getObject().position.copy(this.gridToWorld(shot.cell));
+
+                    this.parent.add(shot3d.getObject());
+                    this.shots.push(shot3d);
+                }
+            }
+        }
+
         this.createGrid();
-        this.createParticles();
     };
 
     Board3D.prototype.createGrid = function() {
@@ -65,59 +79,20 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THR
         this.parent.add(this.planeMesh);
     };
 
-    Board3D.prototype.createParticles = function() {
-        // create particle group
-        this.particleGroup = new SPE.Group({
-            texture: assets.textures.smoke_particle,
-            maxAge: 2,
-            blending: THREE.NormalBlending
-        });
-
-        // create a single emitter
-        var particleEmitter = new SPE.Emitter({
-            type: 'cube',
-
-            position: new THREE.Vector3(0, 0, 0),
-            positionSpread: new THREE.Vector3(2, 0, 2),
-
-            velocity: new THREE.Vector3(0, 55, 0),
-            velocitySpread: new THREE.Vector3(20, 0, 20),
-
-            acceleration: new THREE.Vector3(0, -5, 0),
-
-            angleStart: 0,
-            angleStartSpread: Math.PI,
-            angleEnd: 0,
-            angleEndSpread: Math.PI,
-
-            sizeStart: 1,
-            sizeEnd: 128,
-
-            opacityStart: 1,
-            opacityEnd: 0.5,
-
-            colorStart: new THREE.Color(0.4, 0.4, 0.4),
-            colorEnd: new THREE.Color(0.8, 0.8, 0.8),
-
-            particlesPerSecond: 200
-        });
-
-        // add the emitter to the group
-        this.particleGroup.addEmitter(particleEmitter);
-
-        // add the particle group to the scene so it can be drawn
-        this.parent.add(this.particleGroup.mesh);
-    };
-
-    Board3D.prototype.update = function(clock) {
+    Board3D.prototype.update = function(delta) {
         for(var key in this.ships) {
             if(this.ships.hasOwnProperty(key)) {
                 var ship = this.ships[key];
-                ship.update();
+                ship.update(delta);
             }
         }
 
-        this.particleGroup.tick(0.016);
+        for(var key in this.shots) {
+            if(this.shots.hasOwnProperty(key)) {
+                var shot = this.shots[key];
+                shot.update(delta);
+            }
+        }
     };
 
     Board3D.prototype.placeShip = function(ship) {

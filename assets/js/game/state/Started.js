@@ -114,16 +114,16 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         }
     };
 
-    Started.prototype.update = function(clock) {
+    Started.prototype.update = function(delta) {
         this.controls.update();
-        this.environment.update(clock);
+        this.environment.update(delta);
 
         if(this.torpedo) {
-            this.torpedo.update(clock);
+            this.torpedo.update(delta);
         }
 
-        //this.playerBoard.update(clock);
-        //this.enemyBoard.update(clock);
+        this.playerBoard.update(delta);
+        this.enemyBoard.update(delta);
     };
 
     Started.prototype.render = function(clock) {
