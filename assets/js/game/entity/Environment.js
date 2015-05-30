@@ -26,8 +26,8 @@ define(['three', 'entity/Skybox', 'entity/Water', 'entity/Skydome'], function(TH
         this.parent.add(hemiLight);
     };
 
-    Environment.prototype.update = function(clock) {
-        this.water.update(clock);
+    Environment.prototype.update = function(delta) {
+        this.water.update(delta);
     };
 
     Environment.prototype.render = function() {

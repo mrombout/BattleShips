@@ -25,8 +25,8 @@ define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!
         this.mirrorMesh.renderDepth = 1000;
     };
 
-    Water.prototype.update = function(clock) {
-        this.water.material.uniforms.time.value += clock.getDelta();
+    Water.prototype.update = function(delta) {
+        this.water.material.uniforms.time.value += delta;
     };
 
     Water.prototype.render = function() {

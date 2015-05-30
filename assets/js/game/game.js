@@ -27,8 +27,9 @@ define(['three', 'renderer', 'camera', 'stats'], function(THREE, renderer, camer
 
             if(game.state) {
                 stats.begin();
-                game.state.update(game.clock);
-                game.state.render(game.clock);
+                var delta = game.clock.getDelta();
+                game.state.update(delta);
+                game.state.render(delta);
                 stats.end();
             }
         }

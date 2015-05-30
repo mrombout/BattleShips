@@ -12,6 +12,7 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     Lobby.prototype.loadGames = function() {
         var me = this;
 
+        this.elapsedTime = 0;
         this.view.clearGameItems();
 
         lobbyService.getGames().done(function(data) {
@@ -129,25 +130,25 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         me.parent.add(mesh);
     };
 
-    Lobby.prototype.update = function(clock) {
+    Lobby.prototype.update = function(delta) {
         // update environment
-        this.environment.update(clock);
+        this.environment.update(delta);
 
         // update battleship
         if(this.battleship) {
-            clock.getElapsedTime();
-            this.battleship.rotation.x = Math.sin(clock.elapsedTime) / 64;
-            this.battleship.rotation.z = Math.sin(clock.elapsedTime) / 64;
-            this.battleship.rotation.y = -Math.cos(clock.elapsedTime) / 64;
+            this.elapsedTime += delta;
+            this.battleship.rotation.x = Math.sin(this.elapsedTime) / 64;
+            this.battleship.rotation.z = Math.sin(this.elapsedTime) / 64;
+            this.battleship.rotation.y = -Math.cos(this.elapsedTime) / 64;
         }
     };
 
-    Lobby.prototype.render = function(clock) {
+    Lobby.prototype.render = function(delta) {
         // render environment
         this.environment.render();
 
         // render
-        renderer.render(clock.getDelta());
+        renderer.render(delta);
     };
 
     return new Lobby();

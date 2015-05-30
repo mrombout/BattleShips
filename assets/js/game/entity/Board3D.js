@@ -161,7 +161,7 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THR
     };
 
     Board3D.prototype.worldToGrid = function(vec3) {
-        var convertorVec = new THREE.Vector2(vec3.x, vec3.z);
+        var convertorVec = new THREE.Vector2(vec3.x - this.parent.position.x, vec3.z - this.parent.position.z);
         convertorVec.divideScalar(20).floor().addScalar(5);
 
         return convertorVec;
@@ -173,7 +173,7 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship'], function(THR
 
     Board3D.prototype.getSupport = function() {
         return this.planeMesh;
-    }
+    };
 
     return Board3D;
 });

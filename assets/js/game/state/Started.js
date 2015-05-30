@@ -1,4 +1,4 @@
-define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board', 'view/started'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory, startedView) {
+define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board', 'view/started', 'service/started', 'entity/Torpedo'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory, startedView, startedService, Torpedo) {
     var Started = function(gameModel) {
         this.game = gameModel;
 
@@ -20,6 +20,7 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         this.registerEvents();
 
         startedView.show();
+        startedView.setGame(this.game);
 
         scene.add(this.parent);
     };
@@ -31,6 +32,9 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
     Started.prototype.registerEvents = function() {
         document.addEventListener('mousemove', function(e) {
             this.onDocumentMouseMove(e);
+        }.bind(this), false);
+        document.addEventListener('click', function(e) {
+            this.onDocumentMouseClick(e);
         }.bind(this), false);
     };
 
@@ -88,9 +92,42 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         }
     };
 
+    Started.prototype.onDocumentMouseClick = function(e) {
+        var intersects = this.raycaster.intersectObject(this.enemyBoard.getSupport());
+        if(intersects.length > 0) {
+            console.log('Shooting');
+
+            this.torpedo = new Torpedo(this.playerBoard.getObject(), this.cursor);
+            this.torpedo.shoot();
+            this.parent.add(this.torpedo.getObject());
+            /*
+            var shootPosition = this.enemyBoard.worldToGrid(this.cursor.position);
+            startedService.shoot(this.game.id, shootPosition.x, shootPosition.y).done(function(data) {
+                if(data === Shot.BOOM) {
+                    this.torpedo = new Torpedo(this.playerBoard, shootPosition.x, shootPosition.y);
+                    this.torpedo.shoot();
+
+                    this.parent.add(this.torpedo.getObject());
+                } else if(data === Shot.SPLASH) {
+                    this.torpedo = new Torpedo(this.playerBoard, shootPosition.x, shootPosition.y);
+                    this.torpedo.shoot();
+
+                    this.parent.add(this.torpedo.getObject());
+                } else {
+                    // fail
+                }
+            });
+            */
+        }
+    };
+
     Started.prototype.update = function(clock) {
         this.controls.update();
         this.environment.update(clock);
+
+        if(this.torpedo) {
+            this.torpedo.update(clock);
+        }
 
         //this.playerBoard.update(clock);
         //this.enemyBoard.update(clock);
