@@ -10,6 +10,7 @@ define(['entity/Ship3D', 'assets'], function(Ship3D, assets) {
         var shipLength = ship.length;
         var material = new THREE.MeshLambertMaterial({ color: 0xFF0000 });
         var geometry = new THREE.BoxGeometry(20 * shipLength, 20, 20);
+
         if(ship.name === 'Destroyer') {
             geometry = assets.geometries.destroyer;
             material = assets.materials.destroyer.default;
@@ -28,6 +29,10 @@ define(['entity/Ship3D', 'assets'], function(Ship3D, assets) {
         }
 
         var testMesh = new THREE.Mesh(geometry, material);
+
+        if(ship.hits.length === ship.length) {
+            testMesh.rotation.z = -Math.PI / 6;
+        }
 
         ship3d.addObject(testMesh);
 

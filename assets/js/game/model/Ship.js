@@ -5,6 +5,7 @@ define(['model/Cell'], function(Cell) {
         this._id = shipJson._id;
         this.name = shipJson.name;
         this.length = shipJson.length;
+        this.hits = shipJson.hits;
 
         if(shipJson.startCell) {
             this.startCell = new Cell(shipJson.startCell);
