@@ -3,8 +3,6 @@ define(['three'], function(THREE) {
         this.model = shot;
 
         this.parent = new THREE.Object3D();
-
-        this.createObject();
     };
 
     Shot3D.prototype.createObject = function() {

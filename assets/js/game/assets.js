@@ -45,6 +45,9 @@ define(['three'], function(THREE) {
                 },
                 smoke_particle: {
                     url: 'assets/texture/smokeparticle.png'
+                },
+                water_particle: {
+                    url: 'assets/texture/waterparticle.png'
                 }
             },
             geometries: {

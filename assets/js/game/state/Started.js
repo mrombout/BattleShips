@@ -98,6 +98,7 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         if(intersects.length > 0) {
             var shootPosition = this.enemyBoard.worldToGrid(this.cursor.position);
             startedService.shoot(this.game.id, shootPosition.x, shootPosition.y).done(function(data) {
+                console.log('shoot response', data, data == Shot.BOOM, Shot.BOOM, data == Shot.SPLASH, Shot.SPLASH, Shot);
                 if(data === Shot.BOOM || data === Shot.SPLASH) {
                     if(me.torpedo) {
                         me.parent.remove(me.torpedo.getObject());
