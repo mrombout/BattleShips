@@ -49,8 +49,12 @@ define(['three', 'particles/SmokeTrail'], function(THREE, SmokeTrail) {
     };
 
     Torpedo.prototype.explode = function() {
-        console.log('BOOM!');
+        console.log('I exploded!');
         this.isShot = false;
+
+        if(!this.isHit) {
+            this.parent.remove(this.smokeTrail.getObject());
+        }
     };
 
     Torpedo.prototype.getObject = function() {

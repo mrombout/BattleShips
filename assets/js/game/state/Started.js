@@ -22,6 +22,13 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         startedView.show();
         startedView.setGame(this.game);
 
+        console.log('this.game', this.game);
+        if(this.game.yourTurn) {
+            this.controls.target = this.enemyBoard.getObject().position;
+            camera.lookAt(this.enemyBoard.getObject().position);
+            camera.position.x = this.enemyBoard.getObject().position.x;
+        }
+
         scene.add(this.parent);
     };
 
@@ -102,13 +109,13 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         if(intersects.length > 0) {
             var shootPosition = this.enemyBoard.worldToGrid(this.cursor.position);
             startedService.shoot(this.game.id, shootPosition.x, shootPosition.y).done(function(data) {
-                console.log('shoot response', data, data == Shot.BOOM, Shot.BOOM, data == Shot.SPLASH, Shot.SPLASH, Shot);
                 if(data === Shot.BOOM || data === Shot.SPLASH) {
                     if(me.torpedo) {
                         me.parent.remove(me.torpedo.getObject());
                     }
 
                     me.torpedo = new Torpedo(me.playerBoard.getObject(), me.cursor);
+                    me.torpedo.isHit = (data === Shot.BOOM);
                     me.torpedo.shoot();
                     me.parent.add(me.torpedo.getObject());
                 } else {
