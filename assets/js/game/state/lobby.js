@@ -28,6 +28,31 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         });
     };
 
+    Lobby.prototype.clearGames = function() {
+        var me = this;
+        lobbyService.clearGames().done(function(data) {
+            me.loadGames();
+        });
+    };
+
+    Lobby.prototype.createAiGame = function() {
+        var me = this;
+        lobbyService.createAiGame().done(function(data) {
+            if(data.status === "setup") {
+                me.joinGame(data._id);
+            }
+        });
+    };
+
+    Lobby.prototype.createGame = function() {
+        var me = this;
+        lobbyService.createGame().done(function(data) {
+            if(data.status === "setup") {
+                me.joinGame(data._id);
+            }
+        });
+    };
+
     Lobby.prototype.joinGame = function(gameId) {
         var me = this;
         lobbyService.getGame(gameId).done(function(gameModel) {

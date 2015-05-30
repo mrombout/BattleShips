@@ -30,7 +30,7 @@ define(['entity/Ship3D', 'assets'], function(Ship3D, assets) {
 
         var testMesh = new THREE.Mesh(geometry, material);
 
-        if(ship.hits.length === ship.length) {
+        if(ship.hits && ship.hits.length === ship.length) {
             testMesh.rotation.z = -Math.PI / 6;
         }
 

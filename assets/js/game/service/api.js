@@ -10,6 +10,12 @@ define(function() {
                         return $.ajax({
                             url: api.baseUrl + 'users/me/games' + api.token
                         });
+                    },
+                    'delete': function() {
+                        return $.ajax({
+                            method: 'DELETE',
+                            url: api.baseUrl + 'users/me/games' + api.token
+                        });
                     }
                 }
             }
@@ -29,7 +35,7 @@ define(function() {
             ai: {
                 get: function() {
                     return $.ajax({
-                        url: api.baseUrl + 'games' + api.token
+                        url: api.baseUrl + 'games/AI' + api.token
                     });
                 }
             },

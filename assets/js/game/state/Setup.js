@@ -207,10 +207,10 @@ define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'serv
         });
     };
 
-    Setup.prototype.render = function(clock) {
+    Setup.prototype.render = function(delta) {
         this.environment.render();
 
-        renderer.render(clock.getDelta());
+        renderer.render(delta);
     };
 
     return Setup;
