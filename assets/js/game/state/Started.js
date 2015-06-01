@@ -32,6 +32,8 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
     };
 
     Started.prototype.setPlayersTurn = function() {
+        startedView.setGame(this.game);
+
         // focus controls on enemy board
         this.controls.target = this.enemyBoard.getObject().position.clone();
 
@@ -42,6 +44,8 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
 
     Started.prototype.setEnemyTurn = function() {
         var me = this;
+
+        startedView.setGame(this.game);
 
         // focus controls on player board
         this.controls.target = this.playerBoard.getObject().position.clone();
@@ -56,24 +60,20 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
                 // TODO Show Error dialog
             }).done(function(game) {
                 if(game.yourTurn) {
-                    console.log('old game', me.game, 'new game', game);
 
                     // update model
                     me.game.update(game);
 
                     // simulate last shot
                     var latestShots = me.playerBoard.getLatestShots();
-                    console.log('latest shots');
                     for(var key in latestShots) {
                         if(latestShots.hasOwnProperty(key)) {
                             var shot = latestShots[key];
-                            console.log('shot=', shot);
 
                             if(me.torpedo) {
                                 me.parent.remove(me.torpedo.getObject());
                             }
 
-                            console.log('enemy target', shot);
                             me.torpedo = new Torpedo(me.enemyBoard.getObject(), {position: new THREE.Vector3(shot.cell.x, 0, shot.cell.y)});
                             me.torpedo.isHit = (shot.isHit);
                             me.torpedo.shoot().done(function() {
