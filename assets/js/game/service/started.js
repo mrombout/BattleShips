@@ -1,4 +1,4 @@
-define(['three', 'service/api', 'model/Cell'], function(THREE, API, Cell) {
+define(['three', 'service/api', 'model/Cell', 'service/lobby'], function(THREE, API, Cell, lobbyService) {
     var Started = function() {
 
     };
@@ -13,6 +13,10 @@ define(['three', 'service/api', 'model/Cell'], function(THREE, API, Cell) {
         });
 
         return deferred;
+    };
+
+    Started.prototype.getGame = function(gameId) {
+        return lobbyService.getGame(gameId);
     };
 
     return new Started();

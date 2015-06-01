@@ -2,8 +2,10 @@
 
 define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell, Ship, Shot) {
 	var Board = function(board) {
-        this.ships = [];
-        this.shots = [];
+        this.ships = {};
+        this.shots = {};
+
+        this.latestShots = [];
 
         if(board) {
             this._id = board._id;
@@ -12,7 +14,7 @@ define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell
                 for(var key in board.ships) {
                     if(board.ships.hasOwnProperty(key)) {
                         var ship = new Ship(board.ships[key]);
-                        this.ships.push(ship);
+                        this.ships[ship._id] = ship;
                     }
                 }
             }
@@ -22,12 +24,41 @@ define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell
                     if(board.shots.hasOwnProperty(key)) {
                         var shot = board.shots[key];
                         var cell = new Shot(shot);
-                        this.shots.push(cell);
+                        this.shots[shot._id] = cell;
                     }
                 }
             }
         }
 	};
+
+    Board.prototype.update = function(data) {
+        this.latestShots = [];
+
+        // update ships
+        for(var key in data.ships) {
+            if(data.ships.hasOwnProperty(key)) {
+                var ship = data.ships[key];
+                if(this.ships.hasOwnProperty(ship._id)) {
+                    this.ships[ship._id].update(ship);
+                } else {
+                    this.ships.push(new Ship(ship));
+                }
+            }
+        }
+
+        // update shots
+        for(var key in data.shots) {
+            if(data.shots.hasOwnProperty(key)) {
+                var shot = data.shots[key];
+                if(this.shots.hasOwnProperty(shot._id)) {
+                    this.shots[shot._id].update(shot);
+                } else {
+                    this.shots[shot._id] = new Shot(shot);
+                    this.latestShots.push(this.shots[shot._id]);
+                }
+            }
+        }
+    };
 
 	Board.prototype.placeShip = function(x, y, ship) {
 		if(x instanceof THREE.Vector2) {
@@ -51,6 +82,10 @@ define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell
                     return true;
             }
         }
+    };
+
+    Board.prototype.getLatestShots = function() {
+        return this.latestShots;
     };
 
     return Board;

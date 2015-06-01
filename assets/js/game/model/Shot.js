@@ -6,6 +6,10 @@ define(['model/Cell'], function(Cell) {
         }
     };
 
+    Shot.prototype.update = function() {
+
+    };
+
     Shot.BOOM ="BOOM";
     Shot.SPLASH = "SPLASH";
     Shot.FAIL = "FAIL";

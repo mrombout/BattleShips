@@ -142,6 +142,10 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
         return convertorVec;
     };
 
+    Board3D.prototype.getLatestShots = function() {
+        return this.model.getLatestShots();
+    };
+
     Board3D.prototype.getObject = function() {
         return this.parent;
     };

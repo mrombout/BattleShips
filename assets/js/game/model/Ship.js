@@ -14,6 +14,10 @@ define(['model/Cell'], function(Cell) {
         this.__v = 0;
 	};
 
+    Ship.prototype.update = function(data) {
+        this.hits = data.hits;
+    };
+
     Ship.prototype.isOverlapping = function(x, y, length, isVertical) {
         if(!this.startCell || !this.length) {
             return false;

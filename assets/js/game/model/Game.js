@@ -21,5 +21,15 @@ define(['model/Board'], function(Board) {
         this.enemyGameboard = new Board(data.enemyGameboard);
     };
 
+    Game.prototype.update = function(data) {
+        this.status = data.status;
+        this.yourTurn = data.yourTurn;
+
+        this.youWon = data.youWon;
+
+        this.myGameboard.update(data.myGameboard);
+        this.enemyGameboard.update(data.enemyGameboard);
+    };
+
     return Game;
 });

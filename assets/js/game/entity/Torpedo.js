@@ -1,4 +1,4 @@
-define(['three', 'particles/SmokeTrail'], function(THREE, SmokeTrail) {
+define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, $) {
     var Torpedo = function(origin, target) {
         this.parent = new THREE.Object3D();
 
@@ -27,10 +27,16 @@ define(['three', 'particles/SmokeTrail'], function(THREE, SmokeTrail) {
     };
 
     Torpedo.prototype.shoot = function() {
+        this.deff = $.Deferred();
+
         this.direction = this.target.sub(this.origin);
         this.distance = this.target.distanceTo(this.origin);
         this.isShot = true;
         this.travel = 0;
+
+        console.log('shooting torpedo');
+
+        return this.deff;
     };
 
     Torpedo.prototype.update = function(delta) {
@@ -49,11 +55,13 @@ define(['three', 'particles/SmokeTrail'], function(THREE, SmokeTrail) {
     };
 
     Torpedo.prototype.explode = function() {
-        console.log('I exploded!');
         this.isShot = false;
 
         if(!this.isHit) {
             this.parent.remove(this.smokeTrail.getObject());
+            this.deff.reject();
+        } else {
+            this.deff.resolve();
         }
     };
 

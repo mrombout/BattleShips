@@ -22,14 +22,74 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         startedView.show();
         startedView.setGame(this.game);
 
-        console.log('this.game', this.game);
         if(this.game.yourTurn) {
-            this.controls.target = this.enemyBoard.getObject().position;
-            camera.lookAt(this.enemyBoard.getObject().position);
-            camera.position.x = this.enemyBoard.getObject().position.x;
+            this.setPlayersTurn();
+        } else {
+            this.setEnemyTurn();
         }
 
         scene.add(this.parent);
+    };
+
+    Started.prototype.setPlayersTurn = function() {
+        // focus controls on enemy board
+        this.controls.target = this.enemyBoard.getObject().position;
+
+        // change camera to enemy board
+        camera.lookAt(this.enemyBoard.getObject().position);
+        camera.position.x = this.enemyBoard.getObject().position.x;
+    };
+
+    Started.prototype.setEnemyTurn = function() {
+        var me = this;
+
+        // focus controls on player board
+        this.controls.target = this.playerBoard.getObject().position;
+
+        // change camera to player board
+        camera.lookAt(this.playerBoard.getObject().position);
+        camera.position.x = this.playerBoard.getObject().position.x;
+
+        // start polling gamestate
+        var pollGameState = function() {
+            startedService.getGame(me.game.id).fail(function() {
+                // TODO Show Error dialog
+            }).done(function(game) {
+                if(game.yourTurn) {
+                    console.log('old game', me.game, 'new game', game);
+
+                    // update model
+                    me.game.update(game);
+
+                    // simulate last shot
+                    var latestShots = me.playerBoard.getLatestShots();
+                    console.log('latest shots');
+                    for(var key in latestShots) {
+                        if(latestShots.hasOwnProperty(key)) {
+                            var shot = latestShots[key];
+                            console.log('shot=', shot);
+
+                            if(me.torpedo) {
+                                me.parent.remove(me.torpedo.getObject());
+                            }
+
+                            me.torpedo = new Torpedo(me.enemyBoard.getObject(), {position: new THREE.Vector3(shot.cell.x, 0, shot.cell.y)});
+                            me.torpedo.isHit = (shot.isHit);
+                            me.torpedo.shoot().done(function() {
+                                me.setPlayersTurn();
+                            }).fail(function() {
+                                me.setPlayersTurn();
+                            });
+                            me.parent.add(me.torpedo.getObject());
+                        }
+                    }
+                } else {
+                    setTimeout(function() {
+                        pollGameState();
+                    }, 3000);
+                }
+            });
+        }();
     };
 
     Started.prototype.hide = function() {
@@ -116,7 +176,13 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
 
                     me.torpedo = new Torpedo(me.playerBoard.getObject(), me.cursor);
                     me.torpedo.isHit = (data === Shot.BOOM);
-                    me.torpedo.shoot();
+                    me.torpedo.shoot().done(function() {
+                        me.setEnemyTurn();
+                    }).fail(function() {
+                        me.setEnemyTurn();
+                    }).then(function() {
+                        console.log('then');
+                    });
                     me.parent.add(me.torpedo.getObject());
                 } else {
                     // fail
