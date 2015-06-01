@@ -27,6 +27,8 @@ define(['model/Board'], function(Board) {
 
         this.youWon = data.youWon;
 
+        console.log('data is now', data);
+
         this.myGameboard.update(data.myGameboard);
         this.enemyGameboard.update(data.enemyGameboard);
     };

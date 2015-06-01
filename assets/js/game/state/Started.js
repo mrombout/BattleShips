@@ -33,7 +33,7 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
 
     Started.prototype.setPlayersTurn = function() {
         // focus controls on enemy board
-        this.controls.target = this.enemyBoard.getObject().position;
+        this.controls.target = this.enemyBoard.getObject().position.clone();
 
         // change camera to enemy board
         camera.lookAt(this.enemyBoard.getObject().position);
@@ -44,7 +44,7 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         var me = this;
 
         // focus controls on player board
-        this.controls.target = this.playerBoard.getObject().position;
+        this.controls.target = this.playerBoard.getObject().position.clone();
 
         // change camera to player board
         camera.lookAt(this.playerBoard.getObject().position);
@@ -73,6 +73,7 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
                                 me.parent.remove(me.torpedo.getObject());
                             }
 
+                            console.log('enemy target', shot);
                             me.torpedo = new Torpedo(me.enemyBoard.getObject(), {position: new THREE.Vector3(shot.cell.x, 0, shot.cell.y)});
                             me.torpedo.isHit = (shot.isHit);
                             me.torpedo.shoot().done(function() {
@@ -116,9 +117,9 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         this.controls.zoomSpeed = 1.2;
         this.controls.panSpeed = 0.8;
 
-        this.controls.minDistance = 150;
-        this.controls.maxDistance = 350;
-        this.controls.noPan = true;
+        //this.controls.minDistance = 150;
+        //this.controls.maxDistance = 350;
+        this.controls.noPan = false;
 
         this.controls.minPolarAngle = 0; // radians
         this.controls.maxPolarAngle = Math.PI / 2 - 0.1; // radians

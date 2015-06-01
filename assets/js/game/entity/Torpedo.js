@@ -16,6 +16,7 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
         var material = new THREE.MeshLambertMaterial();
         var geometry = new THREE.SphereGeometry(5, 32, 32);
         this.projectile = new THREE.Mesh(geometry, material);
+        this.projectile.position.copy(this.origin);
 
         this.parent.add(this.projectile);
     };
@@ -29,12 +30,10 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
     Torpedo.prototype.shoot = function() {
         this.deff = $.Deferred();
 
-        this.direction = this.target.sub(this.origin);
+        this.direction = this.target.clone().sub(this.origin);
         this.distance = this.target.distanceTo(this.origin);
         this.isShot = true;
         this.travel = 0;
-
-        console.log('shooting torpedo');
 
         return this.deff;
     };
