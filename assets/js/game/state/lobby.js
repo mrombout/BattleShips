@@ -49,6 +49,8 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         lobbyService.createGame().done(function(data) {
             if(data.status === "setup") {
                 me.joinGame(data._id);
+            } else {
+                me.loadGames();
             }
         });
     };
