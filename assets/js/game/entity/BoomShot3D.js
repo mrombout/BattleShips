@@ -1,4 +1,4 @@
-define(['entity/Shot3D', 'particles/SmokeTrail'], function(Shot3D, SmokeTrail) {
+define(['entity/Shot3D', 'particles/Smoke'], function(Shot3D, Smoke) {
     var BoomShot3D = function(shot) {
         Shot3D.call(this, shot);
 
@@ -8,7 +8,7 @@ define(['entity/Shot3D', 'particles/SmokeTrail'], function(Shot3D, SmokeTrail) {
     BoomShot3D.prototype.constructor = BoomShot3D;
 
     BoomShot3D.prototype.createEmitter = function() {
-        this.smokeTrail = new SmokeTrail();
+        this.smokeTrail = new Smoke();
         this.parent.add(this.smokeTrail.getObject());
     };
 
