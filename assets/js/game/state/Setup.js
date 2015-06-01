@@ -82,7 +82,8 @@ define([
     };
 
     Setup.prototype.createGrid = function() {
-        this.board = new Board3D(new Board());
+        this.board = boardFactory.create(this.game.myGameboard);
+        console.log(this.board);
         this.parent.add(this.board.getObject());
     };
 
