@@ -60,9 +60,11 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
                 // TODO Show Error dialog
             }).done(function(game) {
                 if(game.yourTurn) {
-
                     // update model
                     me.game.update(game);
+
+                    // update board
+                    me.playerBoard.sync();
 
                     // simulate last shot
                     var latestShots = me.playerBoard.getLatestShots();
@@ -76,10 +78,10 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
 
                             me.torpedo = new Torpedo(me.enemyBoard.getObject(), {position: new THREE.Vector3(shot.cell.x, 0, shot.cell.y)});
                             me.torpedo.isHit = (shot.isHit);
-                            me.torpedo.shoot().done(function() {
-                                me.setPlayersTurn();
-                            }).fail(function() {
-                                me.setPlayersTurn();
+                            me.torpedo.shoot().always(function() {
+                                setTimeout(function() {
+                                    me.setPlayersTurn();
+                                }, 1000);
                             });
                             me.parent.add(me.torpedo.getObject());
                         }
@@ -177,12 +179,10 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
 
                     me.torpedo = new Torpedo(me.playerBoard.getObject(), me.cursor);
                     me.torpedo.isHit = (data === Shot.BOOM);
-                    me.torpedo.shoot().done(function() {
-                        me.setEnemyTurn();
-                    }).fail(function() {
-                        me.setEnemyTurn();
-                    }).then(function() {
-                        console.log('then');
+                    me.torpedo.shoot().always(function() {
+                        setTimeout(function() {
+                            me.setEnemyTurn();
+                        }, 1000);
                     });
                     me.parent.add(me.torpedo.getObject());
                 } else {

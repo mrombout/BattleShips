@@ -146,6 +146,10 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
         return this.model.getLatestShots();
     };
 
+    Board3D.prototype.sync = function() {
+        console.log('synching board');
+    };
+
     Board3D.prototype.getObject = function() {
         return this.parent;
     };

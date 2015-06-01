@@ -34,8 +34,6 @@ define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell
     Board.prototype.update = function(data) {
         this.latestShots = [];
 
-        console.log('update data is', data);
-
         // update ships
         for(var key in data.ships) {
             if(data.ships.hasOwnProperty(key)) {
@@ -52,8 +50,6 @@ define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell
         for(var key in data.shots) {
             if(data.shots.hasOwnProperty(key)) {
                 var shot = data.shots[key];
-                console.log('shot is now', shot);
-                console.trace();
                 if(this.shots.hasOwnProperty(shot._id)) {
                     this.shots[shot._id].update(shot);
                 } else {
