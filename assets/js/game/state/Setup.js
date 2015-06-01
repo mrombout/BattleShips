@@ -1,6 +1,21 @@
 "use strict";
 
-define(['state/State', 'renderer', 'scene', 'camera', 'view/hud', 'three', 'service/setup', 'factory/ship', 'entity/Board3D', 'model/Board', 'entity/Environment', 'model/GameStatus', 'state/Started', 'game'], function(State, renderer, scene, camera, HUDView, THREE, setupService, ShipFactory, Board3D, Board, Environment, GameStatus, Started, game) {
+define([
+    'state/State',
+    'renderer',
+    'scene',
+    'camera',
+    'view/hud',
+    'three',
+    'service/setup',
+    'factory/ship',
+    'entity/Board3D',
+    'model/Board',
+    'entity/Environment',
+    'model/GameStatus',
+    'state/Started',
+    'game',
+    'factory/board'], function(State, renderer, scene, camera, HUDView, THREE, setupService, ShipFactory, Board3D, Board, Environment, GameStatus, Started, game, boardFactory) {
     var Setup = function(game) {
         State.call(this);
 
