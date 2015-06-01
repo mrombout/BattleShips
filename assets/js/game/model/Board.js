@@ -69,7 +69,7 @@ define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell
             var vec2 = x;
             var ship = y;
             ship.startCell = new Cell({ x: vec2.x, y: vec2.y });
-            this.ships.push(ship);
+            this.ships[ship._id] = ship;
             return;
         }
 
