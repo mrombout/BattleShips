@@ -3,7 +3,7 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
         this.parent = new THREE.Object3D();
 
         this.origin = new THREE.Vector3().copy(origin.position);
-        this.target = new THREE.Vector3().copy(target.position);
+        this.target = new THREE.Vector3().copy(target.position ? target.position : target);
 
         this.gravity = 9.81;
         this.velocity = 40;

@@ -172,14 +172,15 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
         var me = this;
         var intersects = this.raycaster.intersectObject(this.enemyBoard.getSupport());
         if(intersects.length > 0) {
-            var shootPosition = this.enemyBoard.worldToGrid(this.cursor.position);
-            startedService.shoot(this.game.id, shootPosition.x, shootPosition.y).done(function(data) {
+            var shootWorldPosition = this.cursor.position.clone();
+            var shootGridPosition = this.enemyBoard.worldToGrid(shootWorldPosition);
+            startedService.shoot(this.game.id, shootGridPosition.x, shootGridPosition.y).done(function(data) {
                 if(data === Shot.BOOM || data === Shot.SPLASH) {
                     if(me.torpedo) {
                         me.parent.remove(me.torpedo.getObject());
                     }
 
-                    me.torpedo = new Torpedo(me.playerBoard.getObject(), me.cursor);
+                    me.torpedo = new Torpedo(me.playerBoard.getObject(), shootWorldPosition);
                     me.torpedo.isHit = (data === Shot.BOOM);
                     me.torpedo.shoot().always(function() {
                         setTimeout(function() {
