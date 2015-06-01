@@ -1,6 +1,6 @@
 "use strict";
 
-define(['service/api', 'jquery', 'model/Ship'], function(API, $, Ship) {
+define(['service/api', 'jquery', 'model/Ship', 'service/lobby'], function(API, $, Ship, lobbyService) {
     var SetupService = function() {
 
     };
@@ -46,7 +46,12 @@ define(['service/api', 'jquery', 'model/Ship'], function(API, $, Ship) {
         });
 
         return deferred;
-    }
+    };
+
+    SetupService.prototype.getGame = function(gameId) {
+        return lobbyService.getGame(gameId);
+    };
+
 
     return new SetupService();
 });

@@ -210,16 +210,23 @@ define([
     };
 
     Setup.prototype.onReady = function() {
-        //game.setState(new Started());
-        setupService.saveBoard(this.game.id, this.board.model).done(function(data) {
-            if(data.status === GameStatus.SETUP) {
-                console.log('We\'ll remain in setup, but keep polling for gamestate changes');
-            } else if(data.status === GameStatus.STARTED) {
-                console.log('Game has started! We move to started state!');
-            }
-        }).fail(function(data) {
-            console.error(data);
-        });
+        var me = this;
+
+        this.hudView.setWaitingForEnemy(true);
+
+        var pollGameState = function() {
+            setTimeout(function() {
+                setupService.saveBoard(me.game.id, me.board.model).done(function(data) {
+                    if(data.status === GameStatus.STARTED) {
+                        setupService.getGame(me.game.id).done(function(gameModel) {
+                            game.setState(new Started(gameModel));
+                        });
+                    }
+                }).fail(function(data) {
+                    console.error(data);
+                });
+            }, 3000);
+        }();
     };
 
     Setup.prototype.render = function(delta) {

@@ -14,12 +14,15 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
     HUD.prototype.selectElements = function() {
         this.$domElement = $(viewHtml);
         this.$domElement.hide();
-        $container.append(this.$domElement);
+        $container.prepend(this.$domElement);
 
         this.$ul = this.$domElement.find('ul');
 
         this.$button = this.$domElement.find('button');
         this.$button.prop('disabled', true);
+
+        this.$waiting = this.$domElement.find('#waiting');
+        this.$waiting.hide();
     };
 
     HUD.prototype.registerEvents = function() {
@@ -92,6 +95,19 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
     HUD.prototype.show = function() {
         this.presenter.loadShips();
         this.$domElement.show();
+    };
+
+    HUD.prototype.hide = function() {
+        this.$waiting.hide();
+        this.$domElement.hide();
+    };
+
+    HUD.prototype.setWaitingForEnemy = function(waiting) {
+        if(waiting) {
+            this.$waiting.show();
+        } else {
+            this.$waiting.hide();
+        }
     };
 
     return HUD;
