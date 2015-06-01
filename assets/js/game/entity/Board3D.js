@@ -18,7 +18,7 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
             }
         }
 
-        this.shots = [];
+        this.shots = {};
         if(model.shots) {
             for(var key in model.shots) {
                 if(model.shots.hasOwnProperty(key)) {
@@ -27,8 +27,9 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
 
                     shot3d.getObject().position.copy(this.gridToWorld(shot.cell));
 
+                    console.log(shot);
                     this.parent.add(shot3d.getObject());
-                    this.shots.push(shot3d);
+                    this.shots[shot._id] = shot3d;
                 }
             }
         }
@@ -43,7 +44,7 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
         var geometry = new THREE.Geometry();
         var material = new THREE.LineBasicMaterial({color: 0xcccccc,opacity: 0.2});
 
-        for ( var i = -size; i <= size; i += step ) {
+        for (var i = -size; i <= size; i += step ) {
             geometry.vertices.push(new THREE.Vector3(-size, 0, i));
             geometry.vertices.push(new THREE.Vector3(size, 0, i));
 
@@ -147,7 +148,20 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
     };
 
     Board3D.prototype.sync = function() {
-        console.log('synching board');
+        for(var key in this.model.shots) {
+            if(this.model.shots.hasOwnProperty(key)) {
+                var shot = this.model.shots[key];
+
+                if(!this.shots.hasOwnProperty(shot._id)) {
+                    var shot3d = shotFactory.create(shot);
+
+                    shot3d.getObject().position.copy(this.gridToWorld(shot.cell));
+
+                    this.parent.add(shot3d.getObject());
+                    this.shots[shot._id] = shot3d;
+                }
+            }
+        }
     };
 
     Board3D.prototype.getObject = function() {

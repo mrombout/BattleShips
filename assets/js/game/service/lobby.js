@@ -64,6 +64,11 @@ define(['service/api', 'jquery', 'model/Game'], function(API, $, Game) {
         return deferred;
     };
 
+    /**
+     * Creates a new game and starts a match lookup.
+     *
+     * @return Game
+     */
     LobbyService.prototype.createGame = function() {
         var deferred = $.Deferred();
 
@@ -74,16 +79,6 @@ define(['service/api', 'jquery', 'model/Game'], function(API, $, Game) {
         });
 
         return deferred;
-    };
-
-    /**
-     * Creates a new game and starts a match lookup.
-     *
-     * @return Game
-     */
-    LobbyService.prototype.createGame = function(ai) {
-        // TODO make a request to GET /games
-        // TODO make a request to GET /games/AI
     };
 
     return new LobbyService();

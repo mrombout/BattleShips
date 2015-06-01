@@ -64,7 +64,7 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
                     me.game.update(game);
 
                     // update board
-                    me.playerBoard.sync();
+                    me.enemyBoard.sync();
 
                     // simulate last shot
                     var latestShots = me.playerBoard.getLatestShots();
@@ -76,10 +76,12 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
                                 me.parent.remove(me.torpedo.getObject());
                             }
 
-                            me.torpedo = new Torpedo(me.enemyBoard.getObject(), {position: new THREE.Vector3(shot.cell.x, 0, shot.cell.y)});
+                            var worldTarget = me.playerBoard.gridToWorld(shot.cell);
+                            me.torpedo = new Torpedo(me.enemyBoard.getObject(), { position: worldTarget });
                             me.torpedo.isHit = (shot.isHit);
                             me.torpedo.shoot().always(function() {
                                 setTimeout(function() {
+                                    me.playerBoard.sync();
                                     me.setPlayersTurn();
                                 }, 1000);
                             });
