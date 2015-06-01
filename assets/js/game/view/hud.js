@@ -27,7 +27,9 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
 
     HUD.prototype.registerEvents = function() {
         this.$domElement.on('mousedown', 'li', function(e) { this.onMenuItemMouseDown(e); }.bind(this));
+        this.$domElement.on('touchstart', 'li', function(e) { console.log(e); this.onMenuItemMouseDown(e); }.bind(this));
         $container.on('mouseup', function(e) { this.onDocumentMouseUp(e); }.bind(this));
+        $container.on('touchend', function(e) { this.onDocumentMouseUp(e); }.bind(this));
         this.$button.on('click', function(e) { this.onReadyClick(e); }.bind(this));
     };
 
@@ -50,7 +52,7 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
     HUD.prototype.onMenuItemMouseDown = function(e) {
         var $this = $(e.currentTarget);
 
-        if(e.button === 0) {
+        if(e.button === 0 || e.type === "touchstart") {
             this.presenter.selectShip($this.data('ship'));
             this.$selectedShip = $this;
 
@@ -67,7 +69,7 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
     HUD.prototype.onDocumentMouseUp = function(e) {
         var $this = $(e.target);
 
-        if(e.button === 0 && this.$selectedShip) {
+        if((e.button === 0 || e.type === 'touchend') && this.$selectedShip) {
             if(this.$selectedShip) {
                 this.$selectedShip.stop();
                 if(this.presenter.placeShip()) {

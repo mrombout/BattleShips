@@ -141,6 +141,7 @@ define([
             this.onDocumentMouseMove(e);
         }.bind(this);
         document.addEventListener('mousemove', this.onDocumentMouseMoveBind, false);
+        document.addEventListener('touchmove', this.onDocumentMouseMoveBind, false);
     };
 
     /**
@@ -195,7 +196,11 @@ define([
     Setup.prototype.onDocumentMouseMove = function(e) {
         e.preventDefault();
 
-        this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+        if(e.type === 'touchmove') {
+            this.mouse.set((e.touches[0].clientX / window.innerWidth) * 2 - 1, -(e.touches[0].clientY / window.innerHeight) * 2 + 1);
+        } else if(e.type === 'mousemove') {
+            this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+        }
         this.raycaster.setFromCamera(this.mouse, camera);
 
         this.selectedShip.setInvalid(!this.board.isWithinBounds(this.selectedShip) || this.board.isOverlapping(this.selectedShip));
