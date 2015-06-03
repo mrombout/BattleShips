@@ -21,6 +21,7 @@ define(['jquery', 'text!/BattleShipsters/assets/html/started.html', 'container']
     Started.prototype.setGame = function(game) {
         this.game = game;
 
+        console.log('this is the game', game);
         this.$turn.html(game.yourTurn ? "Your turn!" : "Enemy's Attacking!");
     };
 

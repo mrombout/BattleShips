@@ -36,6 +36,7 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
     };
 
     Started.prototype.setPlayersTurn = function() {
+	this.game.yourTurn = true;
         startedView.setGame(this.game);
 
         // focus controls on enemy board
@@ -49,6 +50,7 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
     Started.prototype.setEnemyTurn = function() {
         var me = this;
 
+	this.game.yourTurn = false;
         startedView.setGame(this.game);
 
         // focus controls on player board
@@ -64,6 +66,8 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
                 // TODO Show Error dialog
             }).done(function(game) {
                 if(game.yourTurn) {
+                    console.log('we gettin game', game);
+
                     // update model
                     me.game.update(game);
 
