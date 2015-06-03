@@ -10,7 +10,7 @@ define(['three', 'assets'], function(THREE, assets) {
         // create particle group
         this.particleGroup = new SPE.Group({
             texture: assets.textures.smoke_particle,
-            maxAge: 2,
+            maxAge: 6,
             alphaTest: 1,
             blending: THREE.NormalBlending
         });
@@ -32,8 +32,8 @@ define(['three', 'assets'], function(THREE, assets) {
             angleEnd: 0,
             angleEndSpread: Math.PI,
 
-            sizeStart: 1,
-            sizeEnd: 128,
+            sizeStart: 32,
+            sizeEnd: 256,
 
             //opacityStart: 1,
             //opacityEnd: 0.0,
@@ -41,7 +41,7 @@ define(['three', 'assets'], function(THREE, assets) {
             colorStart: new THREE.Color(0.4, 0.4, 0.4),
             colorEnd: new THREE.Color(0.8, 0.8, 0.8),
 
-            particlesPerSecond: 200
+            particlesPerSecond: 1800
         });
 
         // add the emitter to the group
@@ -55,8 +55,8 @@ define(['three', 'assets'], function(THREE, assets) {
         this.particleEmitter.position = obj.position;
     };
 
-    SmokeTrail.prototype.update = function() {
-        this.particleGroup.tick(0.016);
+    SmokeTrail.prototype.update = function(delta) {
+        this.particleGroup.tick(delta);
     };
 
     SmokeTrail.prototype.getObject = function() {

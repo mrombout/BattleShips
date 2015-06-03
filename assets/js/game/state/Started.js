@@ -28,6 +28,10 @@ define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environme
             this.setEnemyTurn();
         }
 
+        camera.position.set(0, 200, 300);
+        camera.lookAt(scene.position);
+        camera.updateProjectionMatrix();
+
         scene.add(this.parent);
     };
 

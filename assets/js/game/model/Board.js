@@ -51,8 +51,10 @@ define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell
             if(data.shots.hasOwnProperty(key)) {
                 var shot = data.shots[key];
                 if(this.shots.hasOwnProperty(shot._id)) {
+                    console.log('just updating shots');
                     this.shots[shot._id].update(shot);
                 } else {
+                    console.log('actually creating shots');
                     this.shots[shot._id] = shot;
                     this.latestShots.push(shot);
                 }

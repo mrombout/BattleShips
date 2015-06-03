@@ -39,7 +39,7 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
     };
 
     Torpedo.prototype.update = function(delta) {
-        this.smokeTrail.update();
+        this.smokeTrail.update(delta);
 
         if(this.isShot) {
             var curDirection = this.direction.clone();
