@@ -1,4 +1,36 @@
-define(['state/State', 'three', 'renderer', 'scene', 'camera', 'entity/Environment', 'entity/Board3D', 'model/Board', 'service/api', 'spe', 'assets', 'factory/board', 'view/started', 'service/started', 'entity/Torpedo', 'model/Shot'], function(State, THREE, renderer, scene, camera, Environment, Board3D, Board, API, SPE, assets, boardFactory, startedView, startedService, Torpedo, Shot) {
+define([
+    'state/State',
+    'three',
+    'renderer',
+    'scene',
+    'camera',
+    'entity/Environment',
+    'entity/Board3D',
+    'model/Board',
+    'service/api',
+    'spe',
+    'assets',
+    'factory/board',
+    'view/started',
+    'service/started',
+    'entity/Torpedo',
+    'model/Shot'], function(
+        State,
+        THREE,
+        renderer,
+        scene,
+        camera,
+        Environment,
+        Board3D,
+        Board,
+        API,
+        SPE,
+        assets,
+        boardFactory,
+        startedView,
+        startedService,
+        Torpedo,
+        Shot) {
     var Started = function(gameModel) {
         this.game = gameModel;
 
