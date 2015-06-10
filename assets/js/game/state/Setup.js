@@ -223,6 +223,7 @@ define([
             setTimeout(function() {
                 setupService.saveBoard(me.game.id, me.board.model).done(function(data) {
                     if(data.status === GameStatus.STARTED) {
+                        this.hudView.setWaitingForEnemy(false);
                         setupService.getGame(me.game.id).done(function(gameModel) {
                             game.setState(new Started(gameModel));
                         });
