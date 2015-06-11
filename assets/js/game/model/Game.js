@@ -33,5 +33,14 @@ define(['model/Board'], function(Board) {
         this.enemyGameboard.update(data.enemyGameboard);
     };
 
+    Game.prototype.getPlayerScore = function() {
+        console.log(this.enemyGameboard.getHits());
+        return this.enemyGameboard.getHits().length;
+    };
+
+    Game.prototype.getEnemyScore = function() {
+        return this.myGameboard.getHits().length;
+    };
+
     return Game;
 });

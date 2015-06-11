@@ -1,6 +1,6 @@
 "use strict";
 
-define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell, Ship, Shot) {
+define(['three', 'jquery', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, $, Cell, Ship, Shot) {
 	var Board = function(board) {
         this.ships = {};
         this.shots = {};
@@ -88,6 +88,20 @@ define(['three', 'model/Cell', 'model/Ship', 'model/Shot'], function(THREE, Cell
 
     Board.prototype.getLatestShots = function() {
         return this.latestShots;
+    };
+
+    Board.prototype.getHits = function() {
+        var hits = [];
+        for(var key in this.shots) {
+            if(this.shots.hasOwnProperty(key)) {
+                var shot = this.shots[key];
+                if(shot.isHit) {
+                    hits.push(shot);
+                }
+            }
+        }
+
+        return hits;
     };
 
     return Board;

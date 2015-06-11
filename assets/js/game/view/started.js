@@ -23,6 +23,8 @@ define(['jquery', 'text!/BattleShipsters/assets/html/started.html', 'container']
 
         console.log('this is the game', game);
         this.$turn.html(game.yourTurn ? "Your turn!" : "Enemy's Attacking!");
+        this.$playerScore.html(game.getPlayerScore());
+        this.$enemyScore.html(game.getEnemyScore());
     };
 
     return new Started();
