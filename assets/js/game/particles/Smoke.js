@@ -48,6 +48,7 @@ define(['three', 'assets'], function(THREE, assets) {
         this.particleGroup.addEmitter(this.particleEmitter);
 
         // add the particle group to the scene so it can be drawn
+        this.particleGroup.mesh.frustumCulled = false;
         this.parent.add(this.particleGroup.mesh);
     };
 
