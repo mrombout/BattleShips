@@ -90,7 +90,10 @@ define(['three'], function(THREE) {
                     url: 'assets/audio/sfx/boom.wav'
                 },
                 sfx_splash: {
-                    url: 'assets/audio/sfx/splash.mp3'
+                    url: 'assets/audio/sfx/splash.wav'
+                },
+                sfx_shoot: {
+                    url: 'assets/audio/sfx/shoot.wav'
                 }
             }
         },

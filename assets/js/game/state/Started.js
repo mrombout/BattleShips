@@ -15,6 +15,7 @@ define([
     'service/started',
     'entity/Torpedo',
     'model/Shot',
+    'service/audio',
     'tween'], function(
         State,
         THREE,
@@ -32,6 +33,7 @@ define([
         startedService,
         Torpedo,
         Shot,
+        audioService,
         TWEEN) {
     var Started = function(gameModel) {
         this.game = gameModel;
@@ -147,6 +149,8 @@ define([
                     me.enemyBoard.sync();
 
                     // simulate last shot
+                    audioService.play(assets.audio.sfx_shoot);
+
                     var latestShots = me.playerBoard.getLatestShots();
                     for(var key in latestShots) {
                         if(latestShots.hasOwnProperty(key)) {
@@ -159,7 +163,11 @@ define([
                             var worldTarget = me.playerBoard.gridToWorld(shot.cell);
                             me.torpedo = new Torpedo(me.enemyBoard.getObject(), { position: worldTarget });
                             me.torpedo.isHit = (shot.isHit);
-                            me.torpedo.shoot().always(function() {
+                            me.torpedo.shoot().done(function() {
+                                audioService.play(assets.audio.sfx_boom);
+                            }).fail(function() {
+                                audioService.play(assets.audio.sfx_splash);
+                            }).always(function() {
                                 setTimeout(function() {
                                     me.playerBoard.sync();
                                     me.setPlayersTurn();
@@ -260,9 +268,14 @@ define([
                         me.parent.remove(me.torpedo.getObject());
                     }
 
+                    audioService.play(assets.audio.sfx_shoot);
                     me.torpedo = new Torpedo(me.playerBoard.getObject(), shootWorldPosition);
                     me.torpedo.isHit = (data === Shot.BOOM);
-                    me.torpedo.shoot().always(function() {
+                    me.torpedo.shoot().done(function() {
+                        audioService.play(assets.audio.sfx_boom);
+                    }).fail(function() {
+                        audioService.play(assets.audio.sfx_splash);
+                    }).always(function() {
                         setTimeout(function() {
                             me.setEnemyTurn();
                         }, 1000);
