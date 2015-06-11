@@ -12,6 +12,7 @@ define(['model/Cell'], function(Cell) {
     Shot.BOOM ="BOOM";
     Shot.SPLASH = "SPLASH";
     Shot.FAIL = "FAIL";
+    Shot.WINNER = "WINNER";
 
     return Shot;
 });

@@ -27,7 +27,6 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
 
                     shot3d.getObject().position.copy(this.gridToWorld(shot.cell));
 
-                    console.log(shot);
                     this.parent.add(shot3d.getObject());
                     this.shots[shot._id] = shot3d;
                 }

@@ -1,6 +1,6 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!/BattleShipsters/assets/html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started', 'service/audio'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started, audioService) {
+define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!/BattleShipsters/assets/html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started', 'service/audio', 'state/Done'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started, audioService, Done) {
     var Lobby = function() {
         State.call(this);
 
@@ -62,6 +62,8 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
                 game.setState(new Setup(gameModel));
             } else if(gameModel.status === GameStatus.STARTED) {
                 game.setState(new Started(gameModel));
+            } else if(gameModel.status === GameStatus.DONE) {
+                game.setState(new Done(gameModel));
             }
         });
     };

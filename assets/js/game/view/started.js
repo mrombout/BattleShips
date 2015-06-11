@@ -15,7 +15,7 @@ define(['jquery', 'text!/BattleShipsters/assets/html/started.html', 'container']
     };
 
     Started.prototype.hide = function() {
-
+        this.$domElement.hide();
     };
 
     Started.prototype.setGame = function(game) {

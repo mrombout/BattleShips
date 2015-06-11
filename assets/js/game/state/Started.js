@@ -16,6 +16,9 @@ define([
     'entity/Torpedo',
     'model/Shot',
     'service/audio',
+    'model/GameStatus',
+    'game',
+    'state/Done',
     'tween'], function(
         State,
         THREE,
@@ -34,6 +37,9 @@ define([
         Torpedo,
         Shot,
         audioService,
+        GameStatus,
+        game,
+        Done,
         TWEEN) {
     var Started = function(gameModel) {
         this.game = gameModel;
@@ -79,9 +85,6 @@ define([
         this.game.yourTurn = true;
         startedView.setGame(this.game);
 
-        // focus controls on enemy board
-        //this.controls.target = this.enemyBoard.getObject().position.clone();
-
         // change camera to enemy board
         this.controls.enabled = false;
         camera.target = me.playerBoard.getObject().position.clone();
@@ -90,11 +93,7 @@ define([
             y: 200,
             z: 300
         }, 2000).easing(TWEEN.Easing.Back.InOut).onUpdate(function() {
-            //console.log('update position');
-            //camera.lookAt(camera.target);
         }).onComplete(function() {
-            //console.log('looking at enemy');
-            //camera.lookAt(me.enemyBoard.getObject().position);
             me.controls.enabled = true;
         }).start();
 
@@ -138,12 +137,17 @@ define([
         var pollGameState = function() {
             startedService.getGame(me.game.id).fail(function() {
                 // TODO Show Error dialog
-            }).done(function(game) {
-                if(game.yourTurn) {
-                    console.log('we gettin game', game);
-
+            }).done(function(gameData) {
+                if(gameData.status === GameStatus.DONE) {
                     // update model
-                    me.game.update(game);
+                    me.game.update(gameData);
+
+                    game.setState(new Done(me.game));
+                }
+
+                if(gameData.yourTurn) {
+                    // update model
+                    me.game.update(gameData);
 
                     // update board
                     me.enemyBoard.sync();
@@ -186,7 +190,8 @@ define([
     };
 
     Started.prototype.hide = function() {
-
+        scene.remove(this.parent);
+        startedView.hide();
     };
 
     Started.prototype.registerEvents = function() {
@@ -263,7 +268,7 @@ define([
             var shootWorldPosition = this.cursor.position.clone();
             var shootGridPosition = this.enemyBoard.worldToGrid(shootWorldPosition);
             startedService.shoot(this.game.id, shootGridPosition.x, shootGridPosition.y).done(function(data) {
-                if(data === Shot.BOOM || data === Shot.SPLASH) {
+                if(data === Shot.BOOM || data === Shot.SPLASH || data === Shot.WINNER) {
                     if(me.torpedo) {
                         me.parent.remove(me.torpedo.getObject());
                     }
@@ -281,9 +286,6 @@ define([
                         }, 1000);
                     });
                     me.parent.add(me.torpedo.getObject());
-                } else {
-                    // fail
-                    console.error('Its not your turn! Silly!');
                 }
             });
         }
