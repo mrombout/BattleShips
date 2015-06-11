@@ -1,7 +1,6 @@
-define(['three'], function(THREE) {
+define(['three', 'audioContext'], function(THREE, audioContext) {
     var AudioLoader = function(manager) {
         this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
-        this.audioContext = new ( window.AudioContext || window.webkitAudioContext )();
     };
 
     AudioLoader.prototype.load = function(url, onLoad, onProgress, onError) {
@@ -12,9 +11,9 @@ define(['three'], function(THREE) {
         loader.setResponseType('arraybuffer');
         loader.load(url, function(data) {
             scope.manager.itemStart(url);
-            scope.audioContext.decodeAudioData(data, function(buffer) {
+            audioContext.decodeAudioData(data, function(buffer) {
                 var audio = new THREE.Audio({
-                    context: scope.audioContext
+                    context: audioContext
                 });
                 audio.source.buffer = buffer;
 
@@ -23,7 +22,7 @@ define(['three'], function(THREE) {
             } );
 
         }, onProgress, onError);
-    }
+    };
 
     return AudioLoader;
 });

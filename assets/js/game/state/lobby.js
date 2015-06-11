@@ -1,6 +1,6 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!/BattleShipsters/assets/html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started) {
+define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!/BattleShipsters/assets/html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started', 'service/audio'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started, audioService) {
     var Lobby = function() {
         State.call(this);
 
@@ -69,6 +69,9 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     Lobby.prototype.show = function() {
         console.info('LOBBY', 'Show');
 
+        audioService.play(assets.audio.bgm);
+        audioService.play(assets.audio.ocean);
+
         this.parent = new THREE.Object3D();
         this.parent.name = "lobby";
         scene.add(this.parent);
@@ -88,6 +91,8 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     Lobby.prototype.hide = function() {
         scene.remove(scene.getObjectByName("lobby"));
         this.view.hide();
+
+        audioService.stop(assets.audio.bgm);
     };
 
     Lobby.prototype.createEnvironment = function() {
