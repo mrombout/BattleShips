@@ -31,7 +31,9 @@ var require = {
         "detector": { exports: "Detector" },
         "Stats": { exports: "Stats" },
 
-        "spe": { exports: "SPE" }
+        "spe": { exports: "SPE" },
+
+        "tween": { exports: "TWEEN" }
     },
     paths: {
         "jquery": ["https://code.jquery.com/jquery-2.1.4", "../../../bower_components/dist/jquery"],
@@ -71,6 +73,8 @@ var require = {
 
         'datgui': "../../../vendor/dat.gui/dat.gui",
 
-        "spe": "../../../vendor/ShaderParticles/ShaderParticles"
+        "spe": "../../../vendor/ShaderParticles/ShaderParticles",
+
+        "tween": "../../../bower_components/tween.js/src/Tween"
     }
 };

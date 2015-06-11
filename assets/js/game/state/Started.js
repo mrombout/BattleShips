@@ -14,7 +14,8 @@ define([
     'view/started',
     'service/started',
     'entity/Torpedo',
-    'model/Shot'], function(
+    'model/Shot',
+    'tween'], function(
         State,
         THREE,
         renderer,
@@ -30,11 +31,14 @@ define([
         startedView,
         startedService,
         Torpedo,
-        Shot) {
+        Shot,
+        TWEEN) {
     var Started = function(gameModel) {
         this.game = gameModel;
 
         this.parent = new THREE.Object3D();
+
+        this.timeRunning = 0;
 
         this.mouse = new THREE.Vector2();
         this.raycaster = new THREE.Raycaster();
@@ -68,29 +72,65 @@ define([
     };
 
     Started.prototype.setPlayersTurn = function() {
-	this.game.yourTurn = true;
+        var me = this;
+
+        this.game.yourTurn = true;
         startedView.setGame(this.game);
 
         // focus controls on enemy board
-        this.controls.target = this.enemyBoard.getObject().position.clone();
+        //this.controls.target = this.enemyBoard.getObject().position.clone();
 
         // change camera to enemy board
-        camera.lookAt(this.enemyBoard.getObject().position);
-        camera.position.x = this.enemyBoard.getObject().position.x;
+        this.controls.enabled = false;
+        camera.target = me.playerBoard.getObject().position.clone();
+        var tweenCameraPosition = new TWEEN.Tween(camera.position).to({
+            x: me.enemyBoard.getObject().position.x,
+            y: 200,
+            z: 300
+        }, 2000).easing(TWEEN.Easing.Back.InOut).onUpdate(function() {
+            //console.log('update position');
+            //camera.lookAt(camera.target);
+        }).onComplete(function() {
+            //console.log('looking at enemy');
+            //camera.lookAt(me.enemyBoard.getObject().position);
+            me.controls.enabled = true;
+        }).start();
+
+        var tweenCameraTarget = new TWEEN.Tween(camera.target).to({
+            x: me.enemyBoard.getObject().position.x
+        }, 1000).easing(TWEEN.Easing.Quadratic.In).onUpdate(function() {
+            camera.lookAt(camera.target);
+        }).onComplete(function() {
+            me.controls.target = me.enemyBoard.getObject().position.clone();
+        }).start();
     };
 
     Started.prototype.setEnemyTurn = function() {
         var me = this;
 
-	this.game.yourTurn = false;
+        this.game.yourTurn = false;
         startedView.setGame(this.game);
 
-        // focus controls on player board
-        this.controls.target = this.playerBoard.getObject().position.clone();
-
         // change camera to player board
-        camera.lookAt(this.playerBoard.getObject().position);
-        camera.position.x = this.playerBoard.getObject().position.x;
+        camera.target = this.enemyBoard.getObject().position.clone();
+        this.controls.enabled = false;
+        var tweenCameraPosition = new TWEEN.Tween(camera.position).to({
+            x: this.playerBoard.getObject().position.x,
+            y: 200,
+            z: 300
+        }, 2000).easing(TWEEN.Easing.Back.InOut).onUpdate(function() {
+
+        }).onComplete(function() {
+            me.controls.enabled = true;
+        }).start();
+
+        var tweenCameraTarget = new TWEEN.Tween(camera.target).to({
+            x: me.playerBoard.getObject().position.x
+        }, 1000).easing(TWEEN.Easing.Quadratic.In).onUpdate(function() {
+            camera.lookAt(camera.target);
+        }).onComplete(function() {
+            me.controls.target = me.playerBoard.getObject().position.clone();
+        }).start();
 
         // start polling gamestate
         var pollGameState = function() {
@@ -243,6 +283,9 @@ define([
         if(this.torpedo) {
             this.torpedo.update(delta);
         }
+
+        this.timeRunning += delta;
+        TWEEN.update();
 
         this.playerBoard.update(delta);
         this.enemyBoard.update(delta);
