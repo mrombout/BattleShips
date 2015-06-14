@@ -5,48 +5,29 @@ define([
     'scene',
     'camera',
     'entity/Environment',
-    'entity/Board3D',
-    'model/Board',
-    'service/api',
-    'spe',
-    'assets',
-    'factory/board',
-    'view/started',
-    'service/started',
-    'entity/Torpedo',
-    'model/Shot',
-    'service/audio',
-    'model/GameStatus',
-    'tween'], function(
+    'view/Done'], function(
     State,
     THREE,
     renderer,
     scene,
     camera,
     Environment,
-    Board3D,
-    Board,
-    API,
-    SPE,
-    assets,
-    boardFactory,
-    startedView,
-    startedService,
-    Torpedo,
-    Shot,
-    audioService,
-    GameStatus,
-    TWEEN) {
+    doneView) {
     var Done = function(gameModel) {
         this.game = gameModel;
 
         this.parent = new THREE.Object3D();
+
+        this.doneView = doneView;
     };
     Done.prototype = Object.create(State.prototype);
     Done.prototype.constructor = Done;
 
     Done.prototype.show = function() {
         this.createEnvironment();
+
+        this.doneView.setGame(this.game);
+        this.doneView.show();
 
         camera.position.set(0, 200, 300);
         camera.lookAt(scene.position);
@@ -56,7 +37,8 @@ define([
     };
 
     Done.prototype.hide = function() {
-
+        scene.remove(this.parent);
+        this.doneView.hide();
     };
 
     Done.prototype.createEnvironment = function() {

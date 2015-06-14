@@ -287,3 +287,11 @@ body {
   width: 30%;
   float: right;
 }
+#done #report {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 60%;
+}
