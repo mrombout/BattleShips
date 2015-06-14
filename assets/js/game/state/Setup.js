@@ -49,6 +49,7 @@ define([
     };
 
     Setup.prototype.hide = function() {
+        this.hudView.hide();
         scene.remove(this.parent);
     };
 
