@@ -12,10 +12,15 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     Lobby.prototype.loadGames = function() {
         var me = this;
 
-        this.elapsedTime = 0;
         this.view.clearGameItems();
 
         lobbyService.getGames().done(function(data) {
+            if(data.length === 0) {
+                setTimeout(function() {
+                    me.loadGames();
+                }, 3000);
+            }
+
             for(var key in data) {
                 if(data.hasOwnProperty(key)) {
                     var game = data[key];
@@ -70,6 +75,8 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
 
     Lobby.prototype.show = function() {
         console.info('LOBBY', 'Show');
+
+        this.elapsedTime = 0;
 
         audioService.play(assets.audio.bgm);
         audioService.play(assets.audio.ocean);
