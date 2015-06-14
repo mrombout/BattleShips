@@ -59,6 +59,9 @@ define([
         this.hudView.on('ready', function() {
             this.onReady();
         }.bind(this));
+        this.hudView.on('resetShips', function(e) {
+            this.onResetShips(e);
+        }.bind(this));
     };
 
     Setup.prototype.createEnvironment = function() {
@@ -202,9 +205,10 @@ define([
             this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
         }
         this.raycaster.setFromCamera(this.mouse, camera);
-        
+
         this.selectedShip.setInvalid(!this.board.isWithinBounds(this.selectedShip) || this.board.isOverlapping(this.selectedShip) || this.selectedShip.getObject().position.y === 20);
 
+        // Move ship according to grid
         var intersects = this.raycaster.intersectObject(scene.getObjectByName("dank"));
         if(intersects.length > 0) {
             var intersect = intersects[0];
@@ -212,6 +216,18 @@ define([
             this.selectedShip.getObject().position.copy(intersect.point).add(intersect.face.normal);
             this.selectedShip.getObject().position.divideScalar(20).floor().multiplyScalar(20).add(new THREE.Vector3(10, 0, 10));
         }
+    };
+
+    Setup.prototype.onResetShips = function() {
+        console.log('Resetting ships');
+        for(var key in this.board.getShipObjects()) {
+            if(this.board.getShipObjects().hasOwnProperty(key)) {
+                this.parent.remove(this.board.getShipObjects()[key]);
+            }
+        }
+        this.board.resetShips();
+
+        this.hudView.setIsReady(false);
     };
 
     Setup.prototype.onReady = function() {

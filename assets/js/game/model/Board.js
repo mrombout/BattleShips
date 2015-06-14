@@ -104,5 +104,9 @@ define(['three', 'jquery', 'model/Cell', 'model/Ship', 'model/Shot'], function(T
         return hits;
     };
 
+    Board.prototype.resetShips = function() {
+        this.ships = [];
+    };
+
     return Board;
 });

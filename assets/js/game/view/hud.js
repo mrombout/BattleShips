@@ -18,8 +18,10 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
 
         this.$ul = this.$domElement.find('ul');
 
-        this.$button = this.$domElement.find('button');
-        this.$button.prop('disabled', true);
+        this.$readyButton = this.$domElement.find('button#setup-ready');
+        this.$readyButton.prop('disabled', true);
+
+        this.$resetButton = this.$domElement.find('button#setup-reset');
 
         this.$waiting = this.$domElement.find('#waiting');
         this.$waiting.hide();
@@ -30,7 +32,8 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
         this.$domElement.on('touchstart', 'li', function(e) { console.log(e); this.onMenuItemMouseDown(e); }.bind(this));
         $container.on('mouseup', function(e) { this.onDocumentMouseUp(e); }.bind(this));
         $container.on('touchend', function(e) { this.onDocumentMouseUp(e); }.bind(this));
-        this.$button.on('click', function(e) { this.onReadyClick(e); }.bind(this));
+        this.$readyButton.on('click', function(e) { this.onReadyClick(e); }.bind(this));
+        this.$resetButton.on('click', function(e) { this.onResetClick(e);}.bind(this));
     };
 
     /**
@@ -45,8 +48,8 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
         this.$ul.append(shipItem);
     };
 
-    HUD.prototype.setIsReady = function() {
-        this.$button.prop('disabled', false);
+    HUD.prototype.setIsReady = function(isReady) {
+        this.$readyButton.prop('disabled', !isReady);
     };
 
     HUD.prototype.onMenuItemMouseDown = function(e) {
@@ -86,8 +89,16 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
         }
 
         if(e.button === 2 && this.$selectedShip) {
-            $(this).trigger('rotateShip', this.$selectedShip.data('ship'));
+            $(this).trigger('rotateShip', [this.$selectedShip.data('ship')]);
         }
+    };
+
+    HUD.prototype.onResetClick = function() {
+        $(this).trigger('resetShips');
+
+        console.log(this.$ul.find('li'));
+        this.$ul.empty();
+        this.presenter.loadShips();
     };
 
     HUD.prototype.onReadyClick = function() {

@@ -163,6 +163,21 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
         }
     };
 
+    Board3D.prototype.getShipObjects = function() {
+        var ships = [];
+
+        for(var key in this.ships) {
+            ships.push(this.ships[key].getObject());
+        }
+
+        return ships;
+    };
+
+    Board3D.prototype.resetShips = function() {
+        this.ships = [];
+        this.model.resetShips();
+    };
+
     Board3D.prototype.getObject = function() {
         return this.parent;
     };

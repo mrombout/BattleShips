@@ -181,9 +181,15 @@ body {
   color: white;
   padding-top: 20px;
 }
+#hud #setup-reset {
+  left: 10px;
+}
+#hud #setup-ready {
+  right: 10px;
+}
+#hud #setup-reset,
 #hud #setup-ready {
   position: absolute;
-  right: 10px;
   bottom: 10px;
   background-color: rgba(0, 0, 0, 0.5);
   border-top: 4px solid grey;
@@ -196,12 +202,15 @@ body {
   padding: 20px;
   font-size: 20px;
 }
+#hud #setup-reset:hover,
 #hud #setup-ready:hover {
   background-color: red;
 }
+#hud #setup-reset:active,
 #hud #setup-ready:active {
   background-color: green;
 }
+#hud #setup-reset:disabled,
 #hud #setup-ready:disabled {
   background-color: grey;
 }

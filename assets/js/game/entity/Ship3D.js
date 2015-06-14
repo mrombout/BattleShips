@@ -2,6 +2,7 @@ define(['three'], function(THREE) {
     var Ship3D = function(model) {
         this.model = model;
         this.parent = new THREE.Object3D();
+        this.parent.model = this;
 
         if(model.isVertical) {
             this.rotateToVertical();
