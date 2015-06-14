@@ -202,8 +202,8 @@ define([
             this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
         }
         this.raycaster.setFromCamera(this.mouse, camera);
-
-        this.selectedShip.setInvalid(!this.board.isWithinBounds(this.selectedShip) || this.board.isOverlapping(this.selectedShip));
+        
+        this.selectedShip.setInvalid(!this.board.isWithinBounds(this.selectedShip) || this.board.isOverlapping(this.selectedShip) || this.selectedShip.getObject().position.y === 20);
 
         var intersects = this.raycaster.intersectObject(scene.getObjectByName("dank"));
         if(intersects.length > 0) {
@@ -219,6 +219,7 @@ define([
 
         this.hudView.setWaitingForEnemy(true);
 
+        // TODO: Start polling for new game state
         var pollGameState = function() {
             setTimeout(function() {
                 setupService.saveBoard(me.game.id, me.board.model).done(function(data) {

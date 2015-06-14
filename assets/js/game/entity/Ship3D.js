@@ -11,6 +11,8 @@ define(['three'], function(THREE) {
 
         this.clock = new THREE.Clock(true);
         this.clock.start();
+
+        this.invalid = true;
     };
 
     Ship3D.prototype.update = function() {
