@@ -175,7 +175,7 @@ define([
                                 setTimeout(function() {
                                     me.playerBoard.sync();
                                     me.setPlayersTurn();
-                                }, 1000);
+                                }, 2000);
                             });
                             me.parent.add(me.torpedo.getObject());
                         }
@@ -283,7 +283,7 @@ define([
                     }).always(function() {
                         setTimeout(function() {
                             me.setEnemyTurn();
-                        }, 1000);
+                        }, 2000);
                     });
                     me.parent.add(me.torpedo.getObject());
                 }
