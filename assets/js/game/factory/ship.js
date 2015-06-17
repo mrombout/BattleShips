@@ -5,13 +5,24 @@ define(['entity/Ship3D', 'assets'], function(Ship3D, assets) {
 
     };
 
+    /**
+     * Create a new 3D Ship model based on the ships name.
+     *
+     * The ships name is used because "/game/:id" does not return the ship id
+     * as returned by "/ships" therefore "id" is not a reliable method either.
+     *
+     * It's not worth a request to fetch the actual ship "id" just for display.
+     *
+     * @param ship
+     * @returns {Ship3D}
+     */
     ShipFactory.prototype.create = function(ship) {
         var ship3d = new Ship3D(ship);
         var shipLength = ship.length;
         var material = new THREE.MeshLambertMaterial({ color: 0xFF0000 });
         var geometry = new THREE.BoxGeometry(20 * shipLength, 20, 20);
 
-        if(ship.name === 'Destroyer') {
+        if(ship.name === 'Destroyer' || ship.name === 'Destoryer') {
             geometry = assets.geometries.destroyer;
             material = assets.materials.destroyer.default;
         } else if(ship.name === 'Patrol boat') {
