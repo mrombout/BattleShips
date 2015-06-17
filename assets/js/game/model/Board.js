@@ -104,6 +104,36 @@ define(['three', 'jquery', 'model/Cell', 'model/Ship', 'model/Shot'], function(T
         return hits;
     };
 
+    Board.prototype.getMiss = function() {
+        var miss = [];
+        for(var key in this.shots) {
+            if(this.shots.hasOwnProperty(key)) {
+                var shot = this.shots[key];
+                if(!shot.isHit) {
+                    miss.push(shot);
+                }
+            }
+        }
+
+        return miss;
+    };
+
+    Board.prototype.getTotalShots = function() {
+        var shots = [];
+        for(var key in this.shots) {
+            if(this.shots.hasOwnProperty(key)) {
+                var shot = this.shots[key];
+                shots.push(shot);
+            }
+        }
+
+        return shots;
+    };
+
+    Board.prototype.getRatio = function() {
+        return Math.round(this.getHits().length / this.getTotalShots().length * 100);
+    };
+
     Board.prototype.resetShips = function() {
         this.ships = [];
     };

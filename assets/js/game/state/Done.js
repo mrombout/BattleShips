@@ -12,13 +12,13 @@ define([
     scene,
     camera,
     Environment,
-    doneView) {
+    DoneView) {
     var Done = function(gameModel) {
         this.game = gameModel;
 
         this.parent = new THREE.Object3D();
 
-        this.doneView = doneView;
+        this.doneView = new DoneView(this.game);
     };
     Done.prototype = Object.create(State.prototype);
     Done.prototype.constructor = Done;
