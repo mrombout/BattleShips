@@ -47,6 +47,8 @@ define([
 
         if(this.board.ships.length === 0)
             this.hudView.setCanReset(true);
+        if(this.board.ships.length === 5)
+            this.onReady();
 
         scene.add(this.parent);
     };
@@ -241,21 +243,25 @@ define([
 
         this.hudView.setWaitingForEnemy(true);
 
-        // TODO: Start polling for new game state
         var pollGameState = function() {
-            setTimeout(function() {
-                setupService.saveBoard(me.game.id, me.board.model).done(function(data) {
-                    if(data.status === GameStatus.STARTED) {
-                        me.hudView.setWaitingForEnemy(false);
-                        setupService.getGame(me.game.id).done(function(gameModel) {
-                            game.setState(new Started(gameModel));
-                        });
-                    }
-                }).fail(function(data) {
-                    console.error(data);
-                });
-            }, 3000);
-        }();
+            setupService.getGame(me.game.id).done(function(gameModel) {
+                if(gameModel.status === GameStatus.STARTED) {
+                    me.hudView.setWaitingForEnemy(false);
+                    game.setState(new Started(gameModel));
+                } else {
+                    setTimeout(function() {
+                        pollGameState();
+                    }, 3000);
+                }
+            });
+        };
+
+        setupService.saveBoard(me.game.id, me.board.model).always(function() {
+            pollGameState();
+        });
+
+        // TODO: Start polling for new game state
+
     };
 
     Setup.prototype.render = function(delta) {
