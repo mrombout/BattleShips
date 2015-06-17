@@ -279,12 +279,14 @@ define([
 
             var shootWorldPosition = this.cursor.position.clone();
             var shootGridPosition = this.enemyBoard.worldToGrid(shootWorldPosition);
+
+            if(me.torpedo) {
+                me.parent.remove(me.torpedo.getObject());
+            }
+
             me.torpedo = new Torpedo(me.playerBoard.getObject(), shootWorldPosition);
             startedService.shoot(this.game.id, shootGridPosition.x, shootGridPosition.y).done(function(data) {
                 if(data === Shot.BOOM || data === Shot.SPLASH || data === Shot.WINNER) {
-                    if(me.torpedo) {
-                        me.parent.remove(me.torpedo.getObject());
-                    }
 
                     audioService.play(assets.audio.sfx_shoot);
                     me.torpedo.isHit = (data === Shot.BOOM);
