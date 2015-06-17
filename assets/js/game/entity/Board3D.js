@@ -186,5 +186,17 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
         return this.planeMesh;
     };
 
+    Board3D.prototype.hasShipType = function(shipType) {
+        for(var key in this.ships) {
+            if(this.ships.hasOwnProperty(key)) {
+                var ship3d = this.ships[key];
+                console.log('checking', ship3d.model.name, shipType);
+                if(ship3d.model.name === shipType) {
+                    return true;
+                }
+            }
+        }
+    };
+
     return Board3D;
 });

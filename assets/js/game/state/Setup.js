@@ -45,6 +45,8 @@ define([
         camera.lookAt(scene.position);
         camera.updateProjectionMatrix();
 
+        this.hudView.setIsReady(this.availableShips.length === 0);
+
         scene.add(this.parent);
     };
 
@@ -86,7 +88,7 @@ define([
     };
 
     Setup.prototype.createGrid = function() {
-        this.board = boardFactory.create(this.game.myGameboard);
+        this.board = boardFactory.create(this.game.myGameboard, false);
         this.parent.add(this.board.getObject());
     };
 
@@ -121,7 +123,9 @@ define([
             for(var key in ships) {
                 if(ships.hasOwnProperty(key)) {
                     var ship = ships[key];
-                    me.hudView.addShipItem(ship);
+                    if(!me.board.hasShipType(ship.name)) {
+                        me.hudView.addShipItem(ship);
+                    }
                 }
             }
         });
@@ -139,7 +143,7 @@ define([
         this.disableControls();
 
         this.selectedShip = ShipFactory.create(ship);
-        this.parent.add(this.selectedShip.getObject());
+        this.board.getObject().add(this.selectedShip.getObject());
 
         this.onDocumentMouseMoveBind = function(e) {
             this.onDocumentMouseMove(e);
@@ -156,7 +160,7 @@ define([
 
         document.removeEventListener('mousemove', this.onDocumentMouseMoveBind);
 
-        this.parent.remove(this.selectedShip.getObject());
+        this.board.getObject().remove(this.selectedShip.getObject());
 
         this.selectedShip = null;
     };
@@ -220,10 +224,9 @@ define([
     };
 
     Setup.prototype.onResetShips = function() {
-        console.log('Resetting ships');
         for(var key in this.board.getShipObjects()) {
             if(this.board.getShipObjects().hasOwnProperty(key)) {
-                this.parent.remove(this.board.getShipObjects()[key]);
+                this.board.getObject().remove(this.board.getShipObjects()[key]);
             }
         }
         this.board.resetShips();

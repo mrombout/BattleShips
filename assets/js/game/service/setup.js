@@ -20,7 +20,6 @@ define(['service/api', 'jquery', 'model/Ship', 'service/lobby'], function(API, $
                 ships.push(new Ship(shipJson));
             }
 
-            console.log(ships);
             deferred.resolve(ships);
         });
 
