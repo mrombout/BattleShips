@@ -24,7 +24,7 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
             for(var key in data) {
                 if(data.hasOwnProperty(key)) {
                     var game = data[key];
-                    var template = gameHtml.replace('{enemy}', game.enemyName)
+                    var template = gameHtml.replace('{enemy}', game.enemyName ? game.enemyName : "unknown")
                         .replace('{status}', game.status)
                         .replace('{id}', game._id);
                     me.view.addGameItem($(template));
