@@ -13,7 +13,6 @@ define(['three', 'renderer', 'camera', 'stats'], function(THREE, renderer, camer
             camera.updateProjectionMatrix();
 
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.renderer.setSize(window.innerWidth, window.innerHeight);
         },
         setState: function(state) {
             if(this.state) {

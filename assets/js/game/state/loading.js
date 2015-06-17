@@ -109,7 +109,7 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
     };
 
     Loading.prototype.render = function() {
-        renderer.render();
+        //renderer.render();
     };
 
     return new Loading();

@@ -3,6 +3,7 @@
 define( [
     "threeCore",
     "TrackballControls",
+    "DeviceOrientationControls",
     "WaterShader",
     "RenderPass",
     "ShaderPass",
@@ -15,6 +16,7 @@ define( [
     "BokehPass",
     "FilmPass",
     "VignetteShader",
+    "StereoEffect",
     "DotScreenPass"
 ], function( threeCore ) {
     return threeCore;

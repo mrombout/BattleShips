@@ -6,6 +6,7 @@ var require = {
         "threeCore": { exports: "THREE" },
         "TrackballControls": { deps: ['threeCore'], exports: "THREE" },
         "OrbitControls": { deps: ['threeCore'], exports: "THREE" },
+        "DeviceOrientationControls": { deps: ['threeCore'], exports: "THREE" },
         "WaterShader": { deps: ['threeCore', 'Mirror'], exports: "THREE" },
         "Mirror": { deps: ['threeCore'], exports: "THREE" },
         "RenderPass": { deps: ['threeCore'], exports: "THREE" },
@@ -26,6 +27,7 @@ var require = {
         "DotScreenShader": { deps: ['threeCore'], exports: "THREE" },
         "OceanShaders": { deps: ['threeCore'], exports: "THREE" },
         "BokehShader": { deps: ['threeCore'], exports: "THREE" },
+        "StereoEffect": { deps: ['threeCore'], exports: "THREE" },
         "Ocean": { deps: ['threeCore'], exports: "THREE" },
 
         "detector": { exports: "Detector" },
@@ -42,6 +44,7 @@ var require = {
 
         "TrackballControls": "../../../vendor/TrackballControls/TrackballControls",
         "OrbitControls": "../../../vendor/three.js/examples/js/controls/OrbitControls",
+        "DeviceOrientationControls": "../../../vendor/three.js/examples/js/controls/DeviceOrientationControls",
         "WaterShader": "../../../vendor/WaterShader/WaterShader",
         "Ocean": "../../../vendor/Ocean/Ocean",
         "RenderPass": "../../../vendor/three.js/postprocessing/RenderPass",
@@ -62,6 +65,7 @@ var require = {
         "BokehShader": "../../../vendor/three.js/shaders/BokehShader",
         "DotScreenShader": "../../../vendor/three.js/shaders/DotScreenShader",
         "OceanShaders": "../../../vendor/three.js/shaders/OceanShaders",
+        "StereoEffect": "../../../vendor/three.js/examples/js/effects/StereoEffect",
         "Mirror": "../../../vendor/Mirror/Mirror",
         "detector": "../../../vendor/Detector/Detector",
         "Stats": "../../../vendor/stats.js/stats.min",
