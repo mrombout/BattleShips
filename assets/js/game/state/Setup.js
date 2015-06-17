@@ -45,7 +45,8 @@ define([
         camera.lookAt(scene.position);
         camera.updateProjectionMatrix();
 
-        this.hudView.setIsReady(this.availableShips.length === 0);
+        if(this.board.ships.length === 0)
+            this.hudView.setCanReset(true);
 
         scene.add(this.parent);
     };
@@ -116,16 +117,17 @@ define([
      * view.
      */
     Setup.prototype.loadShips = function() {
-        var me = this;
+        if(this.board.ships.length === 5) {
+            return;
+        }
 
+        var me = this;
         setupService.getShips().done(function(ships) {
             me.availableShips = ships;
             for(var key in ships) {
                 if(ships.hasOwnProperty(key)) {
                     var ship = ships[key];
-                    if(!me.board.hasShipType(ship.name)) {
-                        me.hudView.addShipItem(ship);
-                    }
+                    me.hudView.addShipItem(ship);
                 }
             }
         });

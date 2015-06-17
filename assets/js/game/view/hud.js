@@ -22,6 +22,7 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
         this.$readyButton.prop('disabled', true);
 
         this.$resetButton = this.$domElement.find('button#setup-reset');
+        this.$resetButton.prop('disabled', true);
 
         this.$waiting = this.$domElement.find('#waiting');
         this.$waiting.hide();
@@ -50,6 +51,10 @@ define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'te
 
     HUD.prototype.setIsReady = function(isReady) {
         this.$readyButton.prop('disabled', !isReady);
+    };
+
+    HUD.prototype.setCanReset = function(canReset) {
+        this.$resetButton.prop('disabled', !canReset);
     };
 
     HUD.prototype.onMenuItemMouseDown = function(e) {
