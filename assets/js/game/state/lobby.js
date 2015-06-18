@@ -4,6 +4,13 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     var Lobby = function() {
         State.call(this);
 
+        var me = this;
+        this.commands = {
+            'start': function() {
+                me.createAiGame();
+            }
+        };
+
         this.view = new LobbyView(this);
     };
     Lobby.prototype = Object.create(State.prototype);
@@ -75,8 +82,12 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
 
     Lobby.prototype.show = function() {
         console.info('LOBBY', 'Show');
+        var me = this;
 
         this.elapsedTime = 0;
+
+        annyang.addCommands(this.commands);
+        annyang.start();
 
         audioService.play(assets.audio.bgm);
         audioService.play(assets.audio.ocean);
@@ -100,6 +111,9 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     Lobby.prototype.hide = function() {
         scene.remove(scene.getObjectByName("lobby"));
         this.view.hide();
+
+        annyang.removeCommands(this.commands);
+        annyang.stop();
 
         audioService.stop(assets.audio.bgm);
     };
