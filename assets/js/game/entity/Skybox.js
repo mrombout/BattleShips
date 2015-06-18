@@ -1,4 +1,9 @@
 define(['three'], function(THREE) {
+    /**
+     * Represents the sky in 3D space using a skybox.
+     *
+     * @constructor
+     */
     var Skybox = function() {
         // load skybox
         var cubeMap = new THREE.CubeTexture( [] );
@@ -46,6 +51,11 @@ define(['three'], function(THREE) {
         );
     };
 
+    /**
+     * Returns the parent object of this skybox
+     *
+     * @returns {THREE.Mesh}
+     */
     Skybox.prototype.getObject = function() {
         return this.skyBox;
     };

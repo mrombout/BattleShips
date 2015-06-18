@@ -1,4 +1,9 @@
 define(['three', 'shader!skydome.vert', 'shader!skydome.frag', 'assets'], function(THREE, skydomeVert, skydomeFrag, assets) {
+    /**
+     * Represents the sky in 3D space using a skydome.
+     *
+     * @constructor
+     */
     var Skydome = function() {
         this.parent = new THREE.Object3D();
 
@@ -21,6 +26,11 @@ define(['three', 'shader!skydome.vert', 'shader!skydome.frag', 'assets'], functi
         this.parent.add(skyMesh);
     };
 
+    /**
+     * Returns the parent of this sky.
+     *
+     * @returns {THREE.Object3D|*}
+     */
     Skydome.prototype.getObject = function() {
         return this.parent;
     };

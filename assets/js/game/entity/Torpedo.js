@@ -1,4 +1,11 @@
 define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, $) {
+    /**
+     * Represents a torpedo in 3D space.
+     *
+     * @param origin
+     * @param target
+     * @constructor
+     */
     var Torpedo = function(origin, target) {
         this.parent = new THREE.Object3D();
 
@@ -12,6 +19,9 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
         this.createEmitter();
     };
 
+    /**
+     * Creates the torpedo shell 3D representation.
+     */
     Torpedo.prototype.createShell = function() {
         var material = new THREE.MeshLambertMaterial();
         var geometry = new THREE.SphereGeometry(5, 32, 32);
@@ -21,12 +31,20 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
         this.parent.add(this.projectile);
     };
 
+    /**
+     * Creates the emitter used to create a smoke trail.
+     */
     Torpedo.prototype.createEmitter = function() {
         this.smokeTrail = new SmokeTrail();
         this.smokeTrail.attach(this.projectile);
         this.parent.add(this.smokeTrail.getObject());
     };
 
+    /**
+     * Shoots this torpedo to its target location.
+     *
+     * @returns {$.Deferred}
+     */
     Torpedo.prototype.shoot = function() {
         this.deff = $.Deferred();
 
@@ -38,6 +56,11 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
         return this.deff;
     };
 
+    /**
+     * Updates this torpedo.
+     *
+     * @param {number} delta
+     */
     Torpedo.prototype.update = function(delta) {
         this.smokeTrail.update(delta);
 
@@ -53,6 +76,9 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
         }
     };
 
+    /**
+     * Explodes the torpedo.
+     */
     Torpedo.prototype.explode = function() {
         this.isShot = false;
 
@@ -64,6 +90,11 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
         }
     };
 
+    /**
+     * Returns the parent object of this torpedo.
+     *
+     * @returns {THREE.Object3D}
+     */
     Torpedo.prototype.getObject = function() {
         return this.parent;
     };

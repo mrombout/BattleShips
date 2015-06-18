@@ -1,4 +1,11 @@
 define(['three'], function(THREE) {
+
+    /**
+     * Represents a Ship in 3D space.
+     *
+     * @param model
+     * @constructor
+     */
     var Ship3D = function(model) {
         this.model = model;
         this.parent = new THREE.Object3D();
@@ -16,7 +23,11 @@ define(['three'], function(THREE) {
         this.invalid = true;
     };
 
+    /**
+     * Updates the ship.
+     */
     Ship3D.prototype.update = function() {
+        // make the ship gently rock around
         this.clock.getElapsedTime();
         this.parent.rotation.x = Math.sin(this.clock.elapsedTime) / 48;
         this.parent.rotation.z = Math.sin(this.clock.elapsedTime) / 48;
@@ -24,16 +35,29 @@ define(['three'], function(THREE) {
         if(this.model.isVertical) {
             this.parent.rotation.y += -Math.PI / 2;
         }
-    }
+    };
 
+    /**
+     * Adds an object to this ships parent object.
+     *
+     * @param object
+     */
     Ship3D.prototype.addObject = function(object) {
         this.parent.add(object);
     };
 
+    /**
+     * Returns the parent object of this ship.
+     *
+     * @returns {THREE.Object3D|*}
+     */
     Ship3D.prototype.getObject = function() {
         return this.parent;
     };
 
+    /**
+     * Toggles the ship between a vertical and horizontal position.
+     */
     Ship3D.prototype.rotate = function() {
         if(this.model.isVertical) {
             this.rotateToHorizontal();
@@ -43,18 +67,29 @@ define(['three'], function(THREE) {
         this.model.isVertical = !this.model.isVertical;
     };
 
+    /**
+     * Rotates the ship to a horizontal position
+     */
     Ship3D.prototype.rotateToHorizontal = function() {
         console.log('SHIP3D', 'Rotating to horizontal position', this);
         this.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(20, 20, 20));
         this.getObject().rotation.y = 0;
     };
 
+    /**
+     * Rotates the ship to a vertical position
+     */
     Ship3D.prototype.rotateToVertical = function() {
         console.log('SHIP3D', 'Rotating to vertical position', this);
         this.getObject().applyMatrix(new THREE.Matrix4().makeTranslation(-20, -20, -20));
         this.getObject().rotation.y = -Math.PI / 2;
     };
 
+    /**
+     * Marks this ship as invalid, changing its appearance.
+     *
+     * @param invalid
+     */
     Ship3D.prototype.setInvalid = function(invalid) {
         this.invalid = invalid;
         if(invalid) {
@@ -84,9 +119,14 @@ define(['three'], function(THREE) {
         }
     };
 
+    /**
+     * Returns whether this ship is invalid.
+     *
+     * @returns {boolean}
+     */
     Ship3D.prototype.isInvalid = function() {
         return this.invalid;
-    }
+    };
 
     return Ship3D;
 });
