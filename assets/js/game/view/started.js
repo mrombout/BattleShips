@@ -1,4 +1,4 @@
-define(['jquery', 'text!/BattleShipsters/assets/html/started.html', 'container'], function($, startedHtml, $container) {
+define(['jquery', 'text!../../../html/started.html', 'container'], function($, startedHtml, $container) {
     var Started = function() {
         this.$domElement = $(startedHtml);
         this.$domElement.hide();

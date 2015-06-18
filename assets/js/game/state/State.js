@@ -6,11 +6,13 @@ define(function() {
     };
 
     State.prototype.show = function() {
-
+        annyang.addCommands(this.commands);
+        annyang.start();
     };
 
     State.prototype.hide = function() {
-
+        annyang.removeCommands(this.commands);
+        annyang.stop();
     };
 
     State.prototype.update = function() {

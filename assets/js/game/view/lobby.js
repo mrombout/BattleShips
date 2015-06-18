@@ -1,4 +1,4 @@
-define(['container', 'text!/BattleShipsters/assets/html/lobby.html', 'jquery'], function($container, viewHtml, $) {
+define(['container', 'text!../../../html/lobby.html', 'jquery'], function($container, viewHtml, $) {
     var Lobby = function(presenter) {
         this.presenter = presenter;
 

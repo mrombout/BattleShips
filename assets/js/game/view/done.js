@@ -1,4 +1,4 @@
-define(['jquery', 'text!/BattleShipsters/assets/html/done.html', 'container', 'util/sprintf'], function($, doneHtml, $container, sprintf) {
+define(['jquery', 'text!../../../html/done.html', 'container', 'util/sprintf'], function($, doneHtml, $container, sprintf) {
     var Done = function(gameModel) {
         this.$domElement = $(doneHtml);
         this.$domElement.hide();

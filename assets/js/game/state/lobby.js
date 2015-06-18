@@ -1,6 +1,6 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!/BattleShipsters/assets/html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started', 'service/audio', 'state/Done'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started, audioService, Done) {
+define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!../../../html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started', 'service/audio', 'state/Done'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started, audioService, Done) {
     var Lobby = function() {
         State.call(this);
 
@@ -81,20 +81,15 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     };
 
     Lobby.prototype.show = function() {
+        State.prototype.show.call(this);
         console.info('LOBBY', 'Show');
-        var me = this;
 
         this.elapsedTime = 0;
-
-        annyang.addCommands(this.commands);
-        annyang.start();
 
         audioService.play(assets.audio.bgm);
         audioService.play(assets.audio.ocean);
 
-        this.parent = new THREE.Object3D();
-        this.parent.name = "lobby";
-        scene.add(this.parent);
+        this.createParent();
 
         this.createEnvironment();
 
@@ -112,10 +107,13 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         scene.remove(scene.getObjectByName("lobby"));
         this.view.hide();
 
-        annyang.removeCommands(this.commands);
-        annyang.stop();
-
         audioService.stop(assets.audio.bgm);
+    };
+
+    Lobby.prototype.createParent = function() {
+        this.parent = new THREE.Object3D();
+        this.parent.name = "lobby";
+        scene.add(this.parent);
     };
 
     Lobby.prototype.createEnvironment = function() {

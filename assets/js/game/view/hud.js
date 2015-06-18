@@ -1,6 +1,6 @@
 "use strict";
 
-define(['container', 'text!/BattleShipsters/assets/html/hud.html', 'jquery', 'text!/BattleShipsters/assets/html/_ship.html', 'view/View'], function($container, viewHtml, $, shipHtml, View) {
+define(['container', 'text!../../../html/hud.html', 'jquery', 'text!../../../html/_ship.html', 'view/View'], function($container, viewHtml, $, shipHtml, View) {
     var HUD = function(presenter) {
         View.call(this);
         this.presenter = presenter;
