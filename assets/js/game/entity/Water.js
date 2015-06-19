@@ -1,4 +1,9 @@
 define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!seascape.frag', 'assets', 'util/debug'], function(THREE, renderer, camera, scene, seascapeVert, seascapeFrag, assets, debug) {
+    /**
+     * Represents the water in 3D space.
+     *
+     * @constructor
+     */
     var Water = function() {
         this.lastTime = 0;
 
@@ -25,14 +30,27 @@ define(['three', 'renderer', 'camera', 'scene', 'shader!seascape.vert', 'shader!
         this.mirrorMesh.renderDepth = 1000;
     };
 
+    /**
+     * Updates the water.
+     *
+     * @param {number} delta
+     */
     Water.prototype.update = function(delta) {
         this.water.material.uniforms.time.value += delta;
     };
 
+    /**
+     * Renders the water.
+     */
     Water.prototype.render = function() {
         this.water.render();
     };
 
+    /**
+     * Returns the parent of this water.
+     *
+     * @returns {THREE.Mesh}
+     */
     Water.prototype.getObject = function() {
         return this.mirrorMesh;
     };

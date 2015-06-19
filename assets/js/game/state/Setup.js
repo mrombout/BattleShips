@@ -16,6 +16,13 @@ define([
     'state/Started',
     'game',
     'factory/board'], function(State, renderer, scene, camera, HUDView, THREE, setupService, ShipFactory, Board3D, Board, Environment, GameStatus, Started, game, boardFactory) {
+    /**
+     * State when the player is setting up the boats. This state allows the
+     * player to set up their boats before battle.
+     *
+     * @param game
+     * @constructor
+     */
     var Setup = function(game) {
         State.call(this);
 
@@ -34,22 +41,29 @@ define([
     Setup.prototype.constructor = Setup;
 
     Setup.prototype.show = function() {
+        // create graphics
         this.createEnvironment();
         this.createControls();
         this.createGrid();
+
+        // start listening
         this.registerListeners();
 
+        // show view
         this.hudView.show();
 
+        // set camera position
         camera.position.set(0, 200, 300);
         camera.lookAt(scene.position);
         camera.updateProjectionMatrix();
 
+        // initialize UI state
         if(this.board.ships.length === 0)
             this.hudView.setCanReset(true);
         if(this.board.ships.length === 5)
             this.onReady();
 
+        // add parent to scene
         scene.add(this.parent);
     };
 
@@ -227,6 +241,10 @@ define([
         }
     };
 
+    /**
+     * Resets all ships placed on the board by clearing them out and loading a
+     * new list of boats from the server.
+     */
     Setup.prototype.onResetShips = function() {
         for(var key in this.board.getShipObjects()) {
             if(this.board.getShipObjects().hasOwnProperty(key)) {
@@ -238,12 +256,18 @@ define([
         this.hudView.setIsReady(false);
     };
 
+    /**
+     * Submits the board to the Zeeslag API and starts waiting for the other
+     * user to setup their game by polling every 3 seconds after the last
+     * successful request.
+     */
     Setup.prototype.onReady = function() {
         var me = this;
 
         this.hudView.setWaitingForEnemy(true);
 
         var pollGameState = function() {
+            // TODO Why not always, if error we just want to keep trying
             setupService.getGame(me.game.id).done(function(gameModel) {
                 if(gameModel.status === GameStatus.STARTED) {
                     me.hudView.setWaitingForEnemy(false);
@@ -260,8 +284,7 @@ define([
             pollGameState();
         });
 
-        // TODO: Start polling for new game state
-
+        // TODO: Verify polling
     };
 
     Setup.prototype.render = function(delta) {

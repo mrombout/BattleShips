@@ -1,7 +1,13 @@
 "use strict";
 
 define(['container', 'camera', 'scene', 'util/debug'], function($container, camera, scene, debug) {
-    var DefaultRenderer = function() {
+    /**
+     * Renderer for mid-/high-end PC's that uses several graphical enhancements
+     * and effects.
+     *
+     * @constructor
+     */
+    var HighRenderer = function() {
         function updateFXAAResolution() {
             effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
         }
@@ -49,14 +55,28 @@ define(['container', 'camera', 'scene', 'util/debug'], function($container, came
         this.composer.addPass(effectCopy);
     };
 
-    DefaultRenderer.prototype.setSize = function(w, h) {
+    /**
+     * Sets the size of this renderer.
+     *
+     * @param w
+     * @param h
+     */
+    HighRenderer.prototype.setSize = function(w, h) {
         this.composer.setSize(w, h);
         this.composer.renderer.setSize(w, h);
     };
 
-    DefaultRenderer.prototype.render = function(scene, camera, renderTarget, forceClear) {
+    /**
+     * Renders the provided scene using the provided camera.
+     *
+     * @param {THREE.Scene} scene
+     * @param {THREE.Camera} camera
+     * @param renderTarget
+     * @param forceClear
+     */
+    HighRenderer.prototype.render = function(scene, camera, renderTarget, forceClear) {
         this.composer.render(scene, camera, renderTarget, forceClear);
     };
 
-    return DefaultRenderer;
+    return HighRenderer;
 });

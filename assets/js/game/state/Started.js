@@ -41,6 +41,14 @@ define([
         game,
         Done,
         TWEEN) {
+
+    /**
+     * State when actually playing the game. This state is active when the
+     * player is playing an actualy game of Battleships!
+     *
+     * @param gameModel
+     * @constructor
+     */
     var Started = function(gameModel) {
         this.game = gameModel;
 
@@ -59,36 +67,47 @@ define([
     Started.prototype.constructor = Started;
 
     Started.prototype.show = function() {
+        // initialize graphics
         this.createEnvironment();
         this.createControls();
         this.createPlayerGrid();
         this.createEnemyGrid();
         this.createCursor();
 
+        // register events
         this.registerEvents();
 
+        // show view
         startedView.show();
         startedView.setGame(this.game);
 
+        // initialize turn
         if(this.game.yourTurn) {
             this.setPlayersTurn();
         } else {
             this.setEnemyTurn();
         }
 
+        // set camera position
         camera.position.set(0, 200, 300);
         camera.lookAt(scene.position);
         camera.updateProjectionMatrix();
 
+        // add parent to scene
         scene.add(this.parent);
     };
 
+    /**
+     * Gives the turn to the player. The camers will focus on the enemys board
+     * and the user may now click any cell to hurl a torpedo towards the
+     * enemy.
+     */
     Started.prototype.setPlayersTurn = function() {
         var me = this;
 
         this.playerCanShoot = true;
+        this.game.yourTurn  = true;
 
-        this.game.yourTurn = true;
         startedView.setGame(this.game);
 
         // change camera to enemy board
@@ -116,6 +135,7 @@ define([
         var me = this;
 
         this.game.yourTurn = false;
+
         startedView.setGame(this.game);
 
         // change camera to player board
@@ -218,8 +238,8 @@ define([
     Started.prototype.createControls = function() {
         this.controls = new THREE.OrbitControls(camera, renderer.domElement);
         this.controls.rotateSpeed = 1.5;
-        this.controls.zoomSpeed = 1.2;
-        this.controls.panSpeed = 0.8;
+        this.controls.zoomSpeed   = 1.2;
+        this.controls.panSpeed    = 0.8;
 
         //this.controls.minDistance = 150;
         //this.controls.maxDistance = 350;
@@ -255,6 +275,11 @@ define([
         this.parent.add(this.cursor);
     };
 
+    /**
+     * Moves the cursor to a new position when the player moves their mouse.
+     *
+     * @param e
+     */
     Started.prototype.onDocumentMouseMove = function(e) {
         this.mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
         this.raycaster.setFromCamera(this.mouse, camera);
@@ -268,6 +293,12 @@ define([
         }
     };
 
+    /**
+     * Shoots a torpedo towards the enemy when the left mouse is clicked and it
+     * is the player turn.
+     *
+     * @param e
+     */
     Started.prototype.onDocumentMouseClick = function(e) {
         if(!this.playerCanShoot)
             return;

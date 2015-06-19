@@ -1,6 +1,12 @@
 "use strict";
 
 define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!../../../html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started', 'service/audio', 'state/Done'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started, audioService, Done) {
+    /**
+     * State when the player has just started the game. This states is used to
+     * allow the user to choose a game to join or create a new game.
+     *
+     * @constructor
+     */
     var Lobby = function() {
         State.call(this);
 
@@ -16,6 +22,9 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     Lobby.prototype = Object.create(State.prototype);
     Lobby.prototype.constructor = Lobby;
 
+    /**
+     * Loads all games from the Zeeslag API and populates the UI with the available games.
+     */
     Lobby.prototype.loadGames = function() {
         var me = this;
 
@@ -40,6 +49,10 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         });
     };
 
+    /**
+     * Clears all available games from the server and reloads the available
+     * games (which should now be empty).
+     */
     Lobby.prototype.clearGames = function() {
         var me = this;
         lobbyService.clearGames().done(function(data) {
@@ -47,6 +60,9 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         });
     };
 
+    /**
+     * Creates a new game against a bot and automatically joins the game.
+     */
     Lobby.prototype.createAiGame = function() {
         var me = this;
         lobbyService.createAiGame().done(function(data) {
@@ -56,6 +72,10 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         });
     };
 
+    /**
+     * Creates a new game against a player and automatically joins the game if
+     * a match could be found immediatly.
+     */
     Lobby.prototype.createGame = function() {
         var me = this;
         lobbyService.createGame().done(function(data) {
@@ -67,6 +87,11 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         });
     };
 
+    /**
+     * Joins the game with the given gameId.
+     *
+     * @param gameId
+     */
     Lobby.prototype.joinGame = function(gameId) {
         var me = this;
         lobbyService.getGame(gameId).done(function(gameModel) {
@@ -121,6 +146,9 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         this.parent.add(this.environment.getObject());
     };
 
+    /**
+     * Loads the battleship displayed in the background.
+     */
     Lobby.prototype.loadBattleship = function() {
         var me = this;
 
@@ -150,6 +178,9 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
         me.parent.add(me.battleship);
     };
 
+    /**
+     * Loads the logo displayed in the background.
+     */
     Lobby.prototype.loadLogo = function() {
         var me = this;
 

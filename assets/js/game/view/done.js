@@ -2,7 +2,7 @@ define(['jquery', 'text!../../../html/done.html', 'container', 'util/sprintf'], 
     var Done = function(gameModel) {
         this.$domElement = $(doneHtml);
         this.$domElement.hide();
-        console.log('this is the ', gameModel);
+
         this.$domElement.html(sprintf(this.$domElement.html(), {
             "winMsg": gameModel.youWon ? "You won!" : "You lost!",
             "eHit": gameModel.myGameboard.getHits().length,

@@ -1,8 +1,23 @@
 define(['three', 'audioContext'], function(THREE, audioContext) {
+
+    /**
+     * Three.js loading used for loading and decoding audio files.
+     *
+     * @param manager
+     * @constructor
+     */
     var AudioLoader = function(manager) {
         this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
     };
 
+    /**
+     * Loads and decodes audio files.
+     *
+     * @param {string} url
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     */
     AudioLoader.prototype.load = function(url, onLoad, onProgress, onError) {
         var scope = this;
 

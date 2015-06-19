@@ -1,7 +1,14 @@
 "use strict";
 
 define(['model/Cell'], function(Cell) {
-	var Ship = function(shipJson) {
+
+    /**
+     * Represents a single game ship.
+     *
+     * @param shipJson
+     * @constructor
+     */
+    var Ship = function(shipJson) {
         this._id = shipJson._id;
         this.name = shipJson.name;
         this.length = shipJson.length;
@@ -12,12 +19,27 @@ define(['model/Cell'], function(Cell) {
         }
         this.isVertical = shipJson.isVertical;
         this.__v = 0;
-	};
+    };
 
+    /**
+     * Updates this ship with new data.
+     *
+     * @param {{hits: Array}} data
+     */
     Ship.prototype.update = function(data) {
         this.hits = data.hits;
     };
 
+    /**
+     * Returns whether this ship of overlapping with the given boat position
+     * and length.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} length
+     * @param {boolean} isVertical
+     * @returns {boolean}
+     */
     Ship.prototype.isOverlapping = function(x, y, length, isVertical) {
         if(!this.startCell || !this.length) {
             return false;
@@ -28,14 +50,15 @@ define(['model/Cell'], function(Cell) {
 
         // calculate occupied
         var occupied = [];
-        for(var i = 0; i < this.length; i++) {
+        var i;
+        for(i = 0; i < this.length; i++) {
             if(this.isVertical)
                 occupied.push({ x: this.startCell.x, y: this.startCell.y + i });
             else
                 occupied.push({ x: this.startCell.x + i, y: this.startCell.y });
         }
 
-        for(var i = 0; i < length; i++) {
+        for(i = 0; i < length; i++) {
             var testCell = {};
             if(isVertical) {
                 testCell = { x: x, y: y + i };

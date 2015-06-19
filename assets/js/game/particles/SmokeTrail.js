@@ -1,12 +1,11 @@
-define(['three', 'assets'], function(THREE, assets) {
+define(['three', 'assets', 'particles/ParticleEffect'], function(THREE, assets, ParticleEffect) {
     var SmokeTrail = function() {
-        this.parent = new THREE.Object3D();
-
-        this.createEmitter();
+        ParticleEffect.call(this);
     };
+    SmokeTrail.prototype = Object.create(ParticleEffect.prototype);
+    SmokeTrail.prototype.constructor = SmokeTrail;
 
-    SmokeTrail.prototype.createEmitter = function() {
-
+    SmokeTrail.prototype.createParticleGroup = function() {
         // create particle group
         this.particleGroup = new SPE.Group({
             texture: assets.textures.smoke_particle,
@@ -50,18 +49,6 @@ define(['three', 'assets'], function(THREE, assets) {
         // add the particle group to the scene so it can be drawn
         this.particleGroup.mesh.frustumCulled = false;
         this.parent.add(this.particleGroup.mesh);
-    };
-
-    SmokeTrail.prototype.attach = function(obj) {
-        this.particleEmitter.position = obj.position;
-    };
-
-    SmokeTrail.prototype.update = function(delta) {
-        this.particleGroup.tick(delta);
-    };
-
-    SmokeTrail.prototype.getObject = function() {
-        return this.parent;
     };
 
     return SmokeTrail;

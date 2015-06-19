@@ -27,6 +27,12 @@ define(['service/api', 'jquery', 'model/Game'], function(API, $, Game) {
         return deferred;
     };
 
+    /**
+     * Retrieves the information of the game with the provided ID.
+     *
+     * @param {string} id
+     * @returns {$.Deferred}
+     */
     LobbyService.prototype.getGame = function(id) {
         var deferred = $.Deferred();
 
@@ -40,6 +46,11 @@ define(['service/api', 'jquery', 'model/Game'], function(API, $, Game) {
         return deferred;
     };
 
+    /**
+     * Clears all current games.
+     *
+     * @returns {$.Deferred}
+     */
     LobbyService.prototype.clearGames = function() {
         var deferred = $.Deferred();
 
@@ -52,6 +63,11 @@ define(['service/api', 'jquery', 'model/Game'], function(API, $, Game) {
         return deferred;
     };
 
+    /**
+     * Creates a new AI game.
+     *
+     * @returns {$.Deferred}
+     */
     LobbyService.prototype.createAiGame = function() {
         var deferred = $.Deferred();
 

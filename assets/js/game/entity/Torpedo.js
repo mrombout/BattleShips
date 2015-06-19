@@ -36,6 +36,7 @@ define(['three', 'particles/SmokeTrail', 'jquery'], function(THREE, SmokeTrail, 
      */
     Torpedo.prototype.createEmitter = function() {
         this.smokeTrail = new SmokeTrail();
+        console.log(this.smokeTrail);
         this.smokeTrail.attach(this.projectile);
         this.parent.add(this.smokeTrail.getObject());
     };

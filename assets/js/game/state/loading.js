@@ -1,6 +1,14 @@
 "use strict";
 
-define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'view/loading', 'loader/AudioLoader', 'loader/JSONLoader', 'state/Started'], function(State, renderer, assets, THREE, game, lobbyState, loadingView, AudioLoader, JSONLoader, StartedState) {
+define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/Lobby', 'view/loading', 'loader/AudioLoader', 'loader/JSONLoader', 'state/Started'], function(State, renderer, assets, THREE, game, LobbyState, loadingView, AudioLoader, JSONLoader, StartedState) {
+    /**
+     * State when the game is still loading assets. This is the first state the
+     * player is in and is used to load all the assets used in the game. It
+     * will automatically continue to the Lobby state when all assets are
+     * loaded.
+     *
+     * @constructor
+     */
     var Loading = function() {
         State.call(this);
 
@@ -9,6 +17,9 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
     Loading.prototype = Object.create(State.prototype);
     Loading.prototype.constructor = Loading;
 
+    /**
+     * Initializes the loading managers and all the loaders required.
+     */
     Loading.prototype.init = function() {
         this.initLoadingManager();
         this.initLoaders();
@@ -33,10 +44,10 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
     };
 
     Loading.prototype.onLoadingManagerLoad = function() {
-        console.log('LOADING', 'Finished', assets);
+        console.info('LOADING', 'Finished', assets);
         setTimeout(function() {
             //game.setState(new StartedState());
-            game.setState(lobbyState);
+            game.setState(LobbyState);
         }, 500);
     };
 
@@ -44,6 +55,9 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
         console.error('LOADING', 'Error');
     };
 
+    /**
+     * Starts loading all required assets from the assets file.
+     */
     Loading.prototype.startLoading = function() {
         console.info('LOADING', 'Start', assets.config);
 
@@ -52,10 +66,19 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
         this.loadAudio();
     };
 
+    /**
+     * Loads all textures and populates assets.textures with the loaded
+     * textures.
+     */
     Loading.prototype.loadTextures = function() {
         this.loadType(assets.config.textures, assets.textures, this.textureLoader);
     };
 
+    /**
+     * Loads all geometries and populates assets.geometries with the loaded
+     * geometries. Any materials attached to the geometries will also be
+     * loaded and add to assets.materials[geometryname][materialname].
+     */
     Loading.prototype.loadGeometries = function() {
         this.loadType(assets.config.geometries, assets.geometries, this.jsonLoader, function(name, args) {
             var materials = args[1];
@@ -71,10 +94,25 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
         });
     };
 
+    /**
+     * Loads all audio and populates assets.audio with the loaded and decoded
+     * audio files.
+     */
     Loading.prototype.loadAudio = function() {
         this.loadType(assets.config.audio, assets.audio, this.audioLoader);
     };
 
+    /**
+     * Loads a type of asset from the given configuration and populates the
+     * loaded resources in the given target variable using the loader provided
+     * by the caller. When the loading is finished the provided callback will
+     * be called.
+     *
+     * @param config
+     * @param target
+     * @param loader
+     * @param callback
+     */
     Loading.prototype.loadType = function(config, target, loader, callback) {
         for(var key in config) {
             if(config.hasOwnProperty(key)) {
@@ -104,12 +142,8 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/lobby', 'vi
         loadingView.hide();
     };
 
-    Loading.prototype.update = function() {
-
-    };
-
     Loading.prototype.render = function() {
-        //renderer.render();
+        // nothing to render
     };
 
     return new Loading();

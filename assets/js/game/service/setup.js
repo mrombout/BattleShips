@@ -6,7 +6,7 @@ define(['service/api', 'jquery', 'model/Ship', 'service/lobby'], function(API, $
     };
 
     /**
-     * Retrieves a list of ships available in the game
+     * Retrieves a list of ships available in the game.
      */
     SetupService.prototype.getShips = function() {
         var deferred = $.Deferred();
@@ -47,6 +47,12 @@ define(['service/api', 'jquery', 'model/Ship', 'service/lobby'], function(API, $
         return deferred;
     };
 
+    /**
+     * Retrieves the information of the game with the provided ID.
+     *
+     * @param gameId
+     * @returns {*|$.Deferred}
+     */
     SetupService.prototype.getGame = function(gameId) {
         return lobbyService.getGame(gameId);
     };

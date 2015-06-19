@@ -1,11 +1,13 @@
-define(['three', 'assets'], function(THREE, assets) {
-    var SmokeTrail = function() {
+define(['three', 'assets', 'particles/ParticleEffect'], function(THREE, assets, ParticleEffect) {
+    var Splash = function() {
         this.parent = new THREE.Object3D();
 
         this.createEmitter();
     };
+    Splash.prototype = Object.create(ParticleEffect.prototype);
+    Splash.prototype.constructor = Splash;
 
-    SmokeTrail.prototype.createEmitter = function() {
+    Splash.prototype.createParticleGroup = function() {
         // create particle group
         this.particleGroup = new SPE.Group({
             texture: assets.textures.water_particle,
@@ -36,17 +38,5 @@ define(['three', 'assets'], function(THREE, assets) {
         this.parent.add(this.particleGroup.mesh);
     };
 
-    SmokeTrail.prototype.attach = function(obj) {
-        this.particleEmitter.position = obj.position;
-    };
-
-    SmokeTrail.prototype.update = function() {
-        this.particleGroup.tick(0.016);
-    };
-
-    SmokeTrail.prototype.getObject = function() {
-        return this.parent;
-    };
-
-    return SmokeTrail;
+    return Splash;
 });

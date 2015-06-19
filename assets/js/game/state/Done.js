@@ -13,6 +13,14 @@ define([
     camera,
     Environment,
     DoneView) {
+
+    /**
+     * State when a game is won by either the player or the enemy. This state
+     * displays a summary and the end results of the game.
+     *
+     * @param gameModel
+     * @constructor
+     */
     var Done = function(gameModel) {
         this.game = gameModel;
 
@@ -26,23 +34,30 @@ define([
     Done.prototype.show = function() {
         this.createEnvironment();
 
+        // show view
         this.doneView.setGame(this.game);
         this.doneView.show();
 
+        // set camera position
         camera.position.set(0, 200, 300);
         camera.lookAt(scene.position);
         camera.updateProjectionMatrix();
 
+        // add parent to scene
         scene.add(this.parent);
     };
 
     Done.prototype.hide = function() {
-        scene.remove(this.parent);
+        // hide view
         this.doneView.hide();
+
+        // remove parent from scene
+        scene.remove(this.parent);
     };
 
     Done.prototype.createEnvironment = function() {
         this.environment = new Environment();
+
         this.parent.add(this.environment.getObject());
     };
 
