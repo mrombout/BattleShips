@@ -31,8 +31,8 @@ define(['three', 'assets', 'particles/ParticleEffect'], function(THREE, assets, 
             angleEnd: 0,
             angleEndSpread: Math.PI,
 
-            sizeStart: 1,
-            sizeEnd: 64,
+            sizeStart: 2,
+            sizeEnd: 128,
 
             //opacityStart: 1,
             //opacityEnd: 0.0,

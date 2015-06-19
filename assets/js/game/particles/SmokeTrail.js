@@ -31,8 +31,8 @@ define(['three', 'assets', 'particles/ParticleEffect'], function(THREE, assets, 
             angleEnd: 0,
             angleEndSpread: Math.PI,
 
-            sizeStart: 32,
-            sizeEnd: 256,
+            sizeStart: 64,
+            sizeEnd: 512,
 
             //opacityStart: 1,
             //opacityEnd: 0.0,
@@ -40,7 +40,7 @@ define(['three', 'assets', 'particles/ParticleEffect'], function(THREE, assets, 
             colorStart: new THREE.Color(0.4, 0.4, 0.4),
             colorEnd: new THREE.Color(0.8, 0.8, 0.8),
 
-            particlesPerSecond: 1800
+            particlesPerSecond: 3600
         });
 
         // add the emitter to the group
