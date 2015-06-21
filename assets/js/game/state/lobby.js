@@ -41,6 +41,9 @@ define([
     var Lobby = function() {
         State.call(this);
 
+        this.isLoadingGames = false;
+        this.isClearingGames = false;
+
         var me = this;
         this.commands = {
             'start': function() {
@@ -57,26 +60,34 @@ define([
      * Loads all games from the Zeeslag API and populates the UI with the available games.
      */
     Lobby.prototype.loadGames = function() {
-        var me = this;
+        if(this.isLoadingGames) {
+            console.warn("Already busy loading new games...");
+            return;
+        }
+
+        this.isLoadingGames = true;
 
         this.view.clearGameItems();
 
+        var me = this;
         lobbyService.getGames().done(function(data) {
             if(data.length === 0) {
                 setTimeout(function() {
                     me.loadGames();
                 }, 3000);
-            }
-
-            for(var key in data) {
-                if(data.hasOwnProperty(key)) {
-                    var game = data[key];
-                    var template = gameHtml.replace('{enemy}', game.enemyName ? game.enemyName : "unknown")
-                        .replace('{status}', game.status)
-                        .replace('{id}', game._id);
-                    me.view.addGameItem($(template));
+            } else {
+                for(var key in data) {
+                    if(data.hasOwnProperty(key)) {
+                        var game = data[key];
+                        var template = gameHtml.replace('{enemy}', game.enemyName ? game.enemyName : "unknown")
+                            .replace('{status}', game.status)
+                            .replace('{id}', game._id);
+                        me.view.addGameItem($(template));
+                    }
                 }
             }
+        }).always(function() {
+            me.isLoadingGames = false;
         });
     };
 
@@ -85,9 +96,18 @@ define([
      * games (which should now be empty).
      */
     Lobby.prototype.clearGames = function() {
+        if(this.isClearingGames) {
+            console.warn("Already busy clearing games...");
+            return;
+        }
+
+        this.isClearingGames = true;
+
         var me = this;
         lobbyService.clearGames().done(function(data) {
             me.loadGames();
+        }).always(function() {
+            me.isClearingGames = false;
         });
     };
 
