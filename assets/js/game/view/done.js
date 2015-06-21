@@ -1,4 +1,4 @@
-define(['jquery', 'text!../../../html/done.html', 'container', 'util/sprintf'], function($, doneHtml, $container, sprintf) {
+define(['jquery', 'text!../../../html/done.html', 'container', 'util/sprintf', 'view/View'], function($, doneHtml, $container, sprintf, View) {
     var Done = function(gameModel) {
         this.$domElement = $(doneHtml);
         this.$domElement.hide();
@@ -15,7 +15,17 @@ define(['jquery', 'text!../../../html/done.html', 'container', 'util/sprintf'], 
             "pRatio": gameModel.enemyGameboard.getRatio() + "%"
         }));
 
+        this.$domElement.find('#back').on('click', function(e) {
+            this.onBackClick(e);
+        }.bind(this));
+
         $container.prepend(this.$domElement);
+    };
+    Done.prototype = Object.create(View.prototype);
+    Done.prototype.constructor = Done;
+
+    Done.prototype.onBackClick = function() {
+        $(this).trigger('back');
     };
 
     Done.prototype.show = function() {

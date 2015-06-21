@@ -5,14 +5,18 @@ define([
     'scene',
     'camera',
     'entity/Environment',
-    'view/Done'], function(
+    'view/Done',
+    'state/lobby',
+    'game'], function(
     State,
     THREE,
     renderer,
     scene,
     camera,
     Environment,
-    DoneView) {
+    DoneView,
+    lobbyState,
+    game) {
 
     /**
      * State when a game is won by either the player or the enemy. This state
@@ -55,6 +59,12 @@ define([
         scene.remove(this.parent);
     };
 
+    Done.prototype.registerListeners = function() {
+        this.doneView.on('back', function() {
+            this.onBack();
+        }.bind(this));
+    };
+
     Done.prototype.createEnvironment = function() {
         this.environment = new Environment();
 
@@ -69,6 +79,10 @@ define([
         this.environment.render();
 
         renderer.render(scene, camera);
+    };
+
+    Done.prototype.onBack = function() {
+        game.setState(lobbyState);
     };
 
     return Done;
