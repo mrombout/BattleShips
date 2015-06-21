@@ -138,7 +138,7 @@ define([
         }
 
         var me = this;
-        setupService.getShips().done(function(ships) {
+        return setupService.getShips().done(function(ships) {
             me.availableShips = ships;
             for(var key in ships) {
                 if(ships.hasOwnProperty(key)) {
@@ -246,14 +246,14 @@ define([
      * new list of boats from the server.
      */
     Setup.prototype.onResetShips = function() {
-        for(var key in this.board.getShipObjects()) {
-            if(this.board.getShipObjects().hasOwnProperty(key)) {
-                this.board.getObject().remove(this.board.getShipObjects()[key]);
-            }
-        }
         this.board.resetShips();
 
-        this.hudView.setIsReady(false);
+        var me = this;
+
+        this.hudView.setCanReset(false);
+        this.loadShips().always(function() {
+            me.hudView.setCanReset(true);
+        });
     };
 
     /**

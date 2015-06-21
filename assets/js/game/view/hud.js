@@ -101,9 +101,7 @@ define(['container', 'text!../../../html/hud.html', 'jquery', 'text!../../../htm
     HUD.prototype.onResetClick = function() {
         $(this).trigger('resetShips');
 
-        console.log(this.$ul.find('li'));
         this.$ul.empty();
-        this.presenter.loadShips();
     };
 
     HUD.prototype.onReadyClick = function() {

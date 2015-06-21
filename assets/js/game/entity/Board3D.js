@@ -235,7 +235,15 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
      * Removes all ships of this board.
      */
     Board3D.prototype.resetShips = function() {
+        // remove all ships from parent object
+        for(var key in this.getShipObjects()) {
+            if(this.getShipObjects().hasOwnProperty(key)) {
+                this.getObject().remove(this.getShipObjects()[key]);
+            }
+        }
+
         this.ships = [];
+
         this.model.resetShips();
     };
 
