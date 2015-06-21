@@ -1,5 +1,7 @@
 define(['jquery', 'text!../../../html/done.html', 'container', 'util/sprintf', 'view/View'], function($, doneHtml, $container, sprintf, View) {
-    var Done = function(gameModel) {
+    var DoneView = function(gameModel) {
+        View.call(this);
+
         this.$domElement = $(doneHtml);
         this.$domElement.hide();
 
@@ -21,24 +23,25 @@ define(['jquery', 'text!../../../html/done.html', 'container', 'util/sprintf', '
 
         $container.prepend(this.$domElement);
     };
-    Done.prototype = Object.create(View.prototype);
-    Done.prototype.constructor = Done;
+    DoneView.prototype = Object.create(View.prototype);
+    DoneView.prototype.constructor = DoneView;
 
-    Done.prototype.onBackClick = function() {
+    DoneView.prototype.onBackClick = function() {
+        console.log('back lcick');
         $(this).trigger('back');
     };
 
-    Done.prototype.show = function() {
+    DoneView.prototype.show = function() {
         this.$domElement.show();
     };
 
-    Done.prototype.hide = function() {
+    DoneView.prototype.hide = function() {
         this.$domElement.hide();
     };
 
-    Done.prototype.setGame = function(game) {
+    DoneView.prototype.setGame = function(game) {
         this.game = game;
     };
 
-    return Done;
+    return DoneView;
 });

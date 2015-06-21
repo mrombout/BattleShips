@@ -1,6 +1,23 @@
 "use strict";
 
-define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/Lobby', 'view/loading', 'loader/AudioLoader', 'loader/JSONLoader', 'state/Started'], function(State, renderer, assets, THREE, game, LobbyState, loadingView, AudioLoader, JSONLoader, StartedState) {
+define([
+    'state/State',
+    'assets',
+    'three',
+    'game',
+    'state/lobby',
+    'view/loading',
+    'loader/AudioLoader',
+    'loader/JSONLoader'
+], function(
+    State,
+    assets,
+    THREE,
+    game,
+    lobbyState,
+    loadingView,
+    AudioLoader,
+    JSONLoader) {
     /**
      * State when the game is still loading assets. This is the first state the
      * player is in and is used to load all the assets used in the game. It
@@ -25,6 +42,9 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/Lobby', 'vi
         this.initLoaders();
     };
 
+    /**
+     * Initializes the loading manager and registers any listeners.
+     */
     Loading.prototype.initLoadingManager = function(){
         this.loadingManager = new THREE.LoadingManager();
         this.loadingManager.onProgress = this.onLoadingManagerProgress;
@@ -47,7 +67,7 @@ define(['state/State', 'renderer', 'assets', 'three', 'game', 'state/Lobby', 'vi
         console.info('LOADING', 'Finished', assets);
         setTimeout(function() {
             //game.setState(new StartedState());
-            game.setState(LobbyState);
+            game.setState(lobbyState);
         }, 500);
     };
 

@@ -6,7 +6,6 @@ define([
     'camera',
     'entity/Environment',
     'view/Done',
-    'state/lobby',
     'game'], function(
     State,
     THREE,
@@ -15,7 +14,6 @@ define([
     camera,
     Environment,
     DoneView,
-    lobbyState,
     game) {
 
     /**
@@ -25,18 +23,23 @@ define([
      * @param gameModel
      * @constructor
      */
-    var Done = function(gameModel) {
+    var DoneTest = function(gameModel, backState) {
+        State.call(this);
+
         this.game = gameModel;
+        this.backState = backState;
 
         this.parent = new THREE.Object3D();
 
         this.doneView = new DoneView(this.game);
     };
-    Done.prototype = Object.create(State.prototype);
-    Done.prototype.constructor = Done;
+    DoneTest.prototype = Object.create(State.prototype);
+    DoneTest.prototype.constructor = DoneTest;
 
-    Done.prototype.show = function() {
+    DoneTest.prototype.show = function() {
         this.createEnvironment();
+
+        this.registerListeners();
 
         // show view
         this.doneView.setGame(this.game);
@@ -51,7 +54,7 @@ define([
         scene.add(this.parent);
     };
 
-    Done.prototype.hide = function() {
+    DoneTest.prototype.hide = function() {
         // hide view
         this.doneView.hide();
 
@@ -59,31 +62,32 @@ define([
         scene.remove(this.parent);
     };
 
-    Done.prototype.registerListeners = function() {
+    DoneTest.prototype.registerListeners = function() {
         this.doneView.on('back', function() {
+            console.log('on back thi');
             this.onBack();
         }.bind(this));
     };
 
-    Done.prototype.createEnvironment = function() {
+    DoneTest.prototype.createEnvironment = function() {
         this.environment = new Environment();
 
         this.parent.add(this.environment.getObject());
     };
 
-    Done.prototype.update = function(delta) {
+    DoneTest.prototype.update = function(delta) {
         this.environment.update(delta);
     };
 
-    Done.prototype.render = function(clock) {
+    DoneTest.prototype.render = function(clock) {
         this.environment.render();
 
         renderer.render(scene, camera);
     };
 
-    Done.prototype.onBack = function() {
-        game.setState(lobbyState);
+    DoneTest.prototype.onBack = function() {
+        game.setState(this.backState);
     };
 
-    return Done;
+    return DoneTest;
 });

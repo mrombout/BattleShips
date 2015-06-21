@@ -1,6 +1,37 @@
 "use strict";
 
-define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environment', 'view/lobby', 'service/lobby', 'text!../../../html/_game.html', 'model/GameStatus', 'game', 'state/Setup', 'state/Started', 'service/audio', 'state/Done'], function(State, scene, renderer, camera, assets, Environment, LobbyView, lobbyService, gameHtml, GameStatus, game, Setup, Started, audioService, Done) {
+define([
+    'state/State',
+    'scene',
+    'renderer',
+    'camera',
+    'assets',
+    'entity/Environment',
+    'view/lobby',
+    'service/lobby',
+    'text!../../../html/_game.html',
+    'model/GameStatus',
+    'game',
+    'state/Setup',
+    'state/Started',
+    'service/audio',
+    'state/Done'], function(
+        State,
+        scene,
+        renderer,
+        camera,
+        assets,
+        Environment,
+        LobbyView,
+        lobbyService,
+        gameHtml,
+        GameStatus,
+        game,
+        Setup,
+        Started,
+        audioService,
+        Done
+    ) {
     /**
      * State when the player has just started the game. This states is used to
      * allow the user to choose a game to join or create a new game.
@@ -100,7 +131,8 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
             } else if(gameModel.status === GameStatus.STARTED) {
                 game.setState(new Started(gameModel));
             } else if(gameModel.status === GameStatus.DONE) {
-                game.setState(new Done(gameModel));
+                console.log(Done);
+                game.setState(new Done(gameModel, me));
             }
         });
     };
@@ -179,7 +211,7 @@ define(['state/State', 'scene', 'renderer', 'camera', 'assets', 'entity/Environm
     };
 
     /**
-     * Loads the logo displayed in the background.
+     * Loads the logo displayed in the background. q
      */
     Lobby.prototype.loadLogo = function() {
         var me = this;
