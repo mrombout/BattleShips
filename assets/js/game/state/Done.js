@@ -72,7 +72,6 @@ define([
      */
     DoneTest.prototype.registerListeners = function() {
         this.doneView.on('back', function() {
-            console.log('on back thi');
             this.onBack();
         }.bind(this));
     };

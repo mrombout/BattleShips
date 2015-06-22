@@ -147,9 +147,9 @@ define([
         var me = this;
         lobbyService.getGame(gameId).done(function(gameModel) {
             if(gameModel.status === GameStatus.SETUP) {
-                game.setState(new Setup(gameModel));
+                game.setState(new Setup(gameModel, me));
             } else if(gameModel.status === GameStatus.STARTED) {
-                game.setState(new Started(gameModel));
+                game.setState(new Started(gameModel, me));
             } else if(gameModel.status === GameStatus.DONE) {
                 console.log(Done);
                 game.setState(new Done(gameModel, me));

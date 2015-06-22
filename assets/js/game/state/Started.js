@@ -41,8 +41,9 @@ define([
      * @param gameModel
      * @constructor
      */
-    var Started = function(gameModel) {
+    var Started = function(gameModel, lobbyState) {
         this.game = gameModel;
+        this.lobbyState = lobbyState;
 
         this.parent = new THREE.Object3D();
 
@@ -173,7 +174,7 @@ define([
                     // update model
                     me.game.update(gameData);
 
-                    game.setState(new Done(me.game));
+                    game.setState(new Done(me.game, me.lobbyState));
                 }
 
                 if(gameData.yourTurn) {

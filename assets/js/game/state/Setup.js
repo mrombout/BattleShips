@@ -35,10 +35,11 @@ define([
      * @param game
      * @constructor
      */
-    var Setup = function(game) {
+    var Setup = function(game, lobbyState) {
         State.call(this);
 
         this.game = game;
+        this.lobbyState = lobbyState;
 
         this.parent = new THREE.Object3D();
 
@@ -283,7 +284,7 @@ define([
             setupService.getGame(me.game.id).done(function(gameModel) {
                 if(gameModel.status === GameStatus.STARTED) {
                     me.hudView.setWaitingForEnemy(false);
-                    game.setState(new Started(gameModel));
+                    game.setState(new Started(gameModel, me.lobbyState));
                 } else {
                     setTimeout(function() {
                         pollGameState();
