@@ -49,14 +49,35 @@ define(['container', 'text!../../../html/hud.html', 'jquery', 'text!../../../htm
         this.$ul.append(shipItem);
     };
 
+    /**
+     * Enables or disables the "Ready" button used to post a gameboard to the
+     * server.
+     *
+     * @param {bool} isReady
+     */
     HUD.prototype.setIsReady = function(isReady) {
         this.$readyButton.prop('disabled', !isReady);
     };
 
+    /**
+     * Enables or disables the "Reset" button used to reset the currently
+     * placed ships.
+     *
+     * @param canReset
+     */
     HUD.prototype.setCanReset = function(canReset) {
         this.$resetButton.prop('disabled', !canReset);
     };
 
+    /**
+     * Notifies the presenter that a ship should be placed on the board and
+     * hides the ship from the menu.
+     *
+     * This method is triggered when the user clicks down on an item in the
+     * ship menu.
+     *
+     * @param e
+     */
     HUD.prototype.onMenuItemMouseDown = function(e) {
         var $this = $(e.currentTarget);
 
@@ -74,6 +95,16 @@ define(['container', 'text!../../../html/hud.html', 'jquery', 'text!../../../htm
         }
     };
 
+    /**
+     * Notifies the presenter that a ship should be dropped on its current
+     * position. It permanently removes the ship from the menu when the
+     * placement has been succesful or shows the item when it failed.
+     *
+     * This method is triggered when the user releases the mouse button
+     * from a previous click on a ship menu item.
+     *
+     * @param e
+     */
     HUD.prototype.onDocumentMouseUp = function(e) {
         var $this = $(e.target);
 
@@ -98,26 +129,49 @@ define(['container', 'text!../../../html/hud.html', 'jquery', 'text!../../../htm
         }
     };
 
+    /**
+     * Notifies the presenter that the user wants to reset the board.
+     *
+     * This method is triggered when the user clicks the "Reset" button.
+     */
     HUD.prototype.onResetClick = function() {
         $(this).trigger('resetShips');
 
         this.$ul.empty();
     };
 
+    /**
+     * Notifies the presenter that the users wants to place the ships on the
+     * board.
+     *
+     * This method is triggered when the user clicks the "Ready" button.
+     */
     HUD.prototype.onReadyClick = function() {
         $(this).trigger('ready');
     };
 
+    /**
+     * Shows this view and notifies the presenter to load the ships.
+     */
     HUD.prototype.show = function() {
         this.presenter.loadShips();
         this.$domElement.show();
     };
 
+    /**
+     * Hides this view.
+     */
     HUD.prototype.hide = function() {
         this.$waiting.hide();
         this.$domElement.hide();
     };
 
+    /**
+     * Sets whether the user is currently waiting for an enemy. When they are
+     * show the waiting spinner to the users.
+     *
+     * @param waiting
+     */
     HUD.prototype.setWaitingForEnemy = function(waiting) {
         if(waiting) {
             this.$waiting.show();

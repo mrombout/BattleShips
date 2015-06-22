@@ -29,8 +29,7 @@ define(['three', 'jquery', 'model/Cell', 'model/Ship', 'model/Shot'], function(T
                 for(var key in board.shots) {
                     if(board.shots.hasOwnProperty(key)) {
                         var shot = board.shots[key];
-                        var cell = new Shot(shot);
-                        this.shots[shot._id] = cell;
+                        this.shots[shot._id] = new Shot(shot);
                     }
                 }
             }
@@ -46,9 +45,9 @@ define(['three', 'jquery', 'model/Cell', 'model/Ship', 'model/Shot'], function(T
         this.latestShots = [];
 
         // update ships
-        for(var key in data.ships) {
-            if(data.ships.hasOwnProperty(key)) {
-                var ship = data.ships[key];
+        for(var shipKey in data.ships) {
+            if(data.ships.hasOwnProperty(shipKey)) {
+                var ship = data.ships[shipKey];
                 if(this.ships.hasOwnProperty(ship._id)) {
                     this.ships[ship._id].update(ship);
                 } else {
@@ -58,9 +57,9 @@ define(['three', 'jquery', 'model/Cell', 'model/Ship', 'model/Shot'], function(T
         }
 
         // update shots
-        for(var key in data.shots) {
-            if(data.shots.hasOwnProperty(key)) {
-                var shot = data.shots[key];
+        for(var shotKey in data.shots) {
+            if(data.shots.hasOwnProperty(shotKey)) {
+                var shot = data.shots[shotKey];
                 if(this.shots.hasOwnProperty(shot._id)) {
                     console.log('just updating shots');
                     this.shots[shot._id].update(shot);

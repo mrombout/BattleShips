@@ -2,7 +2,7 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
     /**
      * Represents a Board in 3D space.
      *
-     * @param Board model
+     * @param {Board} model
      * @constructor
      */
     var Board3D = function(model) {
@@ -73,7 +73,7 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
         this.planeMesh.name = "dank";
 
         // create tiles
-        for(var i = -size; i < size; i += step) {
+        for(i = -size; i < size; i += step) {
             for(var x = -size; x < size; x += step) {
                 var tileGeometry = new THREE.BoxGeometry(20, 20, 20);
                 tileGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(10, 0, 10));
@@ -225,7 +225,9 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
         var ships = [];
 
         for(var key in this.ships) {
-            ships.push(this.ships[key].getObject());
+            if(this.ships.hasOwnProperty()) {
+                ships.push(this.ships[key].getObject());
+            }
         }
 
         return ships;
@@ -236,9 +238,10 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
      */
     Board3D.prototype.resetShips = function() {
         // remove all ships from parent object
-        for(var key in this.getShipObjects()) {
-            if(this.getShipObjects().hasOwnProperty(key)) {
-                this.getObject().remove(this.getShipObjects()[key]);
+        var ships = this.getShipObjects();
+        for(var key in ships) {
+            if(ships.hasOwnProperty(key)) {
+                this.getObject().remove(ships[key]);
             }
         }
 

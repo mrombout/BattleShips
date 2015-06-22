@@ -29,9 +29,7 @@ define(['factory/ship', 'entity/Board3D', 'model/Ship'], function(shipFactory, B
      * @returns {Board3D}
      */
     BoardFactory.prototype.createPlayerBoard = function(board) {
-        var board3d = new Board3D(board);
-
-        return board3d;
+        return new Board3D(board);
     };
 
     /**
@@ -41,9 +39,7 @@ define(['factory/ship', 'entity/Board3D', 'model/Ship'], function(shipFactory, B
      * @returns {Board3D}
      */
     BoardFactory.prototype.createEnemyBoard = function(board) {
-        var board3d = new Board3D(board);
-
-        return board3d;
+        return new Board3D(board);
     };
 
     return new BoardFactory();

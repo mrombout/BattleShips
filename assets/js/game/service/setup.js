@@ -16,8 +16,10 @@ define(['service/api', 'jquery', 'model/Ship', 'service/lobby'], function(API, $
         }).done(function(data, textStatus, jqXhr) {
             var ships = [];
             for(var key in data) {
-                var shipJson = data[key];
-                ships.push(new Ship(shipJson));
+                if(data.hasOwnProperty(key)) {
+                    var shipJson = data[key];
+                    ships.push(new Ship(shipJson));
+                }
             }
 
             deferred.resolve(ships);

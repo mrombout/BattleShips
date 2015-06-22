@@ -17,8 +17,10 @@ define(['service/api', 'jquery', 'model/Game'], function(API, $, Game) {
             deferred.reject();
         }).done(function(data, textStatus, jqXhr) {
             for(var key in data) {
-                var game = data[key];
-                game.prototype = Object.create(Game.prototype);
+                if(data.hasOwnProperty(key)) {
+                    var game = data[key];
+                    game.prototype = Object.create(Game.prototype);
+                }
             }
 
             deferred.resolve(data);

@@ -10,14 +10,25 @@ define(['jquery', 'text!../../../html/started.html', 'container'], function($, s
         $container.prepend(this.$domElement);
     };
 
+    /**
+     * Shows this view.
+     */
     Started.prototype.show = function() {
         this.$domElement.show();
     };
 
+    /**
+     * Hides this from view from user.
+     */
     Started.prototype.hide = function() {
         this.$domElement.hide();
     };
 
+    /**
+     * Set the game this view is used on.
+     *
+     * @param {Game} game
+     */
     Started.prototype.setGame = function(game) {
         this.game = game;
 

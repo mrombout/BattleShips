@@ -1,3 +1,5 @@
+"use strict";
+
 define([
     'state/State',
     'three',
@@ -36,6 +38,9 @@ define([
     DoneTest.prototype = Object.create(State.prototype);
     DoneTest.prototype.constructor = DoneTest;
 
+    /**
+     * Shows this state by creating the environment and showing the view.
+     */
     DoneTest.prototype.show = function() {
         this.createEnvironment();
 
@@ -62,6 +67,9 @@ define([
         scene.remove(this.parent);
     };
 
+    /**
+     * Registers any listeners this state uses.
+     */
     DoneTest.prototype.registerListeners = function() {
         this.doneView.on('back', function() {
             console.log('on back thi');
@@ -69,22 +77,38 @@ define([
         }.bind(this));
     };
 
+    /**
+     * Creates the environment for this state.
+     */
     DoneTest.prototype.createEnvironment = function() {
         this.environment = new Environment();
 
         this.parent.add(this.environment.getObject());
     };
 
+    /**
+     * Updates this state by updating its environment.
+     *
+     * @param {number} delta
+     */
     DoneTest.prototype.update = function(delta) {
         this.environment.update(delta);
     };
 
-    DoneTest.prototype.render = function(clock) {
+    /**
+     * Renders this state by rendering the environment.
+     *
+     * @param {number} delta
+     */
+    DoneTest.prototype.render = function(delta) {
         this.environment.render();
 
         renderer.render(scene, camera);
     };
 
+    /**
+     * Sets the state back to the lobby state.
+     */
     DoneTest.prototype.onBack = function() {
         game.setState(this.backState);
     };

@@ -26,19 +26,34 @@ define(['jquery', 'text!../../../html/done.html', 'container', 'util/sprintf', '
     DoneView.prototype = Object.create(View.prototype);
     DoneView.prototype.constructor = DoneView;
 
+    /**
+     * Notifies the presenter that the user wants to go back to the lobby
+     * state.
+     */
     DoneView.prototype.onBackClick = function() {
         console.log('back lcick');
         $(this).trigger('back');
     };
 
+    /**
+     * Shows this view.
+     */
     DoneView.prototype.show = function() {
         this.$domElement.show();
     };
 
+    /**
+     * Hides this view.
+     */
     DoneView.prototype.hide = function() {
         this.$domElement.hide();
     };
 
+    /**
+     * Sets the game this view displays.
+     *
+     * @param game
+     */
     DoneView.prototype.setGame = function(game) {
         this.game = game;
     };

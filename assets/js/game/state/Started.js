@@ -5,10 +5,6 @@ define([
     'scene',
     'camera',
     'entity/Environment',
-    'entity/Board3D',
-    'model/Board',
-    'service/api',
-    'spe',
     'assets',
     'factory/board',
     'view/started',
@@ -26,10 +22,6 @@ define([
         scene,
         camera,
         Environment,
-        Board3D,
-        Board,
-        API,
-        SPE,
         assets,
         boardFactory,
         startedView,
@@ -66,6 +58,10 @@ define([
     Started.prototype = Object.create(State.prototype);
     Started.prototype.constructor = Started;
 
+    /**
+     * Shows this state by creating the graphics, showing the view and
+     * initializing the game state according to the model.
+     */
     Started.prototype.show = function() {
         // initialize graphics
         this.createEnvironment();
@@ -131,6 +127,15 @@ define([
         }).start();
     };
 
+    /**
+     * Gives the turn to the enemy. Moves the camera to focus in the players
+     * board and starts polling for game state changes.
+     *
+     * When a change is detected (the server reports it is the players turn
+     * again), it updates the model and displays a torpedo being fired at
+     * the latest shoot position. And finally gives the turn back to the
+     * player.
+     */
     Started.prototype.setEnemyTurn = function() {
         var me = this;
 
@@ -216,11 +221,18 @@ define([
         pollGameState();
     };
 
+    /**
+     * Hides this state by remove its objects from the scene and hiding the
+     * view.
+     */
     Started.prototype.hide = function() {
         scene.remove(this.parent);
         startedView.hide();
     };
 
+    /**
+     * Registers to all events this state needs.
+     */
     Started.prototype.registerEvents = function() {
         document.addEventListener('mousemove', function(e) {
             this.onDocumentMouseMove(e);
@@ -230,11 +242,17 @@ define([
         }.bind(this), false);
     };
 
+    /**
+     * Creates the environment for this state.
+     */
     Started.prototype.createEnvironment = function() {
         this.environment = new Environment();
         this.parent.add(this.environment.getObject());
     };
 
+    /**
+     * Creates the controls used in this state.
+     */
     Started.prototype.createControls = function() {
         this.controls = new THREE.OrbitControls(camera, renderer.domElement);
         this.controls.rotateSpeed = 1.5;
@@ -254,18 +272,27 @@ define([
         this.controls.keys = [ 65, 83, 68 ];
     };
 
+    /**
+     * Creates the players board based on the current games `myGameBoard`.
+     */
     Started.prototype.createPlayerGrid = function() {
         this.playerBoard = boardFactory.create(this.game.myGameboard);
         console.log(this.playerBoard);
         this.parent.add(this.playerBoard.getObject());
     };
 
+    /**
+     * Creates the enemy board based on the current games `enemyGameboard`.
+     */
     Started.prototype.createEnemyGrid = function() {
         this.enemyBoard = boardFactory.create(this.game.enemyGameboard);
         this.enemyBoard.getObject().position.x = 400;
         this.parent.add(this.enemyBoard.getObject());
     };
 
+    /**
+     * Creates the 3D cursor.
+     */
     Started.prototype.createCursor = function() {
         var material = new THREE.MeshLambertMaterial();
         var geometry = new THREE.CircleGeometry(10, 20);
@@ -338,6 +365,12 @@ define([
         }
     };
 
+    /**
+     * Updates this view by updating the controls, the environment, active
+     * torpedos, tween animations and both the enemy and the players board.
+     *
+     * @param {number} delta
+     */
     Started.prototype.update = function(delta) {
         this.controls.update();
         this.environment.update(delta);
@@ -353,7 +386,12 @@ define([
         this.enemyBoard.update(delta);
     };
 
-    Started.prototype.render = function(clock) {
+    /**
+     * Renders the environment and the current scene.
+     *
+     * @param {number} delta
+     */
+    Started.prototype.render = function(delta) {
         this.environment.render();
 
         renderer.render(scene, camera);

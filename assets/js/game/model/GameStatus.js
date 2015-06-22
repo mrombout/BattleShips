@@ -7,12 +7,10 @@ define(function() {
      *
      * @type {{QUEUE: string, SETUP: string, STARTED: string, DONE: string}}
      */
-    var GameStatus = {
+    return {
         QUEUE: 'que',
         SETUP: 'setup',
         STARTED: 'started',
         DONE: 'done'
     };
-
-    return GameStatus;
 });
