@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Board3D</title>
+        <!-- <script src="http://use.edgefonts.net/source-sans-pro;source-code-pro.js"></script> -->
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic|Source+Code+Pro:300,400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="../assets/css/bootstrap.css">
+<link rel="stylesheet" href="../assets/css/jquery.bonsai.css">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/icons.css">
+<script type="text/javascript" src="../assets/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="../assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="../assets/js/jquery.bonsai.js"></script>
+<!-- <script type="text/javascript" src="../assets/js/main.js"></script> -->
+
+    </head>
+    <body>
+        <div>
+
+            <!-- Name Title -->
+
+            <h1>Board3D</h1>
+
+            <!-- Type and Stereotype -->
+
+            <section style="margin-top: .5em;">
+                <span class="alert alert-info">
+                    <span class="node-icon _icon-UMLClass"></span>
+                    UMLClass
+                </span>
+                
+            </section>
+
+            <!-- Path -->
+
+            <section style="margin-top: 10px">
+                
+                
+                
+                    
+                    <span class="label label-info"><a href='Battleship_ul_AAAAAAFF+h6SjaM2Hec=.html'><span class='node-icon _icon-Project'></span>Battleship</a></span>
+                
+                    <span>::</span>
+                    <span class="label label-info"><a href='Model_ul_AAAAAAFF+qBWK6M3Z8Y=.html'><span class='node-icon _icon-UMLModel'></span>Model</a></span>
+                
+                    <span>::</span>
+                    <span class="label label-info"><a href='Entity_ul_AAAAAAFOHD8JQU33Pg8=.html'><span class='node-icon _icon-UMLPackage'></span>Entity</a></span>
+                
+                    <span>::</span>
+                    <span class="label label-info"><a href='Board3D_ul_AAAAAAFOHD8s+04ugfE=.html'><span class='node-icon _icon-UMLClass'></span>Board3D</a></span>
+                
+            </section>
+
+            <!-- Diagram -->
+
+            
+
+            <!-- Description -->
+
+            
+            <section>
+                <h3>Description</h3>
+                <div>
+                    
+                        <p>Represents a Board in 3D space.</p>
+                    
+                </div>
+            </section>
+            
+
+            <!-- Specification -->
+
+            
+
+            <!-- Directed Relationship -->
+
+            
+
+            <!-- Undirected Relationship -->
+
+            
+
+            <!-- Classifier -->
+
+            
+                
+                
+
+
+                
+                
+
+
+                
+                
+
+
+                
+                
+
+
+                
+                
+
+            
+
+            <!-- Interface -->
+
+            
+
+            <!-- Component -->
+
+            
+
+            <!-- Node -->
+
+            
+
+            <!-- Actor -->
+
+            
+
+            <!-- Use Case -->
+
+            
+
+            <!-- Template Parameters -->
+
+            
+
+            <!-- Literals -->
+
+            
+
+            <!-- Attributes -->
+
+            
+
+            <!-- Operations -->
+
+            
+            <section>
+                <h3>Operations</h3>
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Visibility</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="createGrid_ul_AAAAAAFOHEBfOlE1xLg=.html">createGrid()</a></td>
+                        <td><p>Creates a 10x10 grid of lines as a visual feedback to players.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="update_ul_AAAAAAFOHEB6ZlE8MrQ=.html">update()</a></td>
+                        <td><p>Updates this board by calling update on all the ships and shots made on
+     * this board.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="placeShip_ul_AAAAAAFOHECNrlFDrgU=.html">placeShip()</a></td>
+                        <td><p>Places a new ship on this board.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="isWithinBounds_ul_AAAAAAFOHEClzlFKn1E=.html">isWithinBounds()</a></td>
+                        <td><p>Places a new ship on this board.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="isOverlapping_ul_AAAAAAFOHEDI4FFRqMg=.html">isOverlapping()</a></td>
+                        <td><p>Returns whether the given ship is overlapping with another ship on this  board.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="gridToWorld_ul_AAAAAAFOHEDhclFYSv0=.html">gridToWorld()</a></td>
+                        <td><p>Converts the given grid position to world coordinates.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="worldToGrid_ul_AAAAAAFOHED7CFFfNQY=.html">worldToGrid()</a></td>
+                        <td><p>Converts the given world position to grid coordinates.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="getLatestShots_ul_AAAAAAFOHEETClFmfBY=.html">getLatestShots()</a></td>
+                        <td><p>Returns the latest shot since last model update.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="sync_ul_AAAAAAFOHEFSilFyjR8=.html">sync()</a></td>
+                        <td><p>Synchronize this 3D Board representation with it&#39;s models state.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="getShipObjects_ul_AAAAAAFOHEFvaVF5tr8=.html">getShipObjects()</a></td>
+                        <td><p>Returns the Objects representing the ships on this board.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="resetShips_ul_AAAAAAFOHEGJpVGAb_sl_g=.html">resetShips()</a></td>
+                        <td><p>Removes all ships of this board.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="getObjects_ul_AAAAAAFOHEGkLFGHhF0=.html">getObjects()</a></td>
+                        <td><p>Returns the parent object of this board.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="getSupport_ul_AAAAAAFOHEG_sl_VVGO_sl_BE=.html">getSupport()</a></td>
+                        <td><p>Returns the supporting place mesh for this board.</p>
+
+<p>The supporting plane mesh is used to support easier and more efficient raycasting.</p></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>public</td>
+                        <td><a href="hasShipType_ul_AAAAAAFOHEHYw1GV8LQ=.html">hasShipType()</a></td>
+                        <td><p>Returns whether this board has the given ship type.</p></td>
+                    </tr>
+                    
+                </table>
+            </section>
+            
+
+            <!-- Extension Points -->
+
+            
+
+            <!-- Parameters -->
+
+            
+
+            <!-- Diagrams -->
+
+            
+            
+
+            <!-- Behavior -->
+
+            
+
+            <!-- Action -->
+
+            
+
+            <!-- Interaction -->
+
+            
+
+            <!-- CombinedFragment -->
+
+            
+
+            <!-- Activity -->
+
+            
+
+            <!-- State Machine -->
+
+            
+
+            <!-- State Machine -->
+
+            
+
+            <!-- State -->
+
+            
+
+            <!-- Vertex -->
+
+            
+
+            <!-- Transition -->
+
+            
+
+            <!-- Properties -->
+
+            <section>
+                <h3>Properties</h3>
+                
+                <table class="table table-striped table-bordered">
+    <tr>
+        <th width="50%">Name</th>
+        <th width="50%">Value</th>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+        <td>name</td>
+        <td>Board3D</td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+        <td>stereotype</td>
+        <td><span class='label label-info'>null</span></td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+        <td>visibility</td>
+        <td>public</td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+        <td>isAbstract</td>
+        <td><span class='label label-info'>false</span></td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+        <td>isFinalSpecialization</td>
+        <td><span class='label label-info'>false</span></td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+        <td>isLeaf</td>
+        <td><span class='label label-info'>false</span></td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+        <td>isActive</td>
+        <td><span class='label label-info'>false</span></td>
+    </tr>
+    
+    
+    
+</table>                
+
+            </section>
+
+            <!-- Tags -->
+
+            
+
+            <!-- Constraints, Dependencies, Dependants -->
+
+            
+                
+                
+
+
+                
+                
+
+
+                
+                
+
+            
+
+            <!-- Relationships -->
+
+            
+            
+<section class="element-list">
+    <h3>Relationships</h3>
+    <ul class="nav nav-list">
+        
+        <li><a href='_ul_AAAAAAFOHEVRIFJpkMI=.html'><span class='node-icon _icon-UMLAssociation'></span>(Shot3D—Board3D)</a></li>
+        
+        <li><a href='_ul_AAAAAAFOHEbsEVX1fzg=.html'><span class='node-icon _icon-UMLAssociation'></span>(Ship3D—Board3D)</a></li>
+        
+    </ul>
+</section>
+
+
+
+            <!-- Owned Elements -->
+
+            
+            
+
+
+        </div>
+    </body>
+</html>

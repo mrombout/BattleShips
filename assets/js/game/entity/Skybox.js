@@ -13,7 +13,7 @@ define(['three'], function(THREE) {
         var loader = new THREE.ImageLoader();
         loader.load( 'assets/texture/Above_The_Sea.jpg', function ( image ) {
             var getSide = function ( x, y ) {
-                var size = 1024;
+                var size = 512;
 
                 var canvas = document.createElement( 'canvas' );
                 canvas.width = size;

@@ -43,6 +43,9 @@ define(['three'], function(THREE) {
                 skydome_diffuse: {
                     url: 'assets/texture/skydome.jpg'
                 },
+                skybox_diffuse: {
+                    url: 'assets/texture/Above_The_Sea.jpg'
+                },
                 smoke_particle: {
                     url: 'assets/texture/smokeparticle.png'
                 },
@@ -99,7 +102,13 @@ define(['three'], function(THREE) {
         },
         textures: { },
         geometries: { },
-        audio: { },
+        audio: {
+            ocean: null,
+            bgm: null,
+            sfx_boom: null,
+            sfx_splash: null,
+            sfx_shoot: null
+        },
         materials: { }
     };
 });

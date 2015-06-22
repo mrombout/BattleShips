@@ -1,6 +1,6 @@
 "use strict";
 
-define([], function() {
+define(['audioContext'], function(audioContext) {
     /**
      * Responsible for playing audio.
      *
@@ -16,7 +16,8 @@ define([], function() {
      * @param audio
      */
     AudioService.prototype.play = function(audio) {
-        audio.play();
+        if(audioContext && audio)
+            audio.play();
     };
 
     /**
@@ -25,7 +26,8 @@ define([], function() {
      * @param audio
      */
     AudioService.prototype.stop = function(audio) {
-        audio.stop();
+        if(audioContext && audio)
+            audio.stop();
     };
 
     return new AudioService();

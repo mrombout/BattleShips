@@ -8,7 +8,12 @@ define([
     'state/lobby',
     'view/loading',
     'loader/AudioLoader',
-    'loader/JSONLoader'
+    'loader/JSONLoader',
+    'audioContext',
+    'state/Done',
+    'state/Setup',
+    'state/Started',
+    'state/State'
 ], function(
     State,
     assets,
@@ -17,7 +22,8 @@ define([
     lobbyState,
     loadingView,
     AudioLoader,
-    JSONLoader) {
+    JSONLoader,
+    audioContext) {
     /**
      * State when the game is still loading assets. This is the first state the
      * player is in and is used to load all the assets used in the game. It
@@ -119,6 +125,11 @@ define([
      * audio files.
      */
     Loading.prototype.loadAudio = function() {
+        if(!audioContext) {
+            console.warn('AudioContext not supporting, skip loading audio');
+            return;
+        }
+
         this.loadType(assets.config.audio, assets.audio, this.audioLoader);
     };
 
