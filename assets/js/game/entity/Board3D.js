@@ -225,7 +225,7 @@ define(['three', 'spe', 'assets', 'entity/Ship3D', 'factory/ship', 'factory/shot
         var ships = [];
 
         for(var key in this.ships) {
-            if(this.ships.hasOwnProperty()) {
+            if(this.ships.hasOwnProperty(key)) {
                 ships.push(this.ships[key].getObject());
             }
         }

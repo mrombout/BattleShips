@@ -1,4 +1,4 @@
-define(['view/lobby'], function(lobbyView) {
+define(['view/Lobby'], function(lobbyView) {
 
     var LoadingPresenter = function(loadingView) {
         this.view = loadingView;

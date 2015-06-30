@@ -72,7 +72,7 @@ define([
     Loading.prototype.onLoadingManagerLoad = function() {
         console.info('LOADING', 'Finished', assets);
         setTimeout(function() {
-            //game.setState(new StartedState());
+            assets.audio.ocean.setLoop(true);
             game.setState(lobbyState);
         }, 500);
     };

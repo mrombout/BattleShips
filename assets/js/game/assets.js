@@ -39,10 +39,7 @@ define(['three'], function(THREE) {
                 logo_specular: {
                     url: 'assets/texture/logo_s.png',
                     anisotropy: 16
-                },
-                skydome_diffuse: {
-                    url: 'assets/texture/skydome.jpg'
-                },
+                },  
                 skybox_diffuse: {
                     url: 'assets/texture/Above_The_Sea.jpg'
                 },
@@ -84,10 +81,10 @@ define(['three'], function(THREE) {
             },
             audio: {
                 ocean: {
-                    url: 'assets/audio/bgm/ocean.wav'
+                    url: 'assets/audio/bgm/ocean.mp3'
                 },
                 bgm: {
-                    url: 'assets/audio/bgm/intro.wav'
+                    url: 'assets/audio/bgm/intro.mp3'
                 },
                 sfx_boom: {
                     url: 'assets/audio/sfx/boom.wav'

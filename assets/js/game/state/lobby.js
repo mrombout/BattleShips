@@ -7,7 +7,7 @@ define([
     'camera',
     'assets',
     'entity/Environment',
-    'view/lobby',
+    'view/Lobby',
     'service/lobby',
     'text!../../../html/_game.html',
     'model/GameStatus',

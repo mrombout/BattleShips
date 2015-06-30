@@ -173,6 +173,8 @@ define(['container', 'text!../../../html/hud.html', 'jquery', 'text!../../../htm
      * @param waiting
      */
     HUD.prototype.setWaitingForEnemy = function(waiting) {
+        this.setIsReady(false);
+
         if(waiting) {
             this.$waiting.show();
         } else {
